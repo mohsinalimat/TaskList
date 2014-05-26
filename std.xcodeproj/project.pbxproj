@@ -24,6 +24,10 @@
 		C08FE2051928163D0012F7D2 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C08FE1E91928163D0012F7D2 /* CoreData.framework */; };
 		C08FE20D1928163D0012F7D2 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C08FE20B1928163D0012F7D2 /* InfoPlist.strings */; };
 		C08FE20F1928163D0012F7D2 /* STDTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C08FE20E1928163D0012F7D2 /* STDTests.m */; };
+		C0C462511932BDF20031E256 /* STDHomepageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C0C462501932BDF20031E256 /* STDHomepageViewController.m */; };
+		C0C462541932BFD10031E256 /* STDSubtasksViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C0C462531932BFD10031E256 /* STDSubtasksViewController.m */; };
+		C0C462571932BFEC0031E256 /* STDNotesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C0C462561932BFEC0031E256 /* STDNotesViewController.m */; };
+		C0C4625A1932BFFD0031E256 /* STDSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C0C462591932BFFD0031E256 /* STDSettingsViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,6 +60,14 @@
 		C08FE20A1928163D0012F7D2 /* STDTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "STDTests-Info.plist"; sourceTree = "<group>"; };
 		C08FE20C1928163D0012F7D2 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		C08FE20E1928163D0012F7D2 /* STDTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = STDTests.m; sourceTree = "<group>"; };
+		C0C4624F1932BDF20031E256 /* STDHomepageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STDHomepageViewController.h; sourceTree = "<group>"; };
+		C0C462501932BDF20031E256 /* STDHomepageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STDHomepageViewController.m; sourceTree = "<group>"; };
+		C0C462521932BFD10031E256 /* STDSubtasksViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STDSubtasksViewController.h; sourceTree = "<group>"; };
+		C0C462531932BFD10031E256 /* STDSubtasksViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STDSubtasksViewController.m; sourceTree = "<group>"; };
+		C0C462551932BFEC0031E256 /* STDNotesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STDNotesViewController.h; sourceTree = "<group>"; };
+		C0C462561932BFEC0031E256 /* STDNotesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STDNotesViewController.m; sourceTree = "<group>"; };
+		C0C462581932BFFD0031E256 /* STDSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STDSettingsViewController.h; sourceTree = "<group>"; };
+		C0C462591932BFFD0031E256 /* STDSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STDSettingsViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,6 +99,14 @@
 		C01CB77219281EC000499B28 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				C0C4624F1932BDF20031E256 /* STDHomepageViewController.h */,
+				C0C462501932BDF20031E256 /* STDHomepageViewController.m */,
+				C0C462551932BFEC0031E256 /* STDNotesViewController.h */,
+				C0C462561932BFEC0031E256 /* STDNotesViewController.m */,
+				C0C462581932BFFD0031E256 /* STDSettingsViewController.h */,
+				C0C462591932BFFD0031E256 /* STDSettingsViewController.m */,
+				C0C462521932BFD10031E256 /* STDSubtasksViewController.h */,
+				C0C462531932BFD10031E256 /* STDSubtasksViewController.m */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -311,8 +331,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C0C462541932BFD10031E256 /* STDSubtasksViewController.m in Sources */,
+				C0C4625A1932BFFD0031E256 /* STDSettingsViewController.m in Sources */,
 				C01CB78919281EC000499B28 /* STDAppDelegate.m in Sources */,
+				C0C462571932BFEC0031E256 /* STDNotesViewController.m in Sources */,
 				C01CB78719281EC000499B28 /* main.m in Sources */,
+				C0C462511932BDF20031E256 /* STDHomepageViewController.m in Sources */,
 				C01CB78619281EC000499B28 /* STD.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -431,8 +455,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "STD/STD-Prefix.pch";
-				INFOPLIST_FILE = "STD/STD-Info.plist";
+				GCC_PREFIX_HEADER = "STD/Other sources/STD-Prefix.pch";
+				INFOPLIST_FILE = "$(SRCROOT)/STD/Supporting files/STD-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -444,8 +468,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "STD/STD-Prefix.pch";
-				INFOPLIST_FILE = "STD/STD-Info.plist";
+				GCC_PREFIX_HEADER = "STD/Other sources/STD-Prefix.pch";
+				INFOPLIST_FILE = "$(SRCROOT)/STD/Supporting files/STD-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
