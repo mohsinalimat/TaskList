@@ -7,8 +7,9 @@
 //
 
 #import "STDHomepageViewController.h"
+#import "RATreeView.h"
 
-@interface STDHomepageViewController ()
+@interface STDHomepageViewController () <RATreeViewDataSource, RATreeViewDelegate>
 
 @end
 
@@ -24,7 +25,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+    
+    [self initSubviews];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -33,5 +35,31 @@
     
     [super viewWillDisappear:animated];
 }
+
+- (void)initSubviews
+{
+    RATreeView *treeView = [[RATreeView alloc] initWithFrame:self.view.bounds];
+    treeView.delegate = self;
+    treeView.dataSource = self;
+    [self.view addSubview:treeView];
+    [treeView reloadData];
+}
+
+#pragma mark - RATreeViewDataSource
+
+//- (NSInteger)treeView:(RATreeView *)treeView numberOfChildrenOfItem:(id)item;
+//{
+//    
+//}
+//
+//- (UITableViewCell *)treeView:(RATreeView *)treeView cellForItem:(id)item treeNodeInfo:(RATreeNodeInfo *)treeNodeInfo;
+//{
+//    
+//}
+//
+//- (id)treeView:(RATreeView *)treeView child:(NSInteger)index ofItem:(id)item;
+//{
+//    
+//}
 
 @end
