@@ -14,4 +14,13 @@
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>
     #import <CoreData/CoreData.h>
+
+    #import "STDCategory.h"
+    #import "STDNote.h"
+    #import "STDSubtask.h"
+    #import "STDTask.h"
+
+    #define MR_ENABLE_ACTIVE_RECORD_LOGGING 0
+    #define MR_SHORTHAND
+    #import "CoreData+MagicalRecord.h"
 #endif
