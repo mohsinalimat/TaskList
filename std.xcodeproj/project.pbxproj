@@ -29,6 +29,18 @@
 		C01CB78919281EC000499B28 /* STDAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C01CB78019281EC000499B28 /* STDAppDelegate.m */; };
 		C01CB78A19281EC000499B28 /* Storyboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C01CB78119281EC000499B28 /* Storyboard.storyboard */; };
 		C01CB78B19281EC000499B28 /* STD-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C01CB78319281EC000499B28 /* STD-Info.plist */; };
+		C082BE05193BD86300A60D8E /* _STDCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = C082BDFE193BD86300A60D8E /* _STDCategory.m */; };
+		C082BE06193BD86300A60D8E /* _STDNote.m in Sources */ = {isa = PBXBuildFile; fileRef = C082BE00193BD86300A60D8E /* _STDNote.m */; };
+		C082BE07193BD86300A60D8E /* _STDSubtask.m in Sources */ = {isa = PBXBuildFile; fileRef = C082BE02193BD86300A60D8E /* _STDSubtask.m */; };
+		C082BE08193BD86300A60D8E /* _STDTask.m in Sources */ = {isa = PBXBuildFile; fileRef = C082BE04193BD86300A60D8E /* _STDTask.m */; };
+		C082BE11193BD86C00A60D8E /* STDCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = C082BE0A193BD86C00A60D8E /* STDCategory.m */; };
+		C082BE12193BD86C00A60D8E /* STDNote.m in Sources */ = {isa = PBXBuildFile; fileRef = C082BE0C193BD86C00A60D8E /* STDNote.m */; };
+		C082BE13193BD86C00A60D8E /* STDSubtask.m in Sources */ = {isa = PBXBuildFile; fileRef = C082BE0E193BD86C00A60D8E /* STDSubtask.m */; };
+		C082BE14193BD86C00A60D8E /* STDTask.m in Sources */ = {isa = PBXBuildFile; fileRef = C082BE10193BD86C00A60D8E /* STDTask.m */; };
+		C082BE15193BD88200A60D8E /* STDCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = C082BE0A193BD86C00A60D8E /* STDCategory.m */; };
+		C082BE16193BD88900A60D8E /* STDNote.m in Sources */ = {isa = PBXBuildFile; fileRef = C082BE0C193BD86C00A60D8E /* STDNote.m */; };
+		C082BE17193BD88B00A60D8E /* STDSubtask.m in Sources */ = {isa = PBXBuildFile; fileRef = C082BE0E193BD86C00A60D8E /* STDSubtask.m */; };
+		C082BE18193BD88E00A60D8E /* STDTask.m in Sources */ = {isa = PBXBuildFile; fileRef = C082BE10193BD86C00A60D8E /* STDTask.m */; };
 		C08FE1E41928163D0012F7D2 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C08FE1E31928163D0012F7D2 /* Foundation.framework */; };
 		C08FE1E61928163D0012F7D2 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C08FE1E51928163D0012F7D2 /* CoreGraphics.framework */; };
 		C08FE1E81928163D0012F7D2 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C08FE1E71928163D0012F7D2 /* UIKit.framework */; };
@@ -66,6 +78,22 @@
 		C01CB78019281EC000499B28 /* STDAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STDAppDelegate.m; sourceTree = "<group>"; };
 		C01CB78119281EC000499B28 /* Storyboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Storyboard.storyboard; sourceTree = "<group>"; };
 		C01CB78319281EC000499B28 /* STD-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "STD-Info.plist"; sourceTree = "<group>"; };
+		C082BDFD193BD86300A60D8E /* _STDCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _STDCategory.h; sourceTree = "<group>"; };
+		C082BDFE193BD86300A60D8E /* _STDCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _STDCategory.m; sourceTree = "<group>"; };
+		C082BDFF193BD86300A60D8E /* _STDNote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _STDNote.h; sourceTree = "<group>"; };
+		C082BE00193BD86300A60D8E /* _STDNote.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _STDNote.m; sourceTree = "<group>"; };
+		C082BE01193BD86300A60D8E /* _STDSubtask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _STDSubtask.h; sourceTree = "<group>"; };
+		C082BE02193BD86300A60D8E /* _STDSubtask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _STDSubtask.m; sourceTree = "<group>"; };
+		C082BE03193BD86300A60D8E /* _STDTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _STDTask.h; sourceTree = "<group>"; };
+		C082BE04193BD86300A60D8E /* _STDTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _STDTask.m; sourceTree = "<group>"; };
+		C082BE09193BD86C00A60D8E /* STDCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STDCategory.h; sourceTree = "<group>"; };
+		C082BE0A193BD86C00A60D8E /* STDCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STDCategory.m; sourceTree = "<group>"; };
+		C082BE0B193BD86C00A60D8E /* STDNote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STDNote.h; sourceTree = "<group>"; };
+		C082BE0C193BD86C00A60D8E /* STDNote.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STDNote.m; sourceTree = "<group>"; };
+		C082BE0D193BD86C00A60D8E /* STDSubtask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STDSubtask.h; sourceTree = "<group>"; };
+		C082BE0E193BD86C00A60D8E /* STDSubtask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STDSubtask.m; sourceTree = "<group>"; };
+		C082BE0F193BD86C00A60D8E /* STDTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STDTask.h; sourceTree = "<group>"; };
+		C082BE10193BD86C00A60D8E /* STDTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STDTask.m; sourceTree = "<group>"; };
 		C08FE1E01928163D0012F7D2 /* STD.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = STD.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C08FE1E31928163D0012F7D2 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		C08FE1E51928163D0012F7D2 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -147,7 +175,23 @@
 		C01CB77719281EC000499B28 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				C082BDFD193BD86300A60D8E /* _STDCategory.h */,
+				C082BDFE193BD86300A60D8E /* _STDCategory.m */,
+				C082BDFF193BD86300A60D8E /* _STDNote.h */,
+				C082BE00193BD86300A60D8E /* _STDNote.m */,
+				C082BE01193BD86300A60D8E /* _STDSubtask.h */,
+				C082BE02193BD86300A60D8E /* _STDSubtask.m */,
+				C082BE03193BD86300A60D8E /* _STDTask.h */,
+				C082BE04193BD86300A60D8E /* _STDTask.m */,
 				C01CB77819281EC000499B28 /* STD.xcdatamodeld */,
+				C082BE09193BD86C00A60D8E /* STDCategory.h */,
+				C082BE0A193BD86C00A60D8E /* STDCategory.m */,
+				C082BE0B193BD86C00A60D8E /* STDNote.h */,
+				C082BE0C193BD86C00A60D8E /* STDNote.m */,
+				C082BE0D193BD86C00A60D8E /* STDSubtask.h */,
+				C082BE0E193BD86C00A60D8E /* STDSubtask.m */,
+				C082BE0F193BD86C00A60D8E /* STDTask.h */,
+				C082BE10193BD86C00A60D8E /* STDTask.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -391,7 +435,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "mogenerator -m STD/Models/STD.xcdatamodeld -O STD/Models --template-var arc=true";
+			shellScript = "PATH=${PATH}:/usr/local/bin\nmogenerator -m STD/Models/STD.xcdatamodeld -O STD/Models --template-var arc=true";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -400,13 +444,21 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C082BE12193BD86C00A60D8E /* STDNote.m in Sources */,
 				C0C462541932BFD10031E256 /* STDSubtasksViewController.m in Sources */,
+				C082BE05193BD86300A60D8E /* _STDCategory.m in Sources */,
+				C082BE14193BD86C00A60D8E /* STDTask.m in Sources */,
+				C082BE13193BD86C00A60D8E /* STDSubtask.m in Sources */,
+				C082BE08193BD86300A60D8E /* _STDTask.m in Sources */,
 				C0C4625A1932BFFD0031E256 /* STDSettingsViewController.m in Sources */,
+				C082BE06193BD86300A60D8E /* _STDNote.m in Sources */,
+				C082BE11193BD86C00A60D8E /* STDCategory.m in Sources */,
 				C01CB78919281EC000499B28 /* STDAppDelegate.m in Sources */,
 				C0C462571932BFEC0031E256 /* STDNotesViewController.m in Sources */,
 				C01CB78719281EC000499B28 /* main.m in Sources */,
 				C0C462511932BDF20031E256 /* STDHomepageViewController.m in Sources */,
 				C01CB78619281EC000499B28 /* STD.xcdatamodeld in Sources */,
+				C082BE07193BD86300A60D8E /* _STDSubtask.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -414,7 +466,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C082BE16193BD88900A60D8E /* STDNote.m in Sources */,
 				C08FE20F1928163D0012F7D2 /* STDTests.m in Sources */,
+				C082BE15193BD88200A60D8E /* STDCategory.m in Sources */,
+				C082BE18193BD88E00A60D8E /* STDTask.m in Sources */,
+				C082BE17193BD88B00A60D8E /* STDSubtask.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -637,6 +693,7 @@
 				C0C7B2E61933C8C9005189C9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
