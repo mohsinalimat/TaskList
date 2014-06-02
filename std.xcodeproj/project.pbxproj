@@ -41,6 +41,7 @@
 		C082BE16193BD88900A60D8E /* STDNote.m in Sources */ = {isa = PBXBuildFile; fileRef = C082BE0C193BD86C00A60D8E /* STDNote.m */; };
 		C082BE17193BD88B00A60D8E /* STDSubtask.m in Sources */ = {isa = PBXBuildFile; fileRef = C082BE0E193BD86C00A60D8E /* STDSubtask.m */; };
 		C082BE18193BD88E00A60D8E /* STDTask.m in Sources */ = {isa = PBXBuildFile; fileRef = C082BE10193BD86C00A60D8E /* STDTask.m */; };
+		C082BE1C193C17D900A60D8E /* UIImage+Extras.m in Sources */ = {isa = PBXBuildFile; fileRef = C082BE1B193C17D900A60D8E /* UIImage+Extras.m */; };
 		C08FE1E41928163D0012F7D2 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C08FE1E31928163D0012F7D2 /* Foundation.framework */; };
 		C08FE1E61928163D0012F7D2 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C08FE1E51928163D0012F7D2 /* CoreGraphics.framework */; };
 		C08FE1E81928163D0012F7D2 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C08FE1E71928163D0012F7D2 /* UIKit.framework */; };
@@ -94,6 +95,8 @@
 		C082BE0E193BD86C00A60D8E /* STDSubtask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STDSubtask.m; sourceTree = "<group>"; };
 		C082BE0F193BD86C00A60D8E /* STDTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STDTask.h; sourceTree = "<group>"; };
 		C082BE10193BD86C00A60D8E /* STDTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STDTask.m; sourceTree = "<group>"; };
+		C082BE1A193C17D900A60D8E /* UIImage+Extras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Extras.h"; sourceTree = "<group>"; };
+		C082BE1B193C17D900A60D8E /* UIImage+Extras.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Extras.m"; sourceTree = "<group>"; };
 		C08FE1E01928163D0012F7D2 /* STD.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = STD.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C08FE1E31928163D0012F7D2 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		C08FE1E51928163D0012F7D2 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -168,6 +171,7 @@
 		C01CB77619281EC000499B28 /* Library */ = {
 			isa = PBXGroup;
 			children = (
+				C082BE19193C17D900A60D8E /* Categories */,
 			);
 			path = Library;
 			sourceTree = "<group>";
@@ -226,6 +230,15 @@
 			children = (
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		C082BE19193C17D900A60D8E /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				C082BE1A193C17D900A60D8E /* UIImage+Extras.h */,
+				C082BE1B193C17D900A60D8E /* UIImage+Extras.m */,
+			);
+			path = Categories;
 			sourceTree = "<group>";
 		};
 		C08FE1D71928163D0012F7D2 = {
@@ -458,6 +471,7 @@
 				C01CB78719281EC000499B28 /* main.m in Sources */,
 				C0C462511932BDF20031E256 /* STDHomepageViewController.m in Sources */,
 				C01CB78619281EC000499B28 /* STD.xcdatamodeld in Sources */,
+				C082BE1C193C17D900A60D8E /* UIImage+Extras.m in Sources */,
 				C082BE07193BD86300A60D8E /* _STDSubtask.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

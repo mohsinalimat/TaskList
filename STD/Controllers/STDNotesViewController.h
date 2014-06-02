@@ -10,4 +10,6 @@
 
 @interface STDNotesViewController : UIViewController
 
+@property (strong, nonatomic) STDTask *task;
+
 @end

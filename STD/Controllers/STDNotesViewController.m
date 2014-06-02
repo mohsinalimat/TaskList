@@ -10,40 +10,47 @@
 
 @interface STDNotesViewController ()
 
+@property (strong, nonatomic) UITextView *textView;
+
 @end
 
 @implementation STDNotesViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+- (void)viewWillAppear:(BOOL)animated
 {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
+    [super viewWillAppear:animated];
+    
+    if (!self.task.note)
+        self.task.note = [STDNote createEntity];
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+        
+    self.textView.text = self.task.note.body;
+    
+    [self.textView becomeFirstResponder];
 }
 
-- (void)didReceiveMemoryWarning
+- (void)viewWillDisappear:(BOOL)animated
 {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    self.task.note.body = self.textView.text;
+    
+    [super viewWillDisappear:animated];
 }
 
-/*
-#pragma mark - Navigation
+#pragma mark - UITextView
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+- (UITextView *)textView
 {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+    if (!_textView) {
+        _textView = [[UITextView alloc] initWithFrame:self.view.bounds];
+        _textView.textContainerInset = (UIEdgeInsets){[UIApplication sharedApplication].statusBarFrame.size.height + self.navigationController.navigationBar.bounds.size.height, 0, 0, 0};
+        _textView.showsVerticalScrollIndicator = NO;
+        [self.view addSubview:_textView];
+    }
+    return _textView;
 }
-*/
 
 @end

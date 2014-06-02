@@ -10,4 +10,6 @@
 
 @interface STDSubtasksViewController : UIViewController
 
+@property (strong, nonatomic) STDTask *task;
+
 @end
