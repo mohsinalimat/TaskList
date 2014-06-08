@@ -8,7 +8,11 @@
 
 #import "STDSubtasksViewController.h"
 
-@interface STDSubtasksViewController ()
+@interface STDSubtasksViewController () <UITableViewDataSource, UITableViewDelegate>
+
+@property (weak, nonatomic) IBOutlet UITableView *tableview;
+
+@property (strong, nonatomic) NSArray *subtasks;
 
 @end
 
@@ -17,6 +21,48 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.tableview.tableHeaderView = [[UIView alloc] initWithFrame:CGRectZero];
+    self.tableview.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+}
+
+- (NSArray *)subtasks
+{
+    if (!_subtasks) {
+        NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:NSStringFromSelector(@selector(index)) ascending:YES];
+        _subtasks = [self.task.subtasks sortedArrayUsingDescriptors:@[sortDescriptor]];
+    }
+    return _subtasks;
+}
+
+#pragma mark - UITableViewDataSource
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return self.subtasks.count;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *CellIdentifier = @"TableViewCellStyleDefault";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (!cell) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    }
+    
+    STDSubtask *subtask = self.subtasks[indexPath.row];
+    cell.textLabel.text = subtask.name;
+    
+    return cell;
+}
+
+#pragma mark - UITableViewDelegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     
 }

@@ -10,9 +10,9 @@
 
 @interface STDNotesViewController () <UITextViewDelegate>
 
-@property (strong, nonatomic) UITextView *textView;
+@property (weak, nonatomic) IBOutlet UITextView *textView;
 
-@property (strong, nonatomic) NSLayoutConstraint *bottomConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomConstraint;
 
 @end
 
@@ -30,8 +30,6 @@
 {
     [super viewDidLoad];
     
-    [self layoutSubviews];
-        
     self.textView.text = self.task.note.body;
     
     [self.textView becomeFirstResponder];
@@ -42,36 +40,6 @@
     self.task.note.body = self.textView.text;
     
     [super viewWillDisappear:animated];
-}
-
-#pragma mark - UITextView
-
-- (UITextView *)textView
-{
-    if (!_textView) {
-        _textView = [[UITextView alloc] initWithFrame:self.view.bounds];
-        _textView.textContainerInset = (UIEdgeInsets){[UIApplication sharedApplication].statusBarFrame.size.height + self.navigationController.navigationBar.bounds.size.height, 0, 0, 0};
-        _textView.showsVerticalScrollIndicator = NO;
-        _textView.delegate = self;
-        [self.view addSubview:_textView];
-    }
-    return _textView;
-}
-
-#pragma mark - Layout
-
-- (void)layoutSubviews
-{
-    self.textView.translatesAutoresizingMaskIntoConstraints = NO;
-    
-    UITextView *textView = self.textView;
-    
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[textView]|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(textView)]];
-    
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[textView]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(textView)]];
-    
-    self.bottomConstraint = [NSLayoutConstraint constraintWithItem:self.textView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.bottomLayoutGuide attribute:NSLayoutAttributeTop multiplier:1.0f constant:0.0f];
-    [self.view addConstraint:self.bottomConstraint];
 }
 
 #pragma mark - UITextViewDelegate
@@ -122,8 +90,7 @@ static CGFloat contentOffsetForBottom(CGRect keyboardFrame) {
     UIWindow *window = [[UIApplication sharedApplication] keyWindow];
     UIView *view = window.rootViewController.view;
     CGRect convertedRect = [view convertRect:keyboardFrame fromView:nil];
-    CGFloat offset = CGRectGetMinY(convertedRect) - CGRectGetHeight(view.frame);
-    return CGRectIsNull(convertedRect) ? 0 : offset;
+    return CGRectIsNull(convertedRect) ? 0 : CGRectGetHeight(convertedRect);
 }
 
 - (void)keyboardWillShow:(NSNotification *)notification

@@ -72,6 +72,9 @@
 //    STDTask *task3 = [STDTask createEntity];
 //    task3.name = @"task 3";
 //    [category addTasksObject:task3];
+//    STDSubtask *subtask = [STDSubtask createEntity];
+//    subtask.name = @"subtask";
+//    [task3 addSubtasksObject:subtask];
 //    [category.managedObjectContext saveOnlySelfAndWait];
     
     self.categories = [STDCategory findAll];
@@ -131,7 +134,7 @@
     
     if ([item isKindOfClass:[STDCategory class]]) {
         STDCategory *category = (STDCategory *)item;
-        cell.textLabel.text = category.name;
+        cell.textLabel.text = [category.name uppercaseString];
     } else if ([item isKindOfClass:[STDTask class]]) {
         STDTask *task = (STDTask *)item;
         cell.textLabel.text = task.name;
