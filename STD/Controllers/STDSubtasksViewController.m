@@ -50,6 +50,9 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        
+        cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
+        cell.textLabel.numberOfLines = 0;
     }
     
     STDSubtask *subtask = self.subtasks[indexPath.row];
@@ -65,6 +68,15 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    STDSubtask *subtask = self.subtasks[indexPath.row];
+    NSString *text = subtask.name;
+    UIFont *font = [UIFont systemFontOfSize:17];
+    CGRect rect = [text boundingRectWithSize:(CGSize){CGRectGetWidth(self.view.frame), MAXFLOAT} options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:font} context:nil];
+    return rect.size.height + 20;
 }
 
 @end
