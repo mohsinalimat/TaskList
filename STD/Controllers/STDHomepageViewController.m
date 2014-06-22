@@ -60,22 +60,25 @@
 
 - (void)load
 {
-//    // sample data
-//    STDCategory *category = [STDCategory createEntity];
-//    category.name = @"category";
-//    STDTask *task = [STDTask createEntity];
-//    task.name = @"task";
-//    [category addTasksObject:task];
-//    STDTask *task2 = [STDTask createEntity];
-//    task2.name = @"task 2";
-//    [category addTasksObject:task2];
-//    STDTask *task3 = [STDTask createEntity];
-//    task3.name = @"task 3";
-//    [category addTasksObject:task3];
-//    STDSubtask *subtask = [STDSubtask createEntity];
-//    subtask.name = @"subtask";
-//    [task3 addSubtasksObject:subtask];
-//    [category.managedObjectContext saveOnlySelfAndWait];
+    // sample data
+    STDCategory *category = [STDCategory createEntity];
+    category.name = @"category";
+    STDTask *task = [STDTask createEntity];
+    task.name = @"task";
+    [category addTasksObject:task];
+    STDTask *task2 = [STDTask createEntity];
+    task2.name = @"task 2";
+    [category addTasksObject:task2];
+    STDTask *task3 = [STDTask createEntity];
+    task3.name = @"task 3";
+    [category addTasksObject:task3];
+    STDSubtask *subtask = [STDSubtask createEntity];
+    subtask.name = @"subtask";
+    [task3 addSubtasksObject:subtask];
+    STDSubtask *subtask2 = [STDSubtask createEntity];
+    subtask2.name = @"subtask 2 (this is a long subtask with a few extra lines\ntesting)";
+    [task3 addSubtasksObject:subtask2];
+    [category.managedObjectContext saveOnlySelfAndWait];
     
     self.categories = [STDCategory findAll];
 }
@@ -157,7 +160,7 @@
     if ([item isKindOfClass:[STDTask class]]) {
         STDTask *task = (STDTask *)item;
         
-        STDNotesViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"STDNotesViewControllerId"];
+        STDSubtasksViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"STDSubtasksViewControllerId"];
         viewController.task = task;
         [self.navigationController pushViewController:viewController animated:YES];
     }

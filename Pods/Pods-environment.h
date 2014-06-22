@@ -6,6 +6,12 @@
 // project.
 
 
+// HPGrowingTextView
+#define COCOAPODS_POD_AVAILABLE_HPGrowingTextView
+#define COCOAPODS_VERSION_MAJOR_HPGrowingTextView 1
+#define COCOAPODS_VERSION_MINOR_HPGrowingTextView 1
+#define COCOAPODS_VERSION_PATCH_HPGrowingTextView 0
+
 // MagicalRecord/Shorthand
 #define COCOAPODS_POD_AVAILABLE_MagicalRecord_Shorthand
 #define COCOAPODS_VERSION_MAJOR_MagicalRecord_Shorthand 2

@@ -80,7 +80,7 @@
 
 - (void)showTextViewCaretPosition:(UITextView *)textView
 {
-    CGRect caretRect = [textView caretRectForPosition:self.textView.selectedTextRange.end];
+    CGRect caretRect = [textView caretRectForPosition:textView.selectedTextRange.end];
     [textView scrollRectToVisible:caretRect animated:NO];
 }
 

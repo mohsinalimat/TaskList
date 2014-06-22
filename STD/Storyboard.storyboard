@@ -92,7 +92,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <tableView appearanceType="aqua" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="PyT-5B-3ie">
+                            <tableView appearanceType="aqua" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="PyT-5B-3ie">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
@@ -102,9 +102,16 @@
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="PyT-5B-3ie" firstAttribute="top" secondItem="Y1F-sg-0DI" secondAttribute="top" id="GZZ-Fr-5Bx"/>
+                            <constraint firstAttribute="bottom" secondItem="PyT-5B-3ie" secondAttribute="bottom" id="f2f-HG-2Ah"/>
+                            <constraint firstAttribute="trailing" secondItem="PyT-5B-3ie" secondAttribute="trailing" id="k2r-79-fcS"/>
+                            <constraint firstItem="PyT-5B-3ie" firstAttribute="leading" secondItem="Y1F-sg-0DI" secondAttribute="leading" id="qUV-fb-Znj"/>
+                        </constraints>
                     </view>
                     <connections>
-                        <outlet property="tableview" destination="PyT-5B-3ie" id="CWS-SP-BOE"/>
+                        <outlet property="bottomConstraint" destination="f2f-HG-2Ah" id="TSW-ck-XgL"/>
+                        <outlet property="tableView" destination="PyT-5B-3ie" id="Rrd-oD-a34"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="EOX-e5-Rmn" userLabel="First Responder" sceneMemberID="firstResponder"/>
