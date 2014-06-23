@@ -109,8 +109,8 @@
         return self.categories.count;
     else if ([item isKindOfClass:[STDCategory class]])
         return ((STDCategory *)item).tasks.count;
-//    else if ([item isKindOfClass:[STDTask class]])
-//        return 1;
+    else if ([item isKindOfClass:[STDTask class]])
+        return 1;
     return 0;
 }
 
@@ -120,7 +120,7 @@
         return self.categories[index];
     else if ([item isKindOfClass:[STDCategory class]])
         return ((STDCategory *)item).tasks.allObjects[index];
-    return nil;
+    return [NSNull null];
 }
 
 - (UITableViewCell *)treeView:(RATreeView *)treeView cellForItem:(id)item treeNodeInfo:(RATreeNodeInfo *)treeNodeInfo;
@@ -137,7 +137,11 @@
     label.text = [NSString stringWithFormat:@"%@", [@(treeNodeInfo.children.count) stringValue]];
     cell.accessoryView = label;
     
-    if ([item isKindOfClass:[STDCategory class]]) {
+    if ([item isKindOfClass:[NSNull class]]) {
+        id parentItem = ((RATreeNodeInfo *)treeNodeInfo.parent).item;
+        STDTask *task = (STDTask *)parentItem;
+        cell.textLabel.text = task.name;
+    } else if ([item isKindOfClass:[STDCategory class]]) {
         STDCategory *category = (STDCategory *)item;
         cell.textLabel.text = [category.name uppercaseString];
     } else if ([item isKindOfClass:[STDTask class]]) {
@@ -152,15 +156,16 @@
 
 - (NSInteger)treeView:(RATreeView *)treeView indentationLevelForRowForItem:(id)item treeNodeInfo:(RATreeNodeInfo *)treeNodeInfo;
 {
-    return 2 * treeNodeInfo.treeDepthLevel;
+    return 2 * MIN(treeNodeInfo.treeDepthLevel, 1);
 }
 
 - (void)treeView:(RATreeView *)treeView didSelectRowForItem:(id)item treeNodeInfo:(RATreeNodeInfo *)treeNodeInfo;
 {
     [treeView deselectRowForItem:item animated:YES];
     
-    if ([item isKindOfClass:[STDTask class]]) {
-        STDTask *task = (STDTask *)item;
+    if ([item isKindOfClass:[NSNull class]]) {
+        id parentItem = ((RATreeNodeInfo *)treeNodeInfo.parent).item;
+        STDTask *task = (STDTask *)parentItem;
         
         STDSubtasksViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"STDSubtasksViewControllerId"];
         viewController.task = task;

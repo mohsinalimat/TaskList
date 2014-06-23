@@ -29,6 +29,7 @@
 		C01CB78919281EC000499B28 /* STDAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C01CB78019281EC000499B28 /* STDAppDelegate.m */; };
 		C01CB78A19281EC000499B28 /* Storyboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C01CB78119281EC000499B28 /* Storyboard.storyboard */; };
 		C01CB78B19281EC000499B28 /* STD-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C01CB78319281EC000499B28 /* STD-Info.plist */; };
+		C07F7C8D1957CB2900CF0C92 /* NSObject+Extras.m in Sources */ = {isa = PBXBuildFile; fileRef = C07F7C8C1957CB2900CF0C92 /* NSObject+Extras.m */; };
 		C082BE05193BD86300A60D8E /* _STDCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = C082BDFE193BD86300A60D8E /* _STDCategory.m */; };
 		C082BE06193BD86300A60D8E /* _STDNote.m in Sources */ = {isa = PBXBuildFile; fileRef = C082BE00193BD86300A60D8E /* _STDNote.m */; };
 		C082BE07193BD86300A60D8E /* _STDSubtask.m in Sources */ = {isa = PBXBuildFile; fileRef = C082BE02193BD86300A60D8E /* _STDSubtask.m */; };
@@ -79,6 +80,8 @@
 		C01CB78019281EC000499B28 /* STDAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STDAppDelegate.m; sourceTree = "<group>"; };
 		C01CB78119281EC000499B28 /* Storyboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Storyboard.storyboard; sourceTree = "<group>"; };
 		C01CB78319281EC000499B28 /* STD-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "STD-Info.plist"; sourceTree = "<group>"; };
+		C07F7C8B1957CB2900CF0C92 /* NSObject+Extras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+Extras.h"; sourceTree = "<group>"; };
+		C07F7C8C1957CB2900CF0C92 /* NSObject+Extras.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Extras.m"; sourceTree = "<group>"; };
 		C082BDFD193BD86300A60D8E /* _STDCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _STDCategory.h; sourceTree = "<group>"; };
 		C082BDFE193BD86300A60D8E /* _STDCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _STDCategory.m; sourceTree = "<group>"; };
 		C082BDFF193BD86300A60D8E /* _STDNote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _STDNote.h; sourceTree = "<group>"; };
@@ -235,6 +238,8 @@
 		C082BE19193C17D900A60D8E /* Categories */ = {
 			isa = PBXGroup;
 			children = (
+				C07F7C8B1957CB2900CF0C92 /* NSObject+Extras.h */,
+				C07F7C8C1957CB2900CF0C92 /* NSObject+Extras.m */,
 				C082BE1A193C17D900A60D8E /* UIImage+Extras.h */,
 				C082BE1B193C17D900A60D8E /* UIImage+Extras.m */,
 			);
@@ -465,6 +470,7 @@
 				C082BE08193BD86300A60D8E /* _STDTask.m in Sources */,
 				C0C4625A1932BFFD0031E256 /* STDSettingsViewController.m in Sources */,
 				C082BE06193BD86300A60D8E /* _STDNote.m in Sources */,
+				C07F7C8D1957CB2900CF0C92 /* NSObject+Extras.m in Sources */,
 				C082BE11193BD86C00A60D8E /* STDCategory.m in Sources */,
 				C01CB78919281EC000499B28 /* STDAppDelegate.m in Sources */,
 				C0C462571932BFEC0031E256 /* STDNotesViewController.m in Sources */,
