@@ -88,12 +88,14 @@
 - (RATreeView *)treeView
 {
     if (!_treeView) {
-        _treeView = [[RATreeView alloc] initWithFrame:self.view.bounds];
+        _treeView = [[RATreeView alloc] initWithFrame:self.view.bounds style:RATreeViewStyleGrouped];
         _treeView.contentInset = (UIEdgeInsets){[UIApplication sharedApplication].statusBarFrame.size.height, 0, 0, 0};
         _treeView.delegate = self;
         _treeView.dataSource = self;
         _treeView.treeHeaderView = [[UIView alloc] initWithFrame:CGRectZero];
         _treeView.treeFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+        _treeView.rowsExpandingAnimation = RATreeViewRowAnimationMiddle;
+        _treeView.rowsCollapsingAnimation = RATreeViewRowAnimationMiddle;
         [self.view addSubview:_treeView];
     }
     return _treeView;
@@ -163,6 +165,15 @@
         STDSubtasksViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"STDSubtasksViewControllerId"];
         viewController.task = task;
         [self.navigationController pushViewController:viewController animated:YES];
+    }
+}
+
+- (void)treeView:(RATreeView *)treeView didExpandRowForItem:(id)item treeNodeInfo:(RATreeNodeInfo *)treeNodeInfo;
+{
+    id lastItem = ((RATreeNodeInfo *)treeNodeInfo.children.lastObject).item;
+    UITableViewCell *cell = [treeView cellForItem:lastItem];
+    if (![[treeView visibleCells] containsObject:cell]) {
+        [treeView scrollToRowForItem:lastItem atScrollPosition:RATreeViewScrollPositionBottom animated:YES];
     }
 }
 
