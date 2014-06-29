@@ -34,7 +34,7 @@
 - (NSArray *)subtasks
 {
     if (!_subtasks) {
-        NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:NSStringFromSelector(@selector(index)) ascending:YES];
+        NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:NSStringFromSelector(@selector(index)) ascending:YES];
         _subtasks = [self.task.subtasks sortedArrayUsingDescriptors:@[sortDescriptor]];
     }
     return _subtasks;

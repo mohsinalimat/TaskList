@@ -29,6 +29,8 @@
 		C01CB78919281EC000499B28 /* STDAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C01CB78019281EC000499B28 /* STDAppDelegate.m */; };
 		C01CB78A19281EC000499B28 /* Storyboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C01CB78119281EC000499B28 /* Storyboard.storyboard */; };
 		C01CB78B19281EC000499B28 /* STD-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C01CB78319281EC000499B28 /* STD-Info.plist */; };
+		C06F19CE1960D308000BEDD8 /* STDTaskDetailsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C06F19CC1960D308000BEDD8 /* STDTaskDetailsTableViewCell.m */; };
+		C06F19CF1960D308000BEDD8 /* STDTaskDetailsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C06F19CD1960D308000BEDD8 /* STDTaskDetailsTableViewCell.xib */; };
 		C07F7C8D1957CB2900CF0C92 /* NSObject+Extras.m in Sources */ = {isa = PBXBuildFile; fileRef = C07F7C8C1957CB2900CF0C92 /* NSObject+Extras.m */; };
 		C082BE05193BD86300A60D8E /* _STDCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = C082BDFE193BD86300A60D8E /* _STDCategory.m */; };
 		C082BE06193BD86300A60D8E /* _STDNote.m in Sources */ = {isa = PBXBuildFile; fileRef = C082BE00193BD86300A60D8E /* _STDNote.m */; };
@@ -80,6 +82,9 @@
 		C01CB78019281EC000499B28 /* STDAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STDAppDelegate.m; sourceTree = "<group>"; };
 		C01CB78119281EC000499B28 /* Storyboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Storyboard.storyboard; sourceTree = "<group>"; };
 		C01CB78319281EC000499B28 /* STD-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "STD-Info.plist"; sourceTree = "<group>"; };
+		C06F19CB1960D308000BEDD8 /* STDTaskDetailsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STDTaskDetailsTableViewCell.h; sourceTree = "<group>"; };
+		C06F19CC1960D308000BEDD8 /* STDTaskDetailsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STDTaskDetailsTableViewCell.m; sourceTree = "<group>"; };
+		C06F19CD1960D308000BEDD8 /* STDTaskDetailsTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = STDTaskDetailsTableViewCell.xib; sourceTree = "<group>"; };
 		C07F7C8B1957CB2900CF0C92 /* NSObject+Extras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+Extras.h"; sourceTree = "<group>"; };
 		C07F7C8C1957CB2900CF0C92 /* NSObject+Extras.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Extras.m"; sourceTree = "<group>"; };
 		C082BDFD193BD86300A60D8E /* _STDCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _STDCategory.h; sourceTree = "<group>"; };
@@ -231,6 +236,9 @@
 		C01CB78419281EC000499B28 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				C06F19CB1960D308000BEDD8 /* STDTaskDetailsTableViewCell.h */,
+				C06F19CC1960D308000BEDD8 /* STDTaskDetailsTableViewCell.m */,
+				C06F19CD1960D308000BEDD8 /* STDTaskDetailsTableViewCell.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -363,8 +371,11 @@
 			attributes = {
 				CLASSPREFIX = STD;
 				LastUpgradeCheck = 0510;
-				ORGANIZATIONNAME = "Appoop Inc";
+				ORGANIZATIONNAME = "More Voltage";
 				TargetAttributes = {
+					C08FE1DF1928163D0012F7D2 = {
+						DevelopmentTeam = NNRNHY2N8B;
+					};
 					C08FE1FF1928163D0012F7D2 = {
 						TestTargetID = C08FE1DF1928163D0012F7D2;
 					};
@@ -394,6 +405,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C06F19CF1960D308000BEDD8 /* STDTaskDetailsTableViewCell.xib in Resources */,
 				C01CB78B19281EC000499B28 /* STD-Info.plist in Resources */,
 				C01CB78519281EC000499B28 /* InfoPlist.strings in Resources */,
 				C01CB78819281EC000499B28 /* Images.xcassets in Resources */,
@@ -469,6 +481,7 @@
 				C082BE13193BD86C00A60D8E /* STDSubtask.m in Sources */,
 				C082BE08193BD86300A60D8E /* _STDTask.m in Sources */,
 				C0C4625A1932BFFD0031E256 /* STDSettingsViewController.m in Sources */,
+				C06F19CE1960D308000BEDD8 /* STDTaskDetailsTableViewCell.m in Sources */,
 				C082BE06193BD86300A60D8E /* _STDNote.m in Sources */,
 				C07F7C8D1957CB2900CF0C92 /* NSObject+Extras.m in Sources */,
 				C082BE11193BD86C00A60D8E /* STDCategory.m in Sources */,
@@ -600,10 +613,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "STD/Other sources/STD-Prefix.pch";
 				INFOPLIST_FILE = "$(SRCROOT)/STD/Supporting files/STD-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "3785BFA1-B7CB-4770-B566-F8EBEA4C17F5";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -614,10 +630,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "STD/Other sources/STD-Prefix.pch";
 				INFOPLIST_FILE = "$(SRCROOT)/STD/Supporting files/STD-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "3785BFA1-B7CB-4770-B566-F8EBEA4C17F5";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
