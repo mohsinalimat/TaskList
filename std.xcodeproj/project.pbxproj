@@ -115,6 +115,7 @@
 		C08FE20A1928163D0012F7D2 /* STDTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "STDTests-Info.plist"; sourceTree = "<group>"; };
 		C08FE20C1928163D0012F7D2 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		C08FE20E1928163D0012F7D2 /* STDTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = STDTests.m; sourceTree = "<group>"; };
+		C0B70649196111B9007BD026 /* STD.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = STD.entitlements; sourceTree = "<group>"; };
 		C0C4624F1932BDF20031E256 /* STDHomepageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STDHomepageViewController.h; sourceTree = "<group>"; };
 		C0C462501932BDF20031E256 /* STDHomepageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STDHomepageViewController.m; sourceTree = "<group>"; };
 		C0C462521932BFD10031E256 /* STDSubtasksViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STDSubtasksViewController.h; sourceTree = "<group>"; };
@@ -290,6 +291,7 @@
 		C08FE1EB1928163D0012F7D2 /* STD */ = {
 			isa = PBXGroup;
 			children = (
+				C0B70649196111B9007BD026 /* STD.entitlements */,
 				C01CB77219281EC000499B28 /* Controllers */,
 				C01CB77319281EC000499B28 /* en.lproj */,
 				C01CB77619281EC000499B28 /* Library */,
@@ -375,6 +377,11 @@
 				TargetAttributes = {
 					C08FE1DF1928163D0012F7D2 = {
 						DevelopmentTeam = NNRNHY2N8B;
+						SystemCapabilities = {
+							com.apple.iCloud = {
+								enabled = 1;
+							};
+						};
 					};
 					C08FE1FF1928163D0012F7D2 = {
 						TestTargetID = C08FE1DF1928163D0012F7D2;
@@ -613,8 +620,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_ENTITLEMENTS = STD/STD.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Lasha Efremidze (T6F7YCQ63G)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Lasha Efremidze (T6F7YCQ63G)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "STD/Other sources/STD-Prefix.pch";
 				INFOPLIST_FILE = "$(SRCROOT)/STD/Supporting files/STD-Info.plist";
@@ -630,8 +638,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_ENTITLEMENTS = STD/STD.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Lasha Efremidze (T6F7YCQ63G)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Lasha Efremidze (T6F7YCQ63G)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "STD/Other sources/STD-Prefix.pch";
 				INFOPLIST_FILE = "$(SRCROOT)/STD/Supporting files/STD-Info.plist";

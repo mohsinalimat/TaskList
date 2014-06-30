@@ -14,6 +14,9 @@
 {
     // Magical Record
     [MagicalRecord setupCoreDataStackWithAutoMigratingSqliteStoreNamed:@"STD.sqlite"];
+    NSString *contentNameKey = [[[NSBundle mainBundle] infoDictionary] objectForKey:(id)kCFBundleIdentifierKey];
+    contentNameKey = [contentNameKey stringByReplacingOccurrencesOfString:@"." withString:@"_" options:NSCaseInsensitiveSearch range:NSMakeRange(0, contentNameKey.length)];
+    [MagicalRecord setupCoreDataStackWithiCloudContainer:nil contentNameKey:contentNameKey localStoreNamed:@"STD.sqlite" cloudStorePathComponent:nil];
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
