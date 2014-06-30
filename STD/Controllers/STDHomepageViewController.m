@@ -61,27 +61,19 @@
 
 - (void)load
 {
-//    // sample data
-//    STDCategory *category = [STDCategory createEntity];
-//    category.name = @"category";
-//    STDTask *task = [STDTask createEntity];
-//    task.name = @"task";
-//    [category addTasksObject:task];
-//    STDTask *task2 = [STDTask createEntity];
-//    task2.name = @"task 2";
-//    [category addTasksObject:task2];
-//    STDTask *task3 = [STDTask createEntity];
-//    task3.name = @"task 3";
-//    [category addTasksObject:task3];
-//    STDSubtask *subtask = [STDSubtask createEntity];
-//    subtask.name = @"subtask";
-//    [task3 addSubtasksObject:subtask];
-//    STDSubtask *subtask2 = [STDSubtask createEntity];
-//    subtask2.name = @"subtask 2 (this is a long subtask with a few extra lines\ntesting)";
-//    [task3 addSubtasksObject:subtask2];
-//    [category.managedObjectContext saveOnlySelfAndWait];
-    
-    self.categories = [STDCategory findAll];
+    NSArray *categories = [STDCategory findAll];
+    if (!categories.count) {
+        STDCategory *category1 = [STDCategory createEntity];
+        category1.name = @"Home";
+
+        STDCategory *category2 = [STDCategory createEntity];
+        category2.name = @"Work";
+        
+        [[NSManagedObjectContext contextForCurrentThread] saveOnlySelfAndWait];
+        
+        categories = [STDCategory findAll];
+    }
+    self.categories = categories;
 }
 
 - (NSArray *)sortedTasksForCategory:(STDCategory *)category
@@ -140,11 +132,7 @@
         
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
-    
-    UILabel *label = [[UILabel alloc] initWithFrame:(CGRect){0, 0, 20, 20}];
-    label.text = [NSString stringWithFormat:@"%@", [@(treeNodeInfo.children.count) stringValue]];
-    cell.accessoryView = label;
-    
+
     if ([item isKindOfClass:[NSNull class]]) {
         id parentItem = ((RATreeNodeInfo *)treeNodeInfo.parent).item;
         STDTask *task = (STDTask *)parentItem;
@@ -160,6 +148,20 @@
         STDTask *task = (STDTask *)item;
         cell.textLabel.text = task.name;
     }
+    
+    UIButton *button = (UIButton *)cell.accessoryView;
+    if (!button) {
+        button = [UIButton buttonWithType:UIButtonTypeSystem];
+        button.frame = (CGRect){0, 0, 44, 44};
+        button.titleLabel.font = [UIFont systemFontOfSize:20.0f];
+        button.tintColor = [UIColor blackColor];
+        cell.accessoryView = button;
+    }
+    
+    NSString *title = @"+";
+    NSUInteger count = treeNodeInfo.children.count;
+    if (count) title = [@(count) stringValue];
+    [button setTitle:title forState:UIControlStateNormal];
     
     return cell;
 }
