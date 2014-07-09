@@ -27,7 +27,7 @@
 #import "RATreeNodeCollectionController.h"
 #import "RATreeNode.h"
 
-
+#import "HPReorderTableView.h"
 
 @interface RATreeView ()
 
@@ -112,7 +112,7 @@
 {
   UITableViewStyle tableViewStyle = [RATreeView tableViewStyleForTreeViewStyle:style];
   
-  UITableView *tableView =  [[UITableView alloc] initWithFrame:frame style:tableViewStyle];
+  UITableView *tableView = [[HPReorderTableView alloc] initWithFrame:frame style:tableViewStyle];
   tableView.delegate = (id<UITableViewDelegate>)self;
   tableView.dataSource = (id<UITableViewDataSource>)self;
   tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;

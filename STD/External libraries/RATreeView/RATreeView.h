@@ -71,6 +71,8 @@ typedef enum RATreeViewRowAnimation {
 //Inserting or Deleting Table Rows
 - (void)treeView:(RATreeView *)treeView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowForItem:(id)item treeNodeInfo:(RATreeNodeInfo *)treeNodeInfo;
 - (BOOL)treeView:(RATreeView *)treeView canEditRowForItem:(id)item treeNodeInfo:(RATreeNodeInfo *)treeNodeInfo;
+- (BOOL)treeView:(RATreeView *)treeView canMoveRowForItem:(id)item treeNodeInfo:(RATreeNodeInfo *)treeNodeInfo;
+- (void)treeView:(RATreeView *)treeView moveRowForItem:(id)sourceItem treeNodeInfo:(RATreeNodeInfo *)sourceTreeNodeInfo toRowForItem:(id)destinationItem treeNodeInfo:(RATreeNodeInfo *)destinationTreeNodeInfo;
 @end
 
 
@@ -103,6 +105,7 @@ typedef enum RATreeViewRowAnimation {
 //Editing Tree Rows
 - (void)treeView:(RATreeView *)treeView willBeginEditingRowForItem:(id)item treeNodeInfo:(RATreeNodeInfo *)treeNodeInfo;
 - (void)treeView:(RATreeView *)treeView didEndEditingRowForItem:(id)item treeNodeInfo:(RATreeNodeInfo *)treeNodeInfo;
+- (id)treeView:(RATreeView *)treeView targetItemForMoveFromRowForItem:(id)sourceItem treeNodeInfo:(RATreeNodeInfo *)sourceTreeNodeInfo indexPath:(NSIndexPath *)sourceIndexPath toProposedRowForItem:(id)destinationItem treeNodeInfo:(RATreeNodeInfo *)destinationTreeNodeInfo indexPath:(NSIndexPath *)destinationIndexPath;
 - (UITableViewCellEditingStyle)treeView:(RATreeView *)treeView editingStyleForRowForItem:(id)item treeNodeInfo:(RATreeNodeInfo *)treeNodeInfo;
 - (NSString *)treeView:(RATreeView *)treeView titleForDeleteConfirmationButtonForRowForItem:(id)item treeNodeInfo:(RATreeNodeInfo *)treeNodeInfo;
 - (BOOL)treeView:(RATreeView *)treeView shouldIndentWhileEditingRowForItem:(id)item treeNodeInfo:(RATreeNodeInfo *)treeNodeInfo;

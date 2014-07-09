@@ -26,11 +26,6 @@
 
 @implementation RATreeView (TableViewDataSource)
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-  return 1;
-}
-
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
   if (self.treeNodeCollectionController == nil) {
@@ -62,6 +57,24 @@
     return [self.dataSource treeView:self canEditRowForItem:treeNode.item treeNodeInfo:[treeNode treeNodeInfo]];
   }
   return YES;
+}
+
+- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath;
+{
+    if ([self.dataSource respondsToSelector:@selector(treeView:canMoveRowForItem:treeNodeInfo:)]) {
+        RATreeNode *treeNode = [self treeNodeForIndex:indexPath.row];
+        return [self.dataSource treeView:self canMoveRowForItem:treeNode.item treeNodeInfo:[treeNode treeNodeInfo]];
+    }
+    return YES;
+}
+
+- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath
+{
+    if ([self.dataSource respondsToSelector:@selector(treeView:moveRowForItem:treeNodeInfo:toRowForItem:treeNodeInfo:)]) {
+        RATreeNode *sourceTreeNode = [self treeNodeForIndex:sourceIndexPath.row];
+        RATreeNode *destinationTreeNode = [self treeNodeForIndex:destinationIndexPath.row];
+        return [self.dataSource treeView:self moveRowForItem:sourceTreeNode.item treeNodeInfo:[sourceTreeNode treeNodeInfo] toRowForItem:destinationTreeNode.item treeNodeInfo:[destinationTreeNode treeNodeInfo]];
+    }
 }
 
 @end

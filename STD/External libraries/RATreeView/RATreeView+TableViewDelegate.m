@@ -183,6 +183,17 @@
   }
 }
 
+- (NSIndexPath *)tableView:(UITableView *)tableView targetIndexPathForMoveFromRowAtIndexPath:(NSIndexPath *)sourceIndexPath toProposedIndexPath:(NSIndexPath *)proposedDestinationIndexPath;
+{
+    if ([self.delegate respondsToSelector:@selector(treeView:targetItemForMoveFromRowForItem:treeNodeInfo:indexPath:toProposedRowForItem:treeNodeInfo:indexPath:)]) {
+        RATreeNode *sourceTreeNode = [self treeNodeForIndex:sourceIndexPath.row];
+        RATreeNode *proposedDestinationTreeNode = [self treeNodeForIndex:proposedDestinationIndexPath.row];
+        id item = [self.delegate treeView:self targetItemForMoveFromRowForItem:sourceTreeNode.item treeNodeInfo:[sourceTreeNode treeNodeInfo] indexPath:sourceIndexPath toProposedRowForItem:proposedDestinationTreeNode.item treeNodeInfo:[proposedDestinationTreeNode treeNodeInfo] indexPath:proposedDestinationIndexPath];
+        NSIndexPath *delegateIndexPath = [self indexPathForItem:item];
+        return delegateIndexPath.row == -1 ? proposedDestinationIndexPath : delegateIndexPath;
+    }
+    return proposedDestinationIndexPath;
+}
 
 #pragma mark Tracking the Removal of Views
 
