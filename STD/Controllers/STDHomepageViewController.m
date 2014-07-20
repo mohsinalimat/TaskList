@@ -51,6 +51,13 @@
     [super viewWillDisappear:animated];
 }
 
+#pragma mark - IBAction
+
+- (IBAction)didTouchOnAccessoryButton:(id)sender
+{
+    
+}
+
 #pragma mark - Styling
 
 - (void)styleNavigationController
@@ -67,9 +74,11 @@
     if (!categories.count) {
         STDCategory *category1 = [STDCategory createEntity];
         category1.name = @"Home";
+        category1.indexValue = 0;
         
         STDCategory *category2 = [STDCategory createEntity];
         category2.name = @"Work";
+        category2.indexValue = 1;
         
 //        STDTask *task1 = [STDTask createEntity];
 //        task1.name = @"task1";
@@ -78,6 +87,10 @@
 //        STDTask *task2 = [STDTask createEntity];
 //        task2.name = @"task2";
 //        [category2 addTasksObject:task2];
+        
+        STDCategory *category3 = [STDCategory createEntity];
+        category3.name = @"New Category";
+        category3.indexValue = 2;
         
         [[NSManagedObjectContext contextForCurrentThread] saveOnlySelfAndWait];
         
@@ -100,11 +113,23 @@
         _treeView = [[RATreeView alloc] initWithFrame:self.view.bounds style:RATreeViewStyleGrouped];
         _treeView.delegate = self;
         _treeView.dataSource = self;
-        _treeView.treeHeaderView = [[UIView alloc] initWithFrame:CGRectZero];
+        _treeView.treeHeaderView = ({
+            UIView *view = [[UIView alloc] initWithFrame:(CGRect){0, 0, 320, 44}];
+            
+            UITextField *textField = [[UITextField alloc] initWithFrame:(CGRect){0, 0, 320, 44}];
+            [view addSubview:textField];
+            
+            UIView *bottomView = [[UIView alloc] initWithFrame:(CGRect){0, 43, 320, 1}];
+            bottomView.backgroundColor = [UIColor colorWithWhite:0.6f alpha:1.0f];
+            [view addSubview:bottomView];
+            
+            view;
+        });
         _treeView.treeFooterView = [[UIView alloc] initWithFrame:CGRectZero];
         _treeView.rowsExpandingAnimation = RATreeViewRowAnimationMiddle;
         _treeView.rowsCollapsingAnimation = RATreeViewRowAnimationMiddle;
         _treeView.separatorStyle = RATreeViewCellSeparatorStyleNone;
+        _treeView.contentInset = (UIEdgeInsets){-_treeView.treeHeaderView.frame.size.height, 0, 0, 0};
         [_treeView registerNib:[UINib nibWithNibName:NSStringFromClass([STDTaskDetailsTableViewCell class]) bundle:nil] forCellReuseIdentifier:NSStringFromClass([STDTaskDetailsTableViewCell class])];
         [self.view addSubview:_treeView];
     }
@@ -154,6 +179,9 @@
     } else if ([item isKindOfClass:[STDCategory class]]) {
         STDCategory *category = (STDCategory *)item;
         cell.textLabel.text = [category.name uppercaseString];
+        
+        BOOL isLastCategory = (self.categories.lastObject == item);
+        // use textfield here and let user enter category
     } else if ([item isKindOfClass:[STDTask class]]) {
         STDTask *task = (STDTask *)item;
         cell.textLabel.text = task.name;
@@ -165,12 +193,15 @@
         button.frame = (CGRect){0, 0, 44, 44};
         button.titleLabel.font = [UIFont systemFontOfSize:20.0f];
         button.tintColor = [UIColor blackColor];
+        [button addTarget:self action:@selector(didTouchOnAccessoryButton:) forControlEvents:UIControlEventTouchUpInside];
         cell.accessoryView = button;
     }
     
     NSString *title = @"+";
-    NSUInteger count = treeNodeInfo.children.count;
-    if (count) title = [@(count) stringValue];
+    if (![self.expandedItems containsObject:item]) {
+        NSUInteger count = treeNodeInfo.children.count;
+        if (count) title = [@(count) stringValue];
+    }
     [button setTitle:title forState:UIControlStateNormal];
     
     return cell;
@@ -248,6 +279,8 @@
     if (!self.expandedItems)
         self.expandedItems = [NSMutableArray array];
     [self.expandedItems addObject:item];
+    
+    [treeView reloadRowsForItems:@[item] withRowAnimation:RATreeViewRowAnimationNone];
 }
 
 - (void)treeView:(RATreeView *)treeView didExpandRowForItem:(id)item treeNodeInfo:(RATreeNodeInfo *)treeNodeInfo;
@@ -261,6 +294,8 @@
 - (void)treeView:(RATreeView *)treeView willCollapseRowForItem:(id)item treeNodeInfo:(RATreeNodeInfo *)treeNodeInfo;
 {
     [self.expandedItems removeObject:item];
+    
+    [treeView reloadRowsForItems:@[item] withRowAnimation:RATreeViewRowAnimationNone];
 }
 
 - (BOOL)treeView:(RATreeView *)treeView shouldItemBeExpandedAfterDataReload:(id)item treeDepthLevel:(NSInteger)treeDepthLevel;
@@ -313,6 +348,22 @@
     STDNotesViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"STDNotesViewControllerId"];
     viewController.task = cell.task;
     [self.navigationController pushViewController:viewController animated:YES];
+}
+
+#pragma mark - UIScrollViewDelegate
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    CGPoint offset = self.treeView.contentOffset;
+    
+    CGFloat height = self.treeView.treeHeaderView.frame.size.height;
+    if (offset.y <= (height / 2.0f)) {
+        self.treeView.contentInset = UIEdgeInsetsZero;
+    } else {
+        self.treeView.contentInset = (UIEdgeInsets){-height, 0, 0, 0};
+    }
+    
+    self.treeView.contentOffset = offset;
 }
 
 @end
