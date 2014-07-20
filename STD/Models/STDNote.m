@@ -12,9 +12,9 @@
 
 // Custom logic goes here.
 
-- (void)willSave
+- (void)awakeFromInsert
 {
-    [super willSave];
+    [super awakeFromInsert];
     
     if (![self primitiveValueForKey:NSStringFromSelector(@selector(note_id))]) {
         [self setPrimitiveValue:[[NSUUID UUID] UUIDString] forKey:NSStringFromSelector(@selector(note_id))];

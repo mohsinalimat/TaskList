@@ -18,7 +18,7 @@
 
 @property (strong, nonatomic) RATreeView *treeView;
 
-@property (strong, nonatomic) NSArray *categories;
+@property (strong, nonatomic) NSMutableArray *categories;
 
 @property (strong, nonatomic) NSMutableArray *expandedItems;
 
@@ -71,11 +71,19 @@
         STDCategory *category2 = [STDCategory createEntity];
         category2.name = @"Work";
         
+//        STDTask *task1 = [STDTask createEntity];
+//        task1.name = @"task1";
+//        [category1 addTasksObject:task1];
+//        
+//        STDTask *task2 = [STDTask createEntity];
+//        task2.name = @"task2";
+//        [category2 addTasksObject:task2];
+        
         [[NSManagedObjectContext contextForCurrentThread] saveOnlySelfAndWait];
         
         categories = [STDCategory findAllSortedBy:NSStringFromSelector(@selector(index)) ascending:YES];
     }
-    self.categories = categories;
+    self.categories = [NSMutableArray arrayWithArray:categories];
 }
 
 - (NSArray *)sortedTasksForCategory:(STDCategory *)category
@@ -170,50 +178,62 @@
 
 - (BOOL)treeView:(RATreeView *)treeView canMoveRowForItem:(id)item treeNodeInfo:(RATreeNodeInfo *)treeNodeInfo;
 {
-    if ([item isKindOfClass:[NSNull class]])
-        return NO;
-    
-    [treeView collapseRowForItem:item];
-    
-    return YES;
+    if ([item isKindOfClass:[STDCategory class]])
+        if (treeNodeInfo.expanded)
+            [treeView collapseRowForItem:item];
+
+    return ![item isKindOfClass:[NSNull class]];
 }
 
 - (void)treeView:(RATreeView *)treeView moveRowForItem:(id)sourceItem treeNodeInfo:(RATreeNodeInfo *)sourceTreeNodeInfo toRowForItem:(id)destinationItem treeNodeInfo:(RATreeNodeInfo *)destinationTreeNodeInfo
 {
-    if ([sourceItem isKindOfClass:[STDCategory class]]) {
+    NSLog(@"moveRowForItem sourceItem %@", [sourceItem class]);
+    NSLog(@"moveRowForItem destinationItem %@", [destinationItem class]);
+    
+    if ([sourceItem isKindOfClass:[STDCategory class]] && [destinationItem isKindOfClass:[STDCategory class]]) {
         STDCategory *sourceCategory = (STDCategory *)sourceItem;
         STDCategory *destinationCategory = (STDCategory *)destinationItem;
         
-        NSNumber *sourceCategoryIndex = sourceCategory.index;
-        sourceCategory.index = destinationCategory.index;
-        destinationCategory.index = sourceCategoryIndex;
+        NSUInteger sourceCategoryIndex = [self.categories indexOfObject:sourceCategory];
+        NSUInteger destinationCategoryIndex = [self.categories indexOfObject:destinationCategory];
+        
+        sourceCategory.indexValue = destinationCategoryIndex;
+        destinationCategory.indexValue = sourceCategoryIndex;
         
         [[NSManagedObjectContext contextForCurrentThread] saveOnlySelfAndWait];
         
-        self.categories = [STDCategory findAllSortedBy:NSStringFromSelector(@selector(index)) ascending:YES];
-        
-        [self.treeView reloadData];
-    } else if ([sourceItem isKindOfClass:[STDTask class]]) {
-        STDTask *sourceTask = (STDTask *)sourceItem;
-        
-        if ([destinationItem isKindOfClass:[STDCategory class]]) {
-            STDCategory *destinationCategory = (STDCategory *)destinationItem;
-            sourceTask.category = destinationCategory;
-            sourceTask.indexValue = destinationCategory.tasks.count;
-        } else if ([destinationItem isKindOfClass:[STDTask class]]) {
-            STDTask *destinationTask = (STDTask *)destinationItem;
-            if (![sourceTask.category.category_id isEqualToString:destinationTask.category.category_id])
-                sourceTask.category = destinationTask.category;
-            
-            NSNumber *sourceTaskIndex = sourceTask.index;
-            sourceTask.index = destinationTask.index;
-            destinationTask.index = sourceTaskIndex;
-        }
-        
-        [[NSManagedObjectContext contextForCurrentThread] saveOnlySelfAndWait];
+        [self.categories exchangeObjectAtIndex:sourceCategoryIndex withObjectAtIndex:destinationCategoryIndex];
         
         [self.treeView reloadData];
     }
+    
+//    if ([sourceItem isKindOfClass:[STDCategory class]])
+//        if ([destinationItem isKindOfClass:[STDCategory class]])
+//            if (![((STDCategory *)sourceItem).category_id isEqualToString:((STDCategory *)destinationItem).category_id])
+//                if (destinationTreeNodeInfo.expanded) {
+//                    [self.expandedItems removeObject:destinationItem];
+//                    [treeView collapseRowForItem:destinationItem];
+//                }
+    
+//    if ([sourceItem isKindOfClass:[STDTask class]]) {
+//        STDTask *sourceTask = (STDTask *)sourceItem;
+//        
+//        if ([destinationItem isKindOfClass:[STDCategory class]]) {
+//            STDCategory *destinationCategory = (STDCategory *)destinationItem;
+//            sourceTask.category = destinationCategory;
+//            sourceTask.indexValue = destinationCategory.tasks.count;
+//        } else if ([destinationItem isKindOfClass:[STDTask class]]) {
+//            STDTask *destinationTask = (STDTask *)destinationItem;
+//            if (![sourceTask.category.category_id isEqualToString:destinationTask.category.category_id])
+//                sourceTask.category = destinationTask.category;
+//            
+//            NSNumber *sourceTaskIndex = sourceTask.index;
+//            sourceTask.index = destinationTask.index;
+//            destinationTask.index = sourceTaskIndex;
+//        }
+//    }
+    
+    NSLog(@"sourceItem %@", sourceItem);
 }
 
 #pragma mark - RATreeViewDelegate
@@ -223,20 +243,22 @@
     return 2 * MIN(treeNodeInfo.treeDepthLevel, 1);
 }
 
-- (void)treeView:(RATreeView *)treeView didExpandRowForItem:(id)item treeNodeInfo:(RATreeNodeInfo *)treeNodeInfo;
+- (void)treeView:(RATreeView *)treeView willExpandRowForItem:(id)item treeNodeInfo:(RATreeNodeInfo *)treeNodeInfo;
 {
     if (!self.expandedItems)
         self.expandedItems = [NSMutableArray array];
     [self.expandedItems addObject:item];
-    
-    id lastItem = ((RATreeNodeInfo *)treeNodeInfo.children.lastObject).item;
-    UITableViewCell *cell = [treeView cellForItem:lastItem];
-    if (![[treeView visibleCells] containsObject:cell]) {
-        [treeView scrollToRowForItem:lastItem atScrollPosition:RATreeViewScrollPositionBottom animated:YES];
-    }
 }
 
-- (void)treeView:(RATreeView *)treeView didCollapseRowForItem:(id)item treeNodeInfo:(RATreeNodeInfo *)treeNodeInfo;
+- (void)treeView:(RATreeView *)treeView didExpandRowForItem:(id)item treeNodeInfo:(RATreeNodeInfo *)treeNodeInfo;
+{
+    id lastItem = ((RATreeNodeInfo *)treeNodeInfo.children.lastObject).item;
+    UITableViewCell *cell = [treeView cellForItem:lastItem];
+    if (![[treeView visibleCells] containsObject:cell])
+        [treeView scrollToRowForItem:lastItem atScrollPosition:RATreeViewScrollPositionBottom animated:YES];
+}
+
+- (void)treeView:(RATreeView *)treeView willCollapseRowForItem:(id)item treeNodeInfo:(RATreeNodeInfo *)treeNodeInfo;
 {
     [self.expandedItems removeObject:item];
 }
@@ -248,29 +270,33 @@
 
 - (id)treeView:(RATreeView *)treeView targetItemForMoveFromRowForItem:(id)sourceItem treeNodeInfo:(RATreeNodeInfo *)sourceTreeNodeInfo indexPath:(NSIndexPath *)sourceIndexPath toProposedRowForItem:(id)destinationItem treeNodeInfo:(RATreeNodeInfo *)destinationTreeNodeInfo indexPath:(NSIndexPath *)destinationIndexPath
 {
-    NSLog(@"sourceItem %@", [sourceItem class]);
-    NSLog(@"destinationItem %@", [destinationItem class]);
+    NSLog(@"targetItemForMoveFromRowForItem sourceItem %@", [sourceItem class]);
+    NSLog(@"targetItemForMoveFromRowForItem destinationItem %@", [destinationItem class]);
     
-    if ([sourceItem isKindOfClass:[STDCategory class]]) {
-//        if ([destinationItem isKindOfClass:[STDCategory class]])
-//            if (destinationTreeNodeInfo.expanded)
-//                if (destinationTreeNodeInfo.children.count)
-//                    return ((RATreeNodeInfo *)destinationTreeNodeInfo.children.lastObject).item;
-        
-        if ([destinationItem isKindOfClass:[STDTask class]])
-            return destinationTreeNodeInfo.parent.item;
-    } else if ([sourceItem isKindOfClass:[STDTask class]]) {
-        if ([destinationItem isKindOfClass:[STDCategory class]]) {
-            if (destinationTreeNodeInfo.children.count)
-                if (!destinationTreeNodeInfo.expanded)
-                    [treeView expandRowForItem:destinationItem];
-            
-            if (destinationIndexPath.row == 0)
-                return sourceItem;
+//    if ([destinationItem isKindOfClass:[STDCategory class]])
+//        if (destinationTreeNodeInfo.children.count)
+//            if (!destinationTreeNodeInfo.expanded)
+//                [treeView expandRowForItem:destinationItem];
+    
+//    // collapse expanded category
+//    if ([sourceItem isKindOfClass:[STDTask class]])
+//        if ([destinationItem isKindOfClass:[STDTask class]])
+//            if (![((STDTask *)sourceItem).category.category_id isEqualToString:((STDTask *)destinationItem).category.category_id])
+//                if (destinationTreeNodeInfo.parent.expanded)
+//                    [treeView collapseRowForItem:destinationTreeNodeInfo.parent.item];
+    
+    // expand expanded category
+    if ([sourceItem isKindOfClass:[STDCategory class]] && [destinationItem isKindOfClass:[STDTask class]]) {
+        if (![((STDCategory *)sourceItem).category_id isEqualToString:((STDTask *)destinationItem).category.category_id]) {
+            if (destinationTreeNodeInfo.parent.expanded) {
+//                [self.expandedItems removeObject:destinationTreeNodeInfo.parent.item];
+//                [treeView collapseRowForItem:destinationTreeNodeInfo.parent.item];
+                return destinationTreeNodeInfo.parent.item;
+            }
         }
     }
     
-    return destinationItem;
+    return destinationIndexPath;
 }
 
 #pragma mark - STDTaskDetailsTableViewCellDelegate

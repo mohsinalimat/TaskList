@@ -189,8 +189,13 @@
         RATreeNode *sourceTreeNode = [self treeNodeForIndex:sourceIndexPath.row];
         RATreeNode *proposedDestinationTreeNode = [self treeNodeForIndex:proposedDestinationIndexPath.row];
         id item = [self.delegate treeView:self targetItemForMoveFromRowForItem:sourceTreeNode.item treeNodeInfo:[sourceTreeNode treeNodeInfo] indexPath:sourceIndexPath toProposedRowForItem:proposedDestinationTreeNode.item treeNodeInfo:[proposedDestinationTreeNode treeNodeInfo] indexPath:proposedDestinationIndexPath];
+        if ([item isKindOfClass:[NSIndexPath class]])
+            return item;
         NSIndexPath *delegateIndexPath = [self indexPathForItem:item];
-        return delegateIndexPath.row == -1 ? proposedDestinationIndexPath : delegateIndexPath;
+        NSLog(@"delegateIndexPath %@", delegateIndexPath);
+        NSLog(@"proposedDestinationIndexPath %@", proposedDestinationIndexPath);
+        NSLog(@"return %@", (delegateIndexPath.row < 0 || delegateIndexPath.row == NSNotFound) ? proposedDestinationIndexPath : delegateIndexPath);
+        return (delegateIndexPath.row < 0 || delegateIndexPath.row == NSNotFound) ? proposedDestinationIndexPath : delegateIndexPath;
     }
     return proposedDestinationIndexPath;
 }
