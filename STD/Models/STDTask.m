@@ -19,15 +19,17 @@
     if (![self primitiveValueForKey:NSStringFromSelector(@selector(task_id))]) {
         [self setPrimitiveValue:[[NSUUID UUID] UUIDString] forKey:NSStringFromSelector(@selector(task_id))];
     }
-    
-    if (![self primitiveValueForKey:NSStringFromSelector(@selector(index))]) {
-        [self setPrimitiveValue:[self getIndex] forKey:NSStringFromSelector(@selector(index))];
-    }
 }
 
-- (NSNumber *)getIndex;
+- (void)addSubtasksObject:(STDSubtask *)value_
 {
-    return @(self.category.tasks.count);
+    value_.indexValue = [[self primitiveSubtasks] count];
+    
+    NSSet *changedObjects = [[NSSet alloc] initWithObjects:&value_ count:1];
+    
+    [self willChangeValueForKey:@"subtasks" withSetMutation:NSKeyValueUnionSetMutation usingObjects:changedObjects];
+    [[self primitiveSubtasks] addObject:value_];
+    [self didChangeValueForKey:@"subtasks" withSetMutation:NSKeyValueUnionSetMutation usingObjects:changedObjects];
 }
 
 @end
