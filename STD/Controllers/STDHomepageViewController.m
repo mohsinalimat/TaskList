@@ -117,10 +117,6 @@
 //        task2.name = @"task2";
 //        [category2 addTasksObject:task2];
         
-        STDCategory *category3 = [STDCategory createEntity];
-        category3.name = @"New Category";
-        category3.indexValue = 2;
-        
         [[NSManagedObjectContext contextForCurrentThread] saveOnlySelfAndWait];
         
         categories = [STDCategory findAllSortedBy:NSStringFromSelector(@selector(index)) ascending:YES];
@@ -134,16 +130,23 @@
     return [category.tasks sortedArrayUsingDescriptors:@[sortDescriptor]];
 }
 
+- (STDCategory *)categoryForSection:(NSInteger)section
+{
+    if (self.categories.count > section)
+        return self.categories[section];
+    return nil;
+}
+
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return self.categories.count;
+    return self.categories.count + 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    STDCategory *category = self.categories[section];
+    STDCategory *category = [self categoryForSection:section];
     return [self.expandedItems containsObject:category] ? category.tasks.count : 0;
 }
 
@@ -152,10 +155,12 @@
     STDTaskDetailsTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass([STDTaskDetailsTableViewCell class])];
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    
+    cell.clipsToBounds = YES;
 
     cell.delegate = self;
     
-    STDCategory *category = self.categories[indexPath.section];
+    STDCategory *category = [self categoryForSection:indexPath.section];
     STDTask *task = [self sortedTasksForCategory:category][indexPath.row];
 
     cell.task = task;
@@ -170,7 +175,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    STDCategory *category = self.categories[indexPath.section];
+    STDCategory *category = [self categoryForSection:indexPath.section];
     STDTask *task = [self sortedTasksForCategory:category][indexPath.row];
     if (!self.expandedItems)
         self.expandedItems = [NSMutableArray array];
@@ -185,7 +190,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    STDCategory *category = self.categories[indexPath.section];
+    STDCategory *category = [self categoryForSection:indexPath.section];
     STDTask *task = [self sortedTasksForCategory:category][indexPath.row];
     return [self.expandedItems containsObject:task] ? 88.0f : 44.0f;
 }
@@ -197,18 +202,17 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    STDCategory *category = self.categories[section];
-    BOOL isLastCategory = [category isEqual:self.categories.lastObject];
+    STDCategory *category = [self categoryForSection:section];
     
     UIView *view = [[UIView alloc] initWithFrame:(CGRect){0, 0, 320, 44}];
     view.backgroundColor = [UIColor whiteColor];
     view.tag = section;
     
     UITextField *textField = [[UITextField alloc] initWithFrame:(CGRect){14, 0, 276, 44}];
-    textField.text = [category.name uppercaseString];
-    textField.textColor = isLastCategory ? [UIColor lightGrayColor] : [UIColor colorWithHue:(210.0f / 360.0f) saturation:0.94f brightness:1.0f alpha:1.0f];
+    textField.text = category ? [category.name uppercaseString] : @"New Category";;
+    textField.textColor = category ? [UIColor colorWithHue:(210.0f / 360.0f) saturation:0.94f brightness:1.0f alpha:1.0f] : [UIColor lightGrayColor];
     textField.font = [UIFont boldSystemFontOfSize:18.0f];
-    textField.userInteractionEnabled = NO;
+    textField.userInteractionEnabled = !category;
     [view addSubview:textField];
     
     UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
