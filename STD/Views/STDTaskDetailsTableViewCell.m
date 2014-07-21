@@ -15,6 +15,8 @@
     for (UIButton *button in self.buttons) {
         button.tintColor = [UIColor blackColor];
     }
+    
+    self.textField.font = [UIFont systemFontOfSize:14.0f];
 }
 
 - (IBAction)didTouchOnTasksButton:(id)sender

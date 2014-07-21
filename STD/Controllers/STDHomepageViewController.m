@@ -13,8 +13,7 @@
 #import "STDSubtasksViewController.h"
 #import "STDNotesViewController.h"
 
-#define kTextField 100
-#define kButton 200
+#define kButton 100
 
 @interface STDHomepageViewController () <UITableViewDataSource, UITableViewDelegate, STDTaskDetailsTableViewCellDelegate>
 
@@ -150,27 +149,20 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"TableViewCellStyleDefault";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-        
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    }
+    STDTaskDetailsTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass([STDTaskDetailsTableViewCell class])];
+    
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+
+    cell.delegate = self;
     
     STDCategory *category = self.categories[indexPath.section];
     STDTask *task = [self sortedTasksForCategory:category][indexPath.row];
+
+    cell.task = task;
     
-    UITextField *textField = (UITextField *)[cell.contentView viewWithTag:kTextField];
-    if (!textField) {
-        textField = [[UITextField alloc] initWithFrame:(CGRect){14, 0, 298, 44}];
-        textField.tag = kTextField;
-        textField.font = [UIFont systemFontOfSize:14.0f];
-        textField.userInteractionEnabled = NO;
-        [cell.contentView addSubview:textField];
-    }
-    textField.text = task.name;
-    
+    cell.textField.text = task.name;
+    cell.textField.userInteractionEnabled = NO;
+
     return cell;
 }
 
