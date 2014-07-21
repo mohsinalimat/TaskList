@@ -22,6 +22,8 @@
 
 @property (strong, nonatomic) NSMutableArray *categories;
 
+@property (strong, nonatomic) NSMutableArray *expandedItems;
+
 @end
 
 @implementation STDHomepageViewController
@@ -37,10 +39,10 @@
 {
     [super viewDidLoad];
     
-    [self styleViewController];
-    
     [self styleNavigationController];
     
+    [self styleTableView];
+
     [self load];
     
     [self.tableView reloadData];
@@ -64,16 +66,24 @@
 {
     NSInteger section = recognizer.view.tag;
     STDCategory *category = self.categories[section];
+    if (!self.expandedItems)
+        self.expandedItems = [NSMutableArray array];
+    if ([self.expandedItems containsObject:category]) {
+        [self.expandedItems removeObject:category];
+    } else  {
+        [self.expandedItems addObject:category];
+    }
     
+    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:section] withRowAnimation:UITableViewRowAnimationNone];
 }
 
 #pragma mark - Styling
 
-- (void)styleViewController
+- (void)styleTableView
 {
     self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectZero];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    
     [self.tableView registerNib:[UINib nibWithNibName:NSStringFromClass([STDTaskDetailsTableViewCell class]) bundle:nil] forCellReuseIdentifier:NSStringFromClass([STDTaskDetailsTableViewCell class])];
 }
 
@@ -132,7 +142,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     STDCategory *category = self.categories[section];
-    return category.tasks.count;
+    return [self.expandedItems containsObject:category] ? category.tasks.count : 0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -151,6 +161,7 @@
     UITextField *textField = (UITextField *)[cell.contentView viewWithTag:kTextField];
     if (!textField) {
         textField = [[UITextField alloc] initWithFrame:(CGRect){14, 0, 298, 44}];
+        textField.tag = kTextField;
         textField.font = [UIFont systemFontOfSize:14.0f];
         textField.userInteractionEnabled = NO;
         [cell.contentView addSubview:textField];
@@ -174,6 +185,7 @@
     
     UIView *view = [[UIView alloc] initWithFrame:(CGRect){0, 0, 320, 44}];
     view.backgroundColor = [UIColor whiteColor];
+    view.tag = section;
     
     UITextField *textField = [[UITextField alloc] initWithFrame:(CGRect){14, 0, 276, 44}];
     textField.text = [category.name uppercaseString];
@@ -184,8 +196,8 @@
     
     UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
     button.frame = (CGRect){276, 0, 44, 44};
-    button.titleLabel.font = [UIFont systemFontOfSize:20.0f];
-    button.tintColor = [UIColor blackColor];
+    button.titleLabel.font = [UIFont systemFontOfSize:18.0f];
+    button.tintColor = [UIColor darkGrayColor];
     [button addTarget:self action:@selector(didTouchOnButton:) forControlEvents:UIControlEventTouchUpInside];
     NSUInteger count = category.tasks.count;
     NSString *title = count ? [NSString stringWithFormat:@"(%d)", count] : @"+";
@@ -194,7 +206,6 @@
     
     UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGestureRecognized:)];
     singleTap.numberOfTapsRequired = 1;
-    singleTap.view.tag = section;
     [view addGestureRecognizer:singleTap];
     
     return view;
