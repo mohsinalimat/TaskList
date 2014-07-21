@@ -13,6 +13,9 @@
 #import "STDSubtasksViewController.h"
 #import "STDNotesViewController.h"
 
+#define kTextField 100
+#define kButton 200
+
 @interface STDHomepageViewController () <UITableViewDataSource, UITableViewDelegate, STDTaskDetailsTableViewCellDelegate>
 
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
@@ -52,8 +55,15 @@
 
 #pragma mark - IBAction
 
-- (IBAction)didTouchOnAccessoryButton:(id)sender
+- (IBAction)didTouchOnButton:(id)sender
 {
+    
+}
+
+- (void)tapGestureRecognized:(UITapGestureRecognizer *)recognizer
+{
+    NSInteger section = recognizer.view.tag;
+    STDCategory *category = self.categories[section];
     
 }
 
@@ -61,21 +71,9 @@
 
 - (void)styleViewController
 {
-    self.tableView.tableHeaderView = ({
-        UIView *view = [[UIView alloc] initWithFrame:(CGRect){0, 0, 320, 44}];
-        
-        UITextField *textField = [[UITextField alloc] initWithFrame:(CGRect){14, 0, 298, 44}];
-        [view addSubview:textField];
-        
-        UIView *bottomView = [[UIView alloc] initWithFrame:(CGRect){0, 43, 320, 1}];
-        bottomView.backgroundColor = [UIColor colorWithWhite:0.6f alpha:1.0f];
-        [view addSubview:bottomView];
-        
-        view;
-    });
+    self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectZero];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    self.tableView.contentInset = (UIEdgeInsets){-self.tableView.tableHeaderView.frame.size.height, 0, 0, 0};
     [self.tableView registerNib:[UINib nibWithNibName:NSStringFromClass([STDTaskDetailsTableViewCell class]) bundle:nil] forCellReuseIdentifier:NSStringFromClass([STDTaskDetailsTableViewCell class])];
 }
 
@@ -149,22 +147,15 @@
     
     STDCategory *category = self.categories[indexPath.section];
     STDTask *task = [self sortedTasksForCategory:category][indexPath.row];
-    cell.textLabel.text = task.name;
     
-    UIButton *button = (UIButton *)cell.accessoryView;
-    if (!button) {
-        button = [UIButton buttonWithType:UIButtonTypeSystem];
-        button.frame = (CGRect){0, 0, 44, 44};
-        button.titleLabel.font = [UIFont systemFontOfSize:20.0f];
-        button.tintColor = [UIColor blackColor];
-        [button addTarget:self action:@selector(didTouchOnAccessoryButton:) forControlEvents:UIControlEventTouchUpInside];
-        cell.accessoryView = button;
+    UITextField *textField = (UITextField *)[cell.contentView viewWithTag:kTextField];
+    if (!textField) {
+        textField = [[UITextField alloc] initWithFrame:(CGRect){14, 0, 298, 44}];
+        textField.font = [UIFont systemFontOfSize:14.0f];
+        textField.userInteractionEnabled = NO;
+        [cell.contentView addSubview:textField];
     }
-    
-    NSString *title = @"+";
-    NSUInteger count = task.subtasks.count;
-    if (count) title = [@(count) stringValue];
-    [button setTitle:title forState:UIControlStateNormal];
+    textField.text = task.name;
     
     return cell;
 }
@@ -179,12 +170,32 @@
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     STDCategory *category = self.categories[section];
-
-    UIView *view = [[UIView alloc] initWithFrame:(CGRect){0, 0, 320, 44}];
+    BOOL isLastCategory = [category isEqual:self.categories.lastObject];
     
-    UITextField *textField = [[UITextField alloc] initWithFrame:(CGRect){14, 0, 298, 44}];
+    UIView *view = [[UIView alloc] initWithFrame:(CGRect){0, 0, 320, 44}];
+    view.backgroundColor = [UIColor whiteColor];
+    
+    UITextField *textField = [[UITextField alloc] initWithFrame:(CGRect){14, 0, 276, 44}];
     textField.text = [category.name uppercaseString];
+    textField.textColor = isLastCategory ? [UIColor lightGrayColor] : [UIColor colorWithHue:(210.0f / 360.0f) saturation:0.94f brightness:1.0f alpha:1.0f];
+    textField.font = [UIFont boldSystemFontOfSize:18.0f];
+    textField.userInteractionEnabled = NO;
     [view addSubview:textField];
+    
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
+    button.frame = (CGRect){276, 0, 44, 44};
+    button.titleLabel.font = [UIFont systemFontOfSize:20.0f];
+    button.tintColor = [UIColor blackColor];
+    [button addTarget:self action:@selector(didTouchOnButton:) forControlEvents:UIControlEventTouchUpInside];
+    NSUInteger count = category.tasks.count;
+    NSString *title = count ? [NSString stringWithFormat:@"(%d)", count] : @"+";
+    [button setTitle:title forState:UIControlStateNormal];
+    [view addSubview:button];
+    
+    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGestureRecognized:)];
+    singleTap.numberOfTapsRequired = 1;
+    singleTap.view.tag = section;
+    [view addGestureRecognizer:singleTap];
     
     return view;
 }
@@ -203,22 +214,6 @@
     STDNotesViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"STDNotesViewControllerId"];
     viewController.task = cell.task;
     [self.navigationController pushViewController:viewController animated:YES];
-}
-
-#pragma mark - UIScrollViewDelegate
-
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
-{
-    CGPoint offset = self.tableView.contentOffset;
-    
-    CGFloat height = self.tableView.tableHeaderView.frame.size.height;
-    if (offset.y <= (height / 2.0f)) {
-        self.tableView.contentInset = UIEdgeInsetsZero;
-    } else {
-        self.tableView.contentInset = (UIEdgeInsets){-height, 0, 0, 0};
-    }
-    
-    self.tableView.contentOffset = offset;
 }
 
 @end
