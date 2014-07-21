@@ -70,6 +70,9 @@
         self.expandedItems = [NSMutableArray array];
     if ([self.expandedItems containsObject:category]) {
         [self.expandedItems removeObject:category];
+        for (STDTask *task in category.tasks) {
+            [self.expandedItems removeObject:task];
+        }
     } else  {
         [self.expandedItems addObject:category];
     }
@@ -173,6 +176,28 @@
 
 #pragma mark - UITableViewDelegate
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    STDCategory *category = self.categories[indexPath.section];
+    STDTask *task = [self sortedTasksForCategory:category][indexPath.row];
+    if (!self.expandedItems)
+        self.expandedItems = [NSMutableArray array];
+    if ([self.expandedItems containsObject:task]) {
+        [self.expandedItems removeObject:task];
+    } else  {
+        [self.expandedItems addObject:task];
+    }
+    
+    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    STDCategory *category = self.categories[indexPath.section];
+    STDTask *task = [self sortedTasksForCategory:category][indexPath.row];
+    return [self.expandedItems containsObject:task] ? 88.0f : 44.0f;
+}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     return 44.0f;
@@ -200,7 +225,7 @@
     button.tintColor = [UIColor darkGrayColor];
     [button addTarget:self action:@selector(didTouchOnButton:) forControlEvents:UIControlEventTouchUpInside];
     NSUInteger count = category.tasks.count;
-    NSString *title = count ? [NSString stringWithFormat:@"(%d)", count] : @"+";
+    NSString *title = (count && ![self.expandedItems containsObject:category]) ? [NSString stringWithFormat:@"(%d)", count] : @"+";
     [button setTitle:title forState:UIControlStateNormal];
     [view addSubview:button];
     
