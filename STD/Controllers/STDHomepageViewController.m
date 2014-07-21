@@ -15,9 +15,11 @@
 
 #define kButton 100
 
+#define kTextFieldCategory 10
+
 static NSString *kTextFieldPlaceholder = @"New Category";
 
-@interface STDHomepageViewController () <UITableViewDataSource, UITableViewDelegate, STDTaskDetailsTableViewCellDelegate, UITextFieldDelegate>
+@interface STDHomepageViewController () <UITableViewDataSource, UITableViewDelegate, STDTaskDetailsTableViewCellDelegate, UITextFieldDelegate, UIAlertViewDelegate>
 
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 
@@ -60,7 +62,15 @@ static NSString *kTextFieldPlaceholder = @"New Category";
 
 - (IBAction)didTouchOnButton:(id)sender
 {
-    
+    UIButton *button = sender;
+    NSInteger section = button.superview.tag;
+        
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"New Task" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Add", nil];
+    alertView.alertViewStyle = UIAlertViewStylePlainTextInput;
+    UITextField *textField = [alertView textFieldAtIndex:0];
+    textField.tag = section;
+    textField.autocapitalizationType = UITextAutocapitalizationTypeWords;
+    [alertView show];
 }
 
 - (void)tapGestureRecognized:(UITapGestureRecognizer *)recognizer
@@ -219,6 +229,7 @@ static NSString *kTextFieldPlaceholder = @"New Category";
     textField.font = [UIFont boldSystemFontOfSize:18.0f];
     textField.userInteractionEnabled = !category;
     textField.delegate = self;
+    textField.tag = kTextFieldCategory;
     [view addSubview:textField];
     
     UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
@@ -288,6 +299,28 @@ static NSString *kTextFieldPlaceholder = @"New Category";
     [[NSManagedObjectContext contextForCurrentThread] saveOnlySelfAndWait];
     
     [self.tableView reloadData];
+}
+
+#pragma mark - UIAlertViewDelegate
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex != alertView.cancelButtonIndex) {
+        UITextField *textField = [alertView textFieldAtIndex:0];
+        if (textField.text.length) {
+            NSInteger section = textField.tag;
+            STDCategory *category = [self categoryForSection:section];
+            if (category) {
+                STDTask *task = [STDTask createEntity];
+                task.name = textField.text;
+                [category addTasksObject:task];
+                
+                [[NSManagedObjectContext contextForCurrentThread] saveOnlySelfAndWait];
+                
+                [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:section] withRowAnimation:UITableViewRowAnimationNone];
+            }
+        }
+    }
 }
 
 @end
