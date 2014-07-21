@@ -15,7 +15,9 @@
 
 #define kButton 100
 
-@interface STDHomepageViewController () <UITableViewDataSource, UITableViewDelegate, STDTaskDetailsTableViewCellDelegate>
+static NSString *kTextFieldPlaceholder = @"New Category";
+
+@interface STDHomepageViewController () <UITableViewDataSource, UITableViewDelegate, STDTaskDetailsTableViewCellDelegate, UITextFieldDelegate>
 
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 
@@ -64,7 +66,7 @@
 - (void)tapGestureRecognized:(UITapGestureRecognizer *)recognizer
 {
     NSInteger section = recognizer.view.tag;
-    STDCategory *category = self.categories[section];
+    STDCategory *category = [self categoryForSection:section];
     if (!self.expandedItems)
         self.expandedItems = [NSMutableArray array];
     if ([self.expandedItems containsObject:category]) {
@@ -83,6 +85,8 @@
 
 - (void)styleTableView
 {
+    self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
+    
     self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectZero];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     
@@ -209,10 +213,12 @@
     view.tag = section;
     
     UITextField *textField = [[UITextField alloc] initWithFrame:(CGRect){14, 0, 276, 44}];
-    textField.text = category ? [category.name uppercaseString] : @"New Category";;
-    textField.textColor = category ? [UIColor colorWithHue:(210.0f / 360.0f) saturation:0.94f brightness:1.0f alpha:1.0f] : [UIColor lightGrayColor];
+    textField.text = [category.name uppercaseString];
+    textField.textColor = [UIColor colorWithHue:(210.0f / 360.0f) saturation:0.94f brightness:1.0f alpha:1.0f];
+    textField.placeholder = kTextFieldPlaceholder;
     textField.font = [UIFont boldSystemFontOfSize:18.0f];
     textField.userInteractionEnabled = !category;
+    textField.delegate = self;
     [view addSubview:textField];
     
     UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
@@ -246,6 +252,42 @@
     STDNotesViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"STDNotesViewControllerId"];
     viewController.task = cell.task;
     [self.navigationController pushViewController:viewController animated:YES];
+}
+
+#pragma mark - UITextFieldDelegate
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [textField resignFirstResponder];
+    return YES;
+}
+
+- (BOOL)textFieldShouldEndEditing:(UITextField *)textField
+{
+    NSInteger section = textField.superview.tag;
+    STDCategory *category = [self categoryForSection:section];
+    if (category)
+        return textField.text.length;
+    return YES;
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField
+{
+    if (!textField.text.length)
+        return;
+    
+    NSInteger section = textField.superview.tag;
+    STDCategory *category = [self categoryForSection:section];
+    if (!category) {
+        category = [STDCategory createEntity];
+        [self.categories addObject:category];
+    }
+    
+    category.name = textField.text;
+    
+    [[NSManagedObjectContext contextForCurrentThread] saveOnlySelfAndWait];
+    
+    [self.tableView reloadData];
 }
 
 @end

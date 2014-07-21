@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5064" systemVersion="13D65" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6198" systemVersion="14A283o" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="STDCategory" representedClassName="STDCategory" syncable="YES">
         <attribute name="category_id" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="index" optional="YES" attributeType="Integer 16" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="index" optional="YES" attributeType="Integer 16" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="tasks" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="STDTask" inverseName="category" inverseEntity="STDTask" syncable="YES"/>
     </entity>
@@ -17,7 +17,7 @@
     <entity name="STDTask" representedClassName="STDTask" syncable="YES">
         <attribute name="completed" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="completion_date" optional="YES" attributeType="Date" syncable="YES"/>
-        <attribute name="index" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="index" optional="YES" attributeType="Integer 16" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="task_id" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="category" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="STDCategory" inverseName="tasks" inverseEntity="STDCategory" syncable="YES"/>
@@ -25,9 +25,9 @@
         <relationship name="subtasks" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="STDSubtask" inverseName="task" inverseEntity="STDSubtask" syncable="YES"/>
     </entity>
     <elements>
-        <element name="STDCategory" positionX="-47" positionY="-256" width="128" height="103"/>
+        <element name="STDCategory" positionX="-47" positionY="-256" width="128" height="105"/>
         <element name="STDNote" positionX="-47" positionY="230" width="128" height="88"/>
-        <element name="STDTask" positionX="-54" positionY="-9" width="128" height="163"/>
         <element name="STDSubtask" positionX="-54" positionY="-108" width="128" height="58"/>
+        <element name="STDTask" positionX="-54" positionY="-9" width="128" height="165"/>
     </elements>
 </model>
