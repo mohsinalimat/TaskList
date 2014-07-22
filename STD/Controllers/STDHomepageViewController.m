@@ -18,6 +18,8 @@
 #define kTextFieldCategory 10
 #define kTextFieldTask 20
 
+#define kNumberOfRowsInSection category.tasks.count + 1
+
 @interface STDHomepageViewController () <UITableViewDataSource, UITableViewDelegate, STDTaskDetailsTableViewCellDelegate, UITextFieldDelegate>
 
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
@@ -69,15 +71,36 @@
 {
     NSInteger section = recognizer.view.tag;
     STDCategory *category = [self categoryForSection:section];
+    
+    NSMutableArray *indexes = [NSMutableArray array];
+    for (NSInteger index = 0; index < kNumberOfRowsInSection; index++) {
+        [indexes addObject:[NSIndexPath indexPathForRow:index inSection:section]];
+    }
+    
+    [CATransaction begin];
+    [CATransaction setCompletionBlock:^{
+        if ([self.expandedItems containsObject:category])
+            if (![[self.tableView indexPathsForVisibleRows] containsObject:indexes.lastObject])
+                [self.tableView scrollToRowAtIndexPath:indexes.lastObject atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+    }];
+    
+    [self.tableView beginUpdates];
+
     if (!self.expandedItems)
         self.expandedItems = [NSMutableArray array];
     if ([self.expandedItems containsObject:category]) {
         [self.expandedItems removeObject:category];
+        
+        [self.tableView deleteRowsAtIndexPaths:indexes withRowAnimation:UITableViewRowAnimationNone];
     } else  {
         [self.expandedItems addObject:category];
+        
+        [self.tableView insertRowsAtIndexPaths:indexes withRowAnimation:UITableViewRowAnimationNone];
     }
     
-    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:section] withRowAnimation:UITableViewRowAnimationNone];
+    [self.tableView endUpdates];
+    
+    [CATransaction commit];
 }
 
 #pragma mark - Styling
@@ -159,7 +182,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     STDCategory *category = [self categoryForSection:section];
-    return [self.expandedItems containsObject:category] ? category.tasks.count + 1 : 0;
+    return [self.expandedItems containsObject:category] ? kNumberOfRowsInSection : 0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -205,7 +228,8 @@
         [self.expandedItems addObject:task];
     }
     
-    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+    [self.tableView beginUpdates];
+    [self.tableView endUpdates];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
