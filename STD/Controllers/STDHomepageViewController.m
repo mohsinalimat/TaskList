@@ -73,9 +73,6 @@
         self.expandedItems = [NSMutableArray array];
     if ([self.expandedItems containsObject:category]) {
         [self.expandedItems removeObject:category];
-        for (STDTask *task in category.tasks) {
-            [self.expandedItems removeObject:task];
-        }
     } else  {
         [self.expandedItems addObject:category];
     }
@@ -201,6 +198,10 @@
     if ([self.expandedItems containsObject:task]) {
         [self.expandedItems removeObject:task];
     } else  {
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"class == %@", [STDTask class]];
+        NSArray *tasks = [self.expandedItems filteredArrayUsingPredicate:predicate];
+        [self.expandedItems removeObjectsInArray:tasks];
+
         [self.expandedItems addObject:task];
     }
     
