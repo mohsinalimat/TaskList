@@ -78,9 +78,6 @@
         }
     } else  {
         [self.expandedItems addObject:category];
-        
-//        if (![[self.tableView indexPathsForVisibleRows] containsObject:[NSIndexPath indexPathForRow:0 inSection:section]])
-//            [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:category.tasks.count inSection:section] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
     }
     
     [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:section] withRowAnimation:UITableViewRowAnimationNone];
