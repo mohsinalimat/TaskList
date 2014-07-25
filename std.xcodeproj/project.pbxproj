@@ -32,6 +32,7 @@
 		C06F19CE1960D308000BEDD8 /* STDTaskDetailsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C06F19CC1960D308000BEDD8 /* STDTaskDetailsTableViewCell.m */; };
 		C06F19CF1960D308000BEDD8 /* STDTaskDetailsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C06F19CD1960D308000BEDD8 /* STDTaskDetailsTableViewCell.xib */; };
 		C07F7C8D1957CB2900CF0C92 /* NSObject+Extras.m in Sources */ = {isa = PBXBuildFile; fileRef = C07F7C8C1957CB2900CF0C92 /* NSObject+Extras.m */; };
+		C080EF901981F8C8009EF488 /* UIViewController+BHTKeyboardNotifications.m in Sources */ = {isa = PBXBuildFile; fileRef = C080EF8F1981F8C8009EF488 /* UIViewController+BHTKeyboardNotifications.m */; };
 		C0827F8519675232000383D3 /* RATreeNode.m in Sources */ = {isa = PBXBuildFile; fileRef = C0827F7219675232000383D3 /* RATreeNode.m */; };
 		C0827F8619675232000383D3 /* RATreeNodeCollectionController.m in Sources */ = {isa = PBXBuildFile; fileRef = C0827F7419675232000383D3 /* RATreeNodeCollectionController.m */; };
 		C0827F8719675232000383D3 /* RATreeNodeInfo+Private.m in Sources */ = {isa = PBXBuildFile; fileRef = C0827F7619675232000383D3 /* RATreeNodeInfo+Private.m */; };
@@ -97,6 +98,8 @@
 		C06F19CD1960D308000BEDD8 /* STDTaskDetailsTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = STDTaskDetailsTableViewCell.xib; sourceTree = "<group>"; };
 		C07F7C8B1957CB2900CF0C92 /* NSObject+Extras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+Extras.h"; sourceTree = "<group>"; };
 		C07F7C8C1957CB2900CF0C92 /* NSObject+Extras.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Extras.m"; sourceTree = "<group>"; };
+		C080EF8E1981F8C8009EF488 /* UIViewController+BHTKeyboardNotifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+BHTKeyboardNotifications.h"; sourceTree = "<group>"; };
+		C080EF8F1981F8C8009EF488 /* UIViewController+BHTKeyboardNotifications.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+BHTKeyboardNotifications.m"; sourceTree = "<group>"; };
 		C0827F7119675232000383D3 /* RATreeNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RATreeNode.h; sourceTree = "<group>"; };
 		C0827F7219675232000383D3 /* RATreeNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RATreeNode.m; sourceTree = "<group>"; };
 		C0827F7319675232000383D3 /* RATreeNodeCollectionController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RATreeNodeCollectionController.h; sourceTree = "<group>"; };
@@ -274,9 +277,19 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		C080EF8D1981F8C8009EF488 /* BHTKeyboardAnimationBlocks */ = {
+			isa = PBXGroup;
+			children = (
+				C080EF8E1981F8C8009EF488 /* UIViewController+BHTKeyboardNotifications.h */,
+				C080EF8F1981F8C8009EF488 /* UIViewController+BHTKeyboardNotifications.m */,
+			);
+			path = BHTKeyboardAnimationBlocks;
+			sourceTree = "<group>";
+		};
 		C0827F6F19675232000383D3 /* External libraries */ = {
 			isa = PBXGroup;
 			children = (
+				C080EF8D1981F8C8009EF488 /* BHTKeyboardAnimationBlocks */,
 				C0827F7019675232000383D3 /* RATreeView */,
 			);
 			path = "External libraries";
@@ -563,6 +576,7 @@
 				C0827F8719675232000383D3 /* RATreeNodeInfo+Private.m in Sources */,
 				C082BE06193BD86300A60D8E /* _STDNote.m in Sources */,
 				C0827F8C19675232000383D3 /* RATreeView+TableViewDelegate.m in Sources */,
+				C080EF901981F8C8009EF488 /* UIViewController+BHTKeyboardNotifications.m in Sources */,
 				C07F7C8D1957CB2900CF0C92 /* NSObject+Extras.m in Sources */,
 				C082BE11193BD86C00A60D8E /* STDCategory.m in Sources */,
 				C0827F8B19675232000383D3 /* RATreeView+TableViewDataSource.m in Sources */,

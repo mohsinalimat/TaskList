@@ -70,7 +70,6 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="bottomConstraint" destination="8xb-qz-vyg" id="bfE-Zf-YzS"/>
                         <outlet property="textView" destination="kcf-tB-a1h" id="g9w-vN-BtL"/>
                     </connections>
                 </viewController>
