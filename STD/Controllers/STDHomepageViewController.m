@@ -8,6 +8,7 @@
 
 #import "STDHomepageViewController.h"
 #import "STDTaskDetailsTableViewCell.h"
+#import "UIViewController+BHTKeyboardNotifications.h"
 #import "UIImage+Extras.h"
 
 #import "STDSubtasksViewController.h"
@@ -42,6 +43,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [self registerForKeyboardNotifications];
     
     [self styleNavigationController];
     
@@ -360,6 +363,43 @@
             }
         }
     }
+}
+
+#pragma mark - Keyboard
+
+- (void)registerForKeyboardNotifications
+{
+    __weak typeof(self) weakSelf = self;
+    
+    [self setKeyboardWillShowAnimationBlock:^(CGRect keyboardFrame) {
+        typeof(self) self = weakSelf;
+        
+        [self keyboardFrameChanged:keyboardFrame];
+    }];
+    
+    [self setKeyboardWillHideAnimationBlock:^(CGRect keyboardFrame) {
+        typeof(self) self = weakSelf;
+        
+        [self keyboardFrameChanged:keyboardFrame];
+    }];
+}
+
+static CGFloat contentOffsetForBottom(CGRect keyboardFrame) {
+    UIWindow *window = [[UIApplication sharedApplication] keyWindow];
+    UIView *view = window.rootViewController.view;
+    CGRect convertedRect = [view convertRect:keyboardFrame fromView:nil];
+    CGFloat offset = CGRectGetHeight(view.frame) - CGRectGetMinY(convertedRect);
+    return CGRectIsNull(convertedRect) ? 0 : offset;
+}
+
+- (void)keyboardFrameChanged:(CGRect)newFrame
+{
+    if (CGRectIsNull(newFrame))
+        return;
+    
+    UIEdgeInsets edgeInsets = self.tableView.contentInset;
+    edgeInsets.bottom = MAX(0.0f, contentOffsetForBottom(newFrame));
+    self.tableView.contentInset = edgeInsets;
 }
 
 @end
