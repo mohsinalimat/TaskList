@@ -21,7 +21,7 @@
 
 #define kNumberOfRowsInSection category.tasks.count + 1
 
-@interface STDHomepageViewController () <UITableViewDataSource, UITableViewDelegate, STDTaskDetailsTableViewCellDelegate, UITextFieldDelegate>
+@interface STDHomepageViewController () <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, STDTaskDetailsTableViewCellDelegate>
 
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 

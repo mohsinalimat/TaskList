@@ -7,17 +7,18 @@
 //
 
 #import "STDSubtasksViewController.h"
-#import "HPGrowingTextView.h"
+#import "STDTaskDetailsTableViewCell.h"
+#import "UIViewController+BHTKeyboardNotifications.h"
 
-#define kTextView 10
+#define kNumberOfRowsInSection self.subtasks.count + 1
 
-@interface STDSubtasksViewController () <UITableViewDataSource, UITableViewDelegate, HPGrowingTextViewDelegate>
+@interface STDSubtasksViewController () <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, STDTaskDetailsTableViewCellDelegate>
 
-@property (weak, nonatomic) IBOutlet UITableView *tableView;
-
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomConstraint;
+@property (strong, nonatomic) IBOutlet UITableView *tableView;
 
 @property (strong, nonatomic) NSArray *subtasks;
+
+@property (strong, nonatomic) NSMutableArray *expandedItems;
 
 @end
 
@@ -27,13 +28,28 @@
 {
     [super viewDidLoad];
     
+    [self registerForKeyboardNotifications];
+    
+    [self styleTableView];
+    
+    [self.tableView reloadData];
+}
+
+#pragma mark - Styling
+
+- (void)styleTableView
+{
     self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectZero];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    
+    [self.tableView registerNib:[UINib nibWithNibName:NSStringFromClass([STDTaskDetailsTableViewCell class]) bundle:nil] forCellReuseIdentifier:NSStringFromClass([STDTaskDetailsTableViewCell class])];
 }
+
+#pragma mark - Load
 
 - (NSArray *)subtasks
 {
-    if (!_subtasks) {
+    if (_subtasks.count != self.task.subtasks.count) {
         NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:NSStringFromSelector(@selector(index)) ascending:YES];
         _subtasks = [self.task.subtasks sortedArrayUsingDescriptors:@[sortDescriptor]];
     }
@@ -52,34 +68,27 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.subtasks.count + 1;
+    return kNumberOfRowsInSection;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"TableViewCellStyleDefault";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-        
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    }
+    STDTaskDetailsTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass([STDTaskDetailsTableViewCell class])];
     
-    HPGrowingTextView *textView = (HPGrowingTextView *)[cell viewWithTag:kTextView];
-    if (!textView) {
-        textView = [[HPGrowingTextView alloc] initWithFrame:cell.bounds];
-        textView.tag = kTextView;
-        textView.delegate = self;
-        textView.isScrollable = NO;
-        textView.font = [UIFont systemFontOfSize:17];
-        
-        [cell.contentView addSubview:textView];
-    }
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    
+    cell.clipsToBounds = YES;
+    
+    cell.delegate = self;
     
     STDSubtask *subtask = [self subtaskForRowAtIndexPath:indexPath];
-    textView.text = subtask.name;
     
-    if (!subtask) textView.placeholder = @"Add a subtask";
+    cell.task = subtask;
+    
+    cell.textField.text = subtask.name;
+    cell.textField.placeholder = @"New Subtask";
+    cell.textField.userInteractionEnabled = !subtask;
+    cell.textField.delegate = self;
     
     return cell;
 }
@@ -88,113 +97,87 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+#pragma mark - UITextFieldDelegate
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    return [self textViewHeightForRowAtIndexPath:indexPath];
+    [textField resignFirstResponder];
+    return YES;
 }
 
-- (CGRect)textViewRectForRowAtIndexPath:(NSIndexPath *)indexPath
+- (BOOL)textFieldShouldEndEditing:(UITextField *)textField
 {
-    STDSubtask *subtask = [self subtaskForRowAtIndexPath:indexPath];
-    NSString *text = subtask.name;
-    NSLog(@"text %@", text);
-    UIFont *font = [UIFont systemFontOfSize:17];
-    return [text boundingRectWithSize:(CGSize){320, MAXFLOAT} options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:font} context:nil];
-}
-
-- (CGFloat)textViewHeightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    CGRect rect = [self textViewRectForRowAtIndexPath:indexPath];
-    return MAX(44, rect.size.height + 20);
-}
-
-#pragma mark - HPGrowingTextViewDelegate
-
-- (BOOL)growingTextViewShouldBeginEditing:(HPGrowingTextView *)growingTextView;
-{
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    CGPoint hitPoint = [textField convertPoint:CGPointZero toView:self.tableView];
+    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:hitPoint];
+    if (indexPath) {
+        STDSubtask *subtask = [self subtaskForRowAtIndexPath:indexPath];
+        if (subtask)
+            return textField.text.length;
+    }
     
     return YES;
 }
 
-- (void)growingTextViewDidBeginEditing:(HPGrowingTextView *)growingTextView;
+- (void)textFieldDidEndEditing:(UITextField *)textField
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
-}
-
-- (BOOL)growingTextViewShouldEndEditing:(HPGrowingTextView *)growingTextView;
-{
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    if (!textField.text.length)
+        return;
     
-    return YES;
-}
-
-- (void)growingTextViewDidEndEditing:(HPGrowingTextView *)growingTextView;
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
-}
-
-- (void)growingTextViewDidChange:(HPGrowingTextView *)growingTextView;
-{
-//    CGPoint location = [growingTextView.superview convertPoint:growingTextView.center toView:self.tableView];
-//    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:location];
-//    STDSubtask *subtask = [self subtaskForRowAtIndexPath:indexPath];
-//    if (!subtask) {
-//        subtask = [STDSubtask createEntity];
-//        subtask.indexValue = self.subtasks.count;
-//        [self.task addSubtasksObject:subtask];
-//        self.subtasks = [self.subtasks arrayByAddingObject:subtask];
-//    }
-//    subtask.name = growingTextView.text;
-//    NSMutableArray *array = [self.subtasks mutableCopy];
-//    [array replaceObjectAtIndex:indexPath.row withObject:subtask];
-//    self.subtasks = [NSArray arrayWithArray:array];
-}
-
-- (void)growingTextView:(HPGrowingTextView *)growingTextView didChangeHeight:(float)height;
-{
-    [self.tableView beginUpdates];
-    [self.tableView endUpdates];
+    CGPoint hitPoint = [textField convertPoint:CGPointZero toView:self.tableView];
+    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:hitPoint];
+    if (indexPath) {
+        STDSubtask *subtask = [self subtaskForRowAtIndexPath:indexPath];
+        if (!subtask) {
+            subtask = [STDSubtask createEntity];
+            [self.task addSubtasksObject:subtask];
+        }
+        
+        subtask.name = textField.text;
+        
+        [[NSManagedObjectContext contextForCurrentThread] saveOnlySelfAndWait];
+        
+        [self.tableView reloadData];
+    }
 }
 
 #pragma mark - Keyboard
+
+- (void)registerForKeyboardNotifications
+{
+    __weak typeof(self) weakSelf = self;
+    
+    [self setKeyboardWillShowAnimationBlock:^(CGRect keyboardFrame) {
+        typeof(self) self = weakSelf;
+        
+        [self keyboardFrameChanged:keyboardFrame];
+    }];
+    
+    [self setKeyboardWillHideAnimationBlock:^(CGRect keyboardFrame) {
+        typeof(self) self = weakSelf;
+        
+        [self keyboardFrameChanged:keyboardFrame];
+    }];
+}
 
 static CGFloat contentOffsetForBottom(CGRect keyboardFrame) {
     UIWindow *window = [[UIApplication sharedApplication] keyWindow];
     UIView *view = window.rootViewController.view;
     CGRect convertedRect = [view convertRect:keyboardFrame fromView:nil];
-    return CGRectIsNull(convertedRect) ? 0 : CGRectGetHeight(convertedRect);
+    CGFloat offset = CGRectGetHeight(view.frame) - CGRectGetMinY(convertedRect);
+    return CGRectIsNull(convertedRect) ? 0 : offset;
 }
 
-- (void)keyboardWillShow:(NSNotification *)notification
+- (void)keyboardFrameChanged:(CGRect)newFrame
 {
-    [self handleKeyboardNotification:notification];
-}
-
-- (void)keyboardWillHide:(NSNotification *)notification
-{
-    [self handleKeyboardNotification:notification];
-}
-
-- (void)handleKeyboardNotification:(NSNotification *)notification
-{
-    CGRect frameEnd;
-    [[[notification userInfo] valueForKey:UIKeyboardFrameEndUserInfoKey] getValue:&frameEnd];
+    if (CGRectIsNull(newFrame))
+        return;
     
-    double animationDuration;
-    [[[notification userInfo] valueForKey:UIKeyboardAnimationDurationUserInfoKey] getValue:&animationDuration];
-    
-    UIViewAnimationCurve animationCurve;
-    [[[notification userInfo] valueForKey:UIKeyboardAnimationCurveUserInfoKey] getValue:&animationCurve];
-    
-    self.bottomConstraint.constant = contentOffsetForBottom(frameEnd);
-    
-    [UIView animateWithDuration:animationDuration delay:0.0f options:((animationCurve << 16) | UIViewAnimationOptionBeginFromCurrentState) animations:^{
-        [self.view layoutIfNeeded];
-    } completion:nil];
+    UIEdgeInsets edgeInsets = self.tableView.contentInset;
+    edgeInsets.bottom = MAX(0.0f, contentOffsetForBottom(newFrame));
+    self.tableView.contentInset = edgeInsets;
 }
 
 @end
