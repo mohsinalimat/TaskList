@@ -2,22 +2,15 @@ PODS:
   - HPGrowingTextView (1.1)
   - HPReorderTableView (0.2)
   - MagicalRecord/Shorthand (2.2)
-  - TPKeyboardAvoiding (1.2.3)
 
 DEPENDENCIES:
   - HPGrowingTextView (= 1.1)
   - HPReorderTableView (= 0.2)
   - MagicalRecord/Shorthand (= 2.2)
-  - TPKeyboardAvoiding (from `https://github.com/michaeltyson/TPKeyboardAvoiding.git`)
-
-EXTERNAL SOURCES:
-  TPKeyboardAvoiding:
-    :git: https://github.com/michaeltyson/TPKeyboardAvoiding.git
 
 SPEC CHECKSUMS:
   HPGrowingTextView: 07d5ab1f1e867acfb7a6f498b819948c9e97d07c
   HPReorderTableView: 245322ad8ca898bffd5f121fd2385ea962ff2b4c
   MagicalRecord: 2b471584fc9e3137f3d0a56967917baa4979e224
-  TPKeyboardAvoiding: 17995aaa6db26ac2a9fa8714a86509c5888f0392
 
 COCOAPODS: 0.33.1
