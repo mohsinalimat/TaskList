@@ -63,6 +63,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		C029468019859BF200C076F8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C08FE1D81928163D0012F7D2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C08FE1DF1928163D0012F7D2;
+			remoteInfo = STD;
+		};
 		C08FE2061928163D0012F7D2 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C08FE1D81928163D0012F7D2 /* Project object */;
@@ -380,6 +387,7 @@
 			);
 			dependencies = (
 				C08FE2071928163D0012F7D2 /* PBXTargetDependency */,
+				C029468119859BF200C076F8 /* PBXTargetDependency */,
 			);
 			name = STDTests;
 			productName = STDTests;
@@ -539,6 +547,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		C029468119859BF200C076F8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C08FE1DF1928163D0012F7D2 /* STD */;
+			targetProxy = C029468019859BF200C076F8 /* PBXContainerItemProxy */;
+		};
 		C08FE2071928163D0012F7D2 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = C08FE1DF1928163D0012F7D2 /* STD */;
@@ -582,7 +595,6 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -620,7 +632,6 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -643,8 +654,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = STD/STD.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Lasha Efremidze (T6F7YCQ63G)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Lasha Efremidze (T6F7YCQ63G)";
+				CODE_SIGN_IDENTITY = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "STD/Other sources/STD-Prefix.pch";
 				INFOPLIST_FILE = "$(SRCROOT)/STD/Supporting files/STD-Info.plist";
@@ -661,8 +671,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = STD/STD.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Lasha Efremidze (T6F7YCQ63G)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Lasha Efremidze (T6F7YCQ63G)";
+				CODE_SIGN_IDENTITY = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "STD/Other sources/STD-Prefix.pch";
 				INFOPLIST_FILE = "$(SRCROOT)/STD/Supporting files/STD-Info.plist";
