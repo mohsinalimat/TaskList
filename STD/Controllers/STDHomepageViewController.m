@@ -94,11 +94,11 @@
     if ([self.expandedItems containsObject:category]) {
         [self.expandedItems removeObject:category];
         
-        [self.tableView deleteRowsAtIndexPaths:indexes withRowAnimation:UITableViewRowAnimationNone];
+        [self.tableView deleteRowsAtIndexPaths:indexes withRowAnimation:UITableViewRowAnimationFade];
     } else  {
         [self.expandedItems addObject:category];
         
-        [self.tableView insertRowsAtIndexPaths:indexes withRowAnimation:UITableViewRowAnimationNone];
+        [self.tableView insertRowsAtIndexPaths:indexes withRowAnimation:UITableViewRowAnimationFade];
     }
     
     [self.tableView endUpdates];
