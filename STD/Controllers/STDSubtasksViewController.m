@@ -12,13 +12,11 @@
 
 #define kNumberOfRowsInSection self.subtasks.count + 1
 
-@interface STDSubtasksViewController () <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, STDTaskDetailsTableViewCellDelegate>
+@interface STDSubtasksViewController () <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate>
 
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 
 @property (strong, nonatomic) NSArray *subtasks;
-
-@property (strong, nonatomic) NSMutableArray *expandedItems;
 
 @end
 
@@ -79,8 +77,6 @@
     
     cell.clipsToBounds = YES;
     
-    cell.delegate = self;
-    
     STDSubtask *subtask = [self subtaskForRowAtIndexPath:indexPath];
     
     cell.task = subtask;
@@ -91,13 +87,6 @@
     cell.textField.delegate = self;
     
     return cell;
-}
-
-#pragma mark - UITableViewDelegate
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    
 }
 
 #pragma mark - UITextFieldDelegate
