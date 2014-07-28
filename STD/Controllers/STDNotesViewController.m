@@ -43,7 +43,25 @@
     [super viewWillDisappear:animated];
 }
 
+#pragma mark - IBActions
+
+- (IBAction)didTouchOnDoneButton:(id)sender
+{
+    [self.textView resignFirstResponder];
+}
+
 #pragma mark - UITextViewDelegate
+
+- (void)textViewDidBeginEditing:(UITextView *)textView;
+{
+    UIBarButtonItem *rightBarButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(didTouchOnDoneButton:)];
+    self.navigationItem.rightBarButtonItem = rightBarButton;
+}
+
+- (void)textViewDidEndEditing:(UITextView *)textView;
+{
+    self.navigationItem.rightBarButtonItem = nil;
+}
 
 - (void)textViewDidChange:(UITextView *)textView
 {
