@@ -7,7 +7,6 @@
 //
 
 #import "STDSubtasksViewController.h"
-#import "HPGrowingTextView.h"
 #import "UIViewController+BHTKeyboardNotifications.h"
 #import "NSObject+Extras.h"
 
@@ -18,7 +17,7 @@
 
 static char kTextViewKey;
 
-@interface STDSubtasksViewController () <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, HPGrowingTextViewDelegate>
+@interface STDSubtasksViewController () <UITableViewDataSource, UITableViewDelegate, UITextViewDelegate>
 
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 
@@ -85,22 +84,31 @@ static char kTextViewKey;
     
     cell.contentView.tag = indexPath.row;
     
-    HPGrowingTextView *textView = (HPGrowingTextView *)[cell.contentView viewWithTag:kTextView];
+    UITextView *textView = (UITextView *)[cell.contentView viewWithTag:kTextView];
     if (!textView) {
-        textView = [[HPGrowingTextView alloc] initWithFrame:(CGRect){0, 3, 320, 30}];
+        textView = [[UITextView alloc] initWithFrame:(CGRect){10, 3, 300, 30}];
         textView.tag = kTextView;
-        textView.clipsToBounds = YES;
         textView.delegate = self;
         textView.font = kTextViewFont;
-        textView.placeholder = @"New Subtask";
-        textView.maxNumberOfLines = 6;
-        textView.contentInset = (UIEdgeInsets){0, 10, 0, 10};
+//        textView.placeholder = @"New Subtask";
+        textView.scrollEnabled = NO;
+        textView.scrollsToTop = NO;
+        textView.textContainer.lineBreakMode = NSLineBreakByWordWrapping;
         [cell.contentView addSubview:textView];
     }
+    
+    NSLog(@"textView %@", textView);
     
     STDSubtask *subtask = [self subtaskForRowAtIndexPath:indexPath];
     textView.text = subtask.name;
     textView.userInteractionEnabled = !subtask;
+    
+    CGRect rect = textView.frame;
+    rect.size.height = [self textViewHeightForString:textView.text];
+    textView.frame = rect;
+
+    if (!subtask)
+        [textView becomeFirstResponder];
     
     return cell;
 }
@@ -114,58 +122,63 @@ static char kTextViewKey;
 
 #pragma mark - HPGrowingTextViewDelegate
 
-- (void)growingTextViewDidBeginEditing:(HPGrowingTextView *)growingTextView;
+- (void)textViewDidBeginEditing:(UITextView *)textView
 {
-    [self setAssociatedObject:growingTextView forKey:&kTextViewKey];
+    [self setAssociatedObject:textView forKey:&kTextViewKey];
 }
 
-- (BOOL)growingTextViewShouldEndEditing:(HPGrowingTextView *)growingTextView;
+- (BOOL)textViewShouldEndEditing:(UITextView *)textView
 {
-    CGPoint hitPoint = [growingTextView convertPoint:CGPointZero toView:self.tableView];
-    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:hitPoint];
-    if (indexPath) {
-        STDSubtask *subtask = [self subtaskForRowAtIndexPath:indexPath];
-        if (subtask)
-            return growingTextView.text.length;
-    }
+    NSInteger row = textView.superview.tag;
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:0];
+    STDSubtask *subtask = [self subtaskForRowAtIndexPath:indexPath];
+    if (subtask)
+        return textView.text.length;
     
     return YES;
 }
 
-- (void)growingTextViewDidEndEditing:(HPGrowingTextView *)growingTextView;
+- (void)textViewDidEndEditing:(UITextView *)textView
 {
     [self setAssociatedObject:nil forKey:&kTextViewKey];
 
-    if (!growingTextView.text.length)
+    if (!textView.text.length)
         return;
     
-    CGPoint hitPoint = [growingTextView convertPoint:CGPointZero toView:self.tableView];
-    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:hitPoint];
-    if (indexPath) {
-        STDSubtask *subtask = [self subtaskForRowAtIndexPath:indexPath];
-        if (!subtask) {
-            subtask = [STDSubtask createEntity];
-            [self.task addSubtasksObject:subtask];
-        }
-        
-        subtask.name = growingTextView.text;
-        
-        [[NSManagedObjectContext contextForCurrentThread] saveOnlySelfAndWait];
-        
-        [self.tableView reloadData];
+    NSInteger row = textView.superview.tag;
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:0];
+    STDSubtask *subtask = [self subtaskForRowAtIndexPath:indexPath];
+    if (!subtask) {
+        subtask = [STDSubtask createEntity];
+        [self.task addSubtasksObject:subtask];
     }
+    
+    subtask.name = textView.text;
+    
+    [[NSManagedObjectContext contextForCurrentThread] saveOnlySelfAndWait];
+    
+    [self.tableView reloadData];
 }
 
-- (void)growingTextView:(HPGrowingTextView *)growingTextView didChangeHeight:(float)height;
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text;
 {
-    [self.tableView beginUpdates];
-    [self.tableView endUpdates];
-}
-
-- (BOOL)growingTextViewShouldReturn:(HPGrowingTextView *)growingTextView;
-{
-    [growingTextView resignFirstResponder];
+    if ([text isEqualToString:@"\n"]) {
+        [textView resignFirstResponder];
+        return NO;
+    }
     return YES;
+}
+
+- (void)textViewDidChange:(UITextView *)textView
+{
+//    CGRect rect = textView.frame;
+//    rect.size.height = [self textViewHeightForString:textView.text];
+//    if (!CGRectEqualToRect(textView.frame, rect)) {
+//        textView.frame = rect;
+//        
+//        [self.tableView beginUpdates];
+//        [self.tableView endUpdates];
+//    }
 }
 
 #pragma mark - Helpers
@@ -179,15 +192,20 @@ static char kTextViewKey;
     return [attributedText boundingRectWithSize:(CGSize){300, CGFLOAT_MAX} options:NSStringDrawingUsesLineFragmentOrigin context:nil];
 }
 
+- (CGFloat)textViewHeightForString:(NSString *)string
+{
+    CGRect rect = [self boundingRectForString:string];
+    return MAX(44.0f, ceilf(rect.size.height) + 23.0f);
+}
+
 - (CGFloat)textViewHeightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    CGRect rect = [self boundingRectForString:[self stringForIndexPath:indexPath]];
-    return MAX(44.0f, ceilf(rect.size.height) + 23.0f);
+    return [self textViewHeightForString:[self stringForIndexPath:indexPath]];
 }
 
 - (NSString *)stringForIndexPath:(NSIndexPath *)indexPath
 {
-    HPGrowingTextView *textView = [self associatedObjectForKey:&kTextViewKey];
+    UITextView *textView = [self associatedObjectForKey:&kTextViewKey];
     if (textView) {
         NSInteger row = textView.superview.tag;
         if (indexPath.row == row)
