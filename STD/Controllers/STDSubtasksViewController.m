@@ -7,12 +7,14 @@
 //
 
 #import "STDSubtasksViewController.h"
-#import "STDTaskDetailsTableViewCell.h"
+#import "HPGrowingTextView.h"
 #import "UIViewController+BHTKeyboardNotifications.h"
+
+#define kTextView 10
 
 #define kNumberOfRowsInSection self.subtasks.count + 1
 
-@interface STDSubtasksViewController () <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate>
+@interface STDSubtasksViewController () <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, HPGrowingTextViewDelegate>
 
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 
@@ -39,8 +41,6 @@
 {
     self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectZero];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
-    
-    [self.tableView registerNib:[UINib nibWithNibName:NSStringFromClass([STDTaskDetailsTableViewCell class]) bundle:nil] forCellReuseIdentifier:NSStringFromClass([STDTaskDetailsTableViewCell class])];
 }
 
 #pragma mark - Load
@@ -71,51 +71,61 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    STDTaskDetailsTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass([STDTaskDetailsTableViewCell class])];
+    static NSString *CellIdentifier = @"TableViewCellStyleDefault";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (!cell) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    }
     
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    
-    cell.clipsToBounds = YES;
+    HPGrowingTextView *textView = (HPGrowingTextView *)[cell.contentView viewWithTag:kTextView];
+    if (!textView) {
+        textView = [[HPGrowingTextView alloc] initWithFrame:(CGRect){14, 7, 292, 30}];
+        textView.tag = kTextView;
+        textView.delegate = self;
+        textView.isScrollable = NO;
+        textView.font = [UIFont systemFontOfSize:17];
+        textView.placeholder = @"New Subtask";
+        
+        [cell.contentView addSubview:textView];
+    }
     
     STDSubtask *subtask = [self subtaskForRowAtIndexPath:indexPath];
-    
-    cell.task = subtask;
-    
-    cell.textField.text = subtask.name;
-    cell.textField.placeholder = @"New Subtask";
-    cell.textField.userInteractionEnabled = !subtask;
-    cell.textField.delegate = self;
+    textView.text = subtask.name;
+    textView.userInteractionEnabled = !subtask;
     
     return cell;
 }
 
-#pragma mark - UITextFieldDelegate
+#pragma mark - UITableViewDelegate
 
-- (BOOL)textFieldShouldReturn:(UITextField *)textField
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [textField resignFirstResponder];
-    return YES;
+    return [self textViewHeightForRowAtIndexPath:indexPath];
 }
 
-- (BOOL)textFieldShouldEndEditing:(UITextField *)textField
+#pragma mark - HPGrowingTextViewDelegate
+
+- (BOOL)growingTextViewShouldEndEditing:(HPGrowingTextView *)growingTextView;
 {
-    CGPoint hitPoint = [textField convertPoint:CGPointZero toView:self.tableView];
+    CGPoint hitPoint = [growingTextView convertPoint:CGPointZero toView:self.tableView];
     NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:hitPoint];
     if (indexPath) {
         STDSubtask *subtask = [self subtaskForRowAtIndexPath:indexPath];
         if (subtask)
-            return textField.text.length;
+            return growingTextView.text.length;
     }
     
     return YES;
 }
 
-- (void)textFieldDidEndEditing:(UITextField *)textField
+- (void)growingTextViewDidEndEditing:(HPGrowingTextView *)growingTextView;
 {
-    if (!textField.text.length)
+    if (!growingTextView.text.length)
         return;
     
-    CGPoint hitPoint = [textField convertPoint:CGPointZero toView:self.tableView];
+    CGPoint hitPoint = [growingTextView convertPoint:CGPointZero toView:self.tableView];
     NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:hitPoint];
     if (indexPath) {
         STDSubtask *subtask = [self subtaskForRowAtIndexPath:indexPath];
@@ -124,12 +134,26 @@
             [self.task addSubtasksObject:subtask];
         }
         
-        subtask.name = textField.text;
+        subtask.name = growingTextView.text;
         
         [[NSManagedObjectContext contextForCurrentThread] saveOnlySelfAndWait];
         
         [self.tableView reloadData];
     }
+}
+
+#pragma mark - Helpers
+
+- (CGRect)boundingRectForString:(NSString *)string
+{
+    return [string boundingRectWithSize:(CGSize){320, MAXFLOAT} options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:17]} context:nil];
+}
+
+- (CGFloat)textViewHeightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    STDSubtask *subtask = [self subtaskForRowAtIndexPath:indexPath];
+    CGRect rect = [self boundingRectForString:subtask.name];
+    return MAX(44, rect.size.height + 20);
 }
 
 #pragma mark - Keyboard
