@@ -9,10 +9,14 @@
 #import "STDSubtasksViewController.h"
 #import "HPGrowingTextView.h"
 #import "UIViewController+BHTKeyboardNotifications.h"
+#import "NSObject+Extras.h"
 
 #define kTextView 10
 
 #define kNumberOfRowsInSection self.subtasks.count + 1
+#define kTextViewFont [UIFont systemFontOfSize:17]
+
+static char kTextViewKey;
 
 @interface STDSubtasksViewController () <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, HPGrowingTextViewDelegate>
 
@@ -79,15 +83,18 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     
+    cell.contentView.tag = indexPath.row;
+    
     HPGrowingTextView *textView = (HPGrowingTextView *)[cell.contentView viewWithTag:kTextView];
     if (!textView) {
-        textView = [[HPGrowingTextView alloc] initWithFrame:(CGRect){14, 7, 292, 30}];
+        textView = [[HPGrowingTextView alloc] initWithFrame:(CGRect){0, 3, 320, 30}];
         textView.tag = kTextView;
+        textView.clipsToBounds = YES;
         textView.delegate = self;
-        textView.isScrollable = NO;
-        textView.font = [UIFont systemFontOfSize:17];
+        textView.font = kTextViewFont;
         textView.placeholder = @"New Subtask";
-        
+        textView.maxNumberOfLines = 6;
+        textView.contentInset = (UIEdgeInsets){0, 10, 0, 10};
         [cell.contentView addSubview:textView];
     }
     
@@ -107,6 +114,11 @@
 
 #pragma mark - HPGrowingTextViewDelegate
 
+- (void)growingTextViewDidBeginEditing:(HPGrowingTextView *)growingTextView;
+{
+    [self setAssociatedObject:growingTextView forKey:&kTextViewKey];
+}
+
 - (BOOL)growingTextViewShouldEndEditing:(HPGrowingTextView *)growingTextView;
 {
     CGPoint hitPoint = [growingTextView convertPoint:CGPointZero toView:self.tableView];
@@ -122,6 +134,8 @@
 
 - (void)growingTextViewDidEndEditing:(HPGrowingTextView *)growingTextView;
 {
+    [self setAssociatedObject:nil forKey:&kTextViewKey];
+
     if (!growingTextView.text.length)
         return;
     
@@ -142,18 +156,46 @@
     }
 }
 
+- (void)growingTextView:(HPGrowingTextView *)growingTextView didChangeHeight:(float)height;
+{
+    [self.tableView beginUpdates];
+    [self.tableView endUpdates];
+}
+
+- (BOOL)growingTextViewShouldReturn:(HPGrowingTextView *)growingTextView;
+{
+    [growingTextView resignFirstResponder];
+    return YES;
+}
+
 #pragma mark - Helpers
 
 - (CGRect)boundingRectForString:(NSString *)string
 {
-    return [string boundingRectWithSize:(CGSize){320, MAXFLOAT} options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:17]} context:nil];
+    if (!string.length)
+        return CGRectZero;
+    
+    NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:string attributes:@{NSFontAttributeName: kTextViewFont}];
+    return [attributedText boundingRectWithSize:(CGSize){300, CGFLOAT_MAX} options:NSStringDrawingUsesLineFragmentOrigin context:nil];
 }
 
 - (CGFloat)textViewHeightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    CGRect rect = [self boundingRectForString:[self stringForIndexPath:indexPath]];
+    return MAX(44.0f, ceilf(rect.size.height) + 23.0f);
+}
+
+- (NSString *)stringForIndexPath:(NSIndexPath *)indexPath
+{
+    HPGrowingTextView *textView = [self associatedObjectForKey:&kTextViewKey];
+    if (textView) {
+        NSInteger row = textView.superview.tag;
+        if (indexPath.row == row)
+            return textView.text;
+    }
+    
     STDSubtask *subtask = [self subtaskForRowAtIndexPath:indexPath];
-    CGRect rect = [self boundingRectForString:subtask.name];
-    return MAX(44, rect.size.height + 20);
+    return subtask.name;
 }
 
 #pragma mark - Keyboard
