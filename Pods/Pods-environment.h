@@ -6,12 +6,6 @@
 // project.
 
 
-// HPGrowingTextView
-#define COCOAPODS_POD_AVAILABLE_HPGrowingTextView
-#define COCOAPODS_VERSION_MAJOR_HPGrowingTextView 1
-#define COCOAPODS_VERSION_MINOR_HPGrowingTextView 1
-#define COCOAPODS_VERSION_PATCH_HPGrowingTextView 0
-
 // HPReorderTableView
 #define COCOAPODS_POD_AVAILABLE_HPReorderTableView
 #define COCOAPODS_VERSION_MAJOR_HPReorderTableView 0
@@ -23,4 +17,10 @@
 #define COCOAPODS_VERSION_MAJOR_MagicalRecord_Shorthand 2
 #define COCOAPODS_VERSION_MINOR_MagicalRecord_Shorthand 2
 #define COCOAPODS_VERSION_PATCH_MagicalRecord_Shorthand 0
+
+// SZTextView
+#define COCOAPODS_POD_AVAILABLE_SZTextView
+#define COCOAPODS_VERSION_MAJOR_SZTextView 1
+#define COCOAPODS_VERSION_MINOR_SZTextView 1
+#define COCOAPODS_VERSION_PATCH_SZTextView 5
 

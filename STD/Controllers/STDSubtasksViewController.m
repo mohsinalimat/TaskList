@@ -7,10 +7,9 @@
 //
 
 #import "STDSubtasksViewController.h"
+#import "STDSubtaskTableViewCell.h"
 #import "UIViewController+BHTKeyboardNotifications.h"
 #import "NSObject+Extras.h"
-
-#define kTextView 10
 
 #define kNumberOfRowsInSection self.subtasks.count + 1
 #define kTextViewFont [UIFont systemFontOfSize:17]
@@ -44,6 +43,8 @@ static char kTextViewKey;
 {
     self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectZero];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    
+    [self.tableView registerNib:[UINib nibWithNibName:NSStringFromClass([STDSubtaskTableViewCell class]) bundle:nil] forCellReuseIdentifier:NSStringFromClass([STDSubtaskTableViewCell class])];
 }
 
 #pragma mark - Load
@@ -74,41 +75,26 @@ static char kTextViewKey;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"TableViewCellStyleDefault";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-        
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    }
+    STDSubtaskTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass([STDSubtaskTableViewCell class])];
+    
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
     cell.contentView.tag = indexPath.row;
     
-    UITextView *textView = (UITextView *)[cell.contentView viewWithTag:kTextView];
-    if (!textView) {
-        textView = [[UITextView alloc] initWithFrame:(CGRect){10, 3, 300, 30}];
-        textView.tag = kTextView;
-        textView.delegate = self;
-        textView.font = kTextViewFont;
-//        textView.placeholder = @"New Subtask";
-        textView.scrollEnabled = NO;
-        textView.scrollsToTop = NO;
-        textView.textContainer.lineBreakMode = NSLineBreakByWordWrapping;
-        [cell.contentView addSubview:textView];
-    }
-    
-    NSLog(@"textView %@", textView);
-    
-    STDSubtask *subtask = [self subtaskForRowAtIndexPath:indexPath];
-    textView.text = subtask.name;
-    textView.userInteractionEnabled = !subtask;
-    
-    CGRect rect = textView.frame;
-    rect.size.height = [self textViewHeightForString:textView.text];
-    textView.frame = rect;
+    cell.textView.delegate = self;
+    cell.textView.font = kTextViewFont;
+//    cell.textView.placeholder = @"New Subtask";
 
-    if (!subtask)
-        [textView becomeFirstResponder];
+    STDSubtask *subtask = [self subtaskForRowAtIndexPath:indexPath];
+    cell.textView.text = subtask.name;
+    cell.textView.userInteractionEnabled = !subtask;
+    
+    CGRect rect = cell.textView.frame;
+    rect.size.height = [self textViewHeightForString:cell.textView.text];
+    cell.textView.frame = rect;
+    
+//    if (!subtask)
+//        [cell.textView becomeFirstResponder];
     
     return cell;
 }
@@ -171,14 +157,14 @@ static char kTextViewKey;
 
 - (void)textViewDidChange:(UITextView *)textView
 {
-//    CGRect rect = textView.frame;
-//    rect.size.height = [self textViewHeightForString:textView.text];
-//    if (!CGRectEqualToRect(textView.frame, rect)) {
-//        textView.frame = rect;
-//        
-//        [self.tableView beginUpdates];
-//        [self.tableView endUpdates];
-//    }
+    CGRect rect = textView.frame;
+    rect.size.height = [self textViewHeightForString:textView.text];
+    if (!CGRectEqualToRect(textView.frame, rect)) {
+        textView.frame = rect;
+        
+        [self.tableView beginUpdates];
+        [self.tableView endUpdates];
+    }
 }
 
 #pragma mark - Helpers
@@ -189,7 +175,7 @@ static char kTextViewKey;
         return CGRectZero;
     
     NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:string attributes:@{NSFontAttributeName: kTextViewFont}];
-    return [attributedText boundingRectWithSize:(CGSize){300, CGFLOAT_MAX} options:NSStringDrawingUsesLineFragmentOrigin context:nil];
+    return [attributedText boundingRectWithSize:(CGSize){292, CGFLOAT_MAX} options:NSStringDrawingUsesLineFragmentOrigin context:nil];
 }
 
 - (CGFloat)textViewHeightForString:(NSString *)string

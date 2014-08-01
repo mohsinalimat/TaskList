@@ -29,8 +29,8 @@
 		C01CB78919281EC000499B28 /* STDAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C01CB78019281EC000499B28 /* STDAppDelegate.m */; };
 		C01CB78A19281EC000499B28 /* Storyboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C01CB78119281EC000499B28 /* Storyboard.storyboard */; };
 		C01CB78B19281EC000499B28 /* STD-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C01CB78319281EC000499B28 /* STD-Info.plist */; };
-		C06F19CE1960D308000BEDD8 /* STDTaskDetailsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C06F19CC1960D308000BEDD8 /* STDTaskDetailsTableViewCell.m */; };
-		C06F19CF1960D308000BEDD8 /* STDTaskDetailsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C06F19CD1960D308000BEDD8 /* STDTaskDetailsTableViewCell.xib */; };
+		C06F19CE1960D308000BEDD8 /* STDTaskTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C06F19CC1960D308000BEDD8 /* STDTaskTableViewCell.m */; };
+		C06F19CF1960D308000BEDD8 /* STDTaskTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C06F19CD1960D308000BEDD8 /* STDTaskTableViewCell.xib */; };
 		C07F7C8D1957CB2900CF0C92 /* NSObject+Extras.m in Sources */ = {isa = PBXBuildFile; fileRef = C07F7C8C1957CB2900CF0C92 /* NSObject+Extras.m */; };
 		C080EF901981F8C8009EF488 /* UIViewController+BHTKeyboardNotifications.m in Sources */ = {isa = PBXBuildFile; fileRef = C080EF8F1981F8C8009EF488 /* UIViewController+BHTKeyboardNotifications.m */; };
 		C082BE05193BD86300A60D8E /* _STDCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = C082BDFE193BD86300A60D8E /* _STDCategory.m */; };
@@ -60,6 +60,8 @@
 		C0C462541932BFD10031E256 /* STDSubtasksViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C0C462531932BFD10031E256 /* STDSubtasksViewController.m */; };
 		C0C462571932BFEC0031E256 /* STDNotesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C0C462561932BFEC0031E256 /* STDNotesViewController.m */; };
 		C0C4625A1932BFFD0031E256 /* STDSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C0C462591932BFFD0031E256 /* STDSettingsViewController.m */; };
+		C0F933331986178A00FC7329 /* STDSubtaskTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C0F933311986178A00FC7329 /* STDSubtaskTableViewCell.m */; };
+		C0F933341986178A00FC7329 /* STDSubtaskTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C0F933321986178A00FC7329 /* STDSubtaskTableViewCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -90,9 +92,9 @@
 		C01CB78019281EC000499B28 /* STDAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STDAppDelegate.m; sourceTree = "<group>"; };
 		C01CB78119281EC000499B28 /* Storyboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Storyboard.storyboard; sourceTree = "<group>"; };
 		C01CB78319281EC000499B28 /* STD-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "STD-Info.plist"; sourceTree = "<group>"; };
-		C06F19CB1960D308000BEDD8 /* STDTaskDetailsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STDTaskDetailsTableViewCell.h; sourceTree = "<group>"; };
-		C06F19CC1960D308000BEDD8 /* STDTaskDetailsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STDTaskDetailsTableViewCell.m; sourceTree = "<group>"; };
-		C06F19CD1960D308000BEDD8 /* STDTaskDetailsTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = STDTaskDetailsTableViewCell.xib; sourceTree = "<group>"; };
+		C06F19CB1960D308000BEDD8 /* STDTaskTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STDTaskTableViewCell.h; sourceTree = "<group>"; };
+		C06F19CC1960D308000BEDD8 /* STDTaskTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STDTaskTableViewCell.m; sourceTree = "<group>"; };
+		C06F19CD1960D308000BEDD8 /* STDTaskTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = STDTaskTableViewCell.xib; sourceTree = "<group>"; };
 		C07F7C8B1957CB2900CF0C92 /* NSObject+Extras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+Extras.h"; sourceTree = "<group>"; };
 		C07F7C8C1957CB2900CF0C92 /* NSObject+Extras.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Extras.m"; sourceTree = "<group>"; };
 		C080EF8E1981F8C8009EF488 /* UIViewController+BHTKeyboardNotifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+BHTKeyboardNotifications.h"; sourceTree = "<group>"; };
@@ -134,6 +136,9 @@
 		C0C462561932BFEC0031E256 /* STDNotesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STDNotesViewController.m; sourceTree = "<group>"; };
 		C0C462581932BFFD0031E256 /* STDSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STDSettingsViewController.h; sourceTree = "<group>"; };
 		C0C462591932BFFD0031E256 /* STDSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STDSettingsViewController.m; sourceTree = "<group>"; };
+		C0F933301986178A00FC7329 /* STDSubtaskTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STDSubtaskTableViewCell.h; sourceTree = "<group>"; };
+		C0F933311986178A00FC7329 /* STDSubtaskTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STDSubtaskTableViewCell.m; sourceTree = "<group>"; };
+		C0F933321986178A00FC7329 /* STDSubtaskTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = STDSubtaskTableViewCell.xib; sourceTree = "<group>"; };
 		CE5729C3CBEE4252A6670778 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -247,9 +252,12 @@
 		C01CB78419281EC000499B28 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				C06F19CB1960D308000BEDD8 /* STDTaskDetailsTableViewCell.h */,
-				C06F19CC1960D308000BEDD8 /* STDTaskDetailsTableViewCell.m */,
-				C06F19CD1960D308000BEDD8 /* STDTaskDetailsTableViewCell.xib */,
+				C0F933301986178A00FC7329 /* STDSubtaskTableViewCell.h */,
+				C0F933311986178A00FC7329 /* STDSubtaskTableViewCell.m */,
+				C0F933321986178A00FC7329 /* STDSubtaskTableViewCell.xib */,
+				C06F19CB1960D308000BEDD8 /* STDTaskTableViewCell.h */,
+				C06F19CC1960D308000BEDD8 /* STDTaskTableViewCell.m */,
+				C06F19CD1960D308000BEDD8 /* STDTaskTableViewCell.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -441,7 +449,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C06F19CF1960D308000BEDD8 /* STDTaskDetailsTableViewCell.xib in Resources */,
+				C06F19CF1960D308000BEDD8 /* STDTaskTableViewCell.xib in Resources */,
+				C0F933341986178A00FC7329 /* STDSubtaskTableViewCell.xib in Resources */,
 				C01CB78B19281EC000499B28 /* STD-Info.plist in Resources */,
 				C01CB78519281EC000499B28 /* InfoPlist.strings in Resources */,
 				C01CB78819281EC000499B28 /* Images.xcassets in Resources */,
@@ -513,11 +522,12 @@
 				C082BE12193BD86C00A60D8E /* STDNote.m in Sources */,
 				C0C462541932BFD10031E256 /* STDSubtasksViewController.m in Sources */,
 				C082BE05193BD86300A60D8E /* _STDCategory.m in Sources */,
+				C0F933331986178A00FC7329 /* STDSubtaskTableViewCell.m in Sources */,
 				C082BE14193BD86C00A60D8E /* STDTask.m in Sources */,
 				C082BE13193BD86C00A60D8E /* STDSubtask.m in Sources */,
 				C082BE08193BD86300A60D8E /* _STDTask.m in Sources */,
 				C0C4625A1932BFFD0031E256 /* STDSettingsViewController.m in Sources */,
-				C06F19CE1960D308000BEDD8 /* STDTaskDetailsTableViewCell.m in Sources */,
+				C06F19CE1960D308000BEDD8 /* STDTaskTableViewCell.m in Sources */,
 				C082BE06193BD86300A60D8E /* _STDNote.m in Sources */,
 				C080EF901981F8C8009EF488 /* UIViewController+BHTKeyboardNotifications.m in Sources */,
 				C07F7C8D1957CB2900CF0C92 /* NSObject+Extras.m in Sources */,

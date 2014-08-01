@@ -7,7 +7,7 @@
 //
 
 #import "STDHomepageViewController.h"
-#import "STDTaskDetailsTableViewCell.h"
+#import "STDTaskTableViewCell.h"
 #import "UIViewController+BHTKeyboardNotifications.h"
 #import "UIImage+Extras.h"
 
@@ -21,7 +21,7 @@
 
 #define kNumberOfRowsInSection category.tasks.count + 1
 
-@interface STDHomepageViewController () <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, STDTaskDetailsTableViewCellDelegate>
+@interface STDHomepageViewController () <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, STDTaskTableViewCellDelegate>
 
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 
@@ -113,7 +113,7 @@
     self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectZero];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     
-    [self.tableView registerNib:[UINib nibWithNibName:NSStringFromClass([STDTaskDetailsTableViewCell class]) bundle:nil] forCellReuseIdentifier:NSStringFromClass([STDTaskDetailsTableViewCell class])];
+    [self.tableView registerNib:[UINib nibWithNibName:NSStringFromClass([STDTaskTableViewCell class]) bundle:nil] forCellReuseIdentifier:NSStringFromClass([STDTaskTableViewCell class])];
 }
 
 - (void)styleNavigationController
@@ -190,7 +190,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    STDTaskDetailsTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass([STDTaskDetailsTableViewCell class])];
+    STDTaskTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass([STDTaskTableViewCell class])];
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
@@ -281,16 +281,16 @@
     return view;
 }
 
-#pragma mark - STDTaskDetailsTableViewCellDelegate
+#pragma mark - STDTaskTableViewCellDelegate
 
-- (void)taskDetailsTableViewCell:(STDTaskDetailsTableViewCell *)cell didTouchOnTasksButton:(id)sender
+- (void)taskDetailsTableViewCell:(STDTaskTableViewCell *)cell didTouchOnTasksButton:(id)sender
 {
     STDSubtasksViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"STDSubtasksViewControllerId"];
     viewController.task = cell.task;
     [self.navigationController pushViewController:viewController animated:YES];
 }
 
-- (void)taskDetailsTableViewCell:(STDTaskDetailsTableViewCell *)cell didTouchOnNotesButton:(id)sender
+- (void)taskDetailsTableViewCell:(STDTaskTableViewCell *)cell didTouchOnNotesButton:(id)sender
 {
     STDNotesViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"STDNotesViewControllerId"];
     viewController.task = cell.task;

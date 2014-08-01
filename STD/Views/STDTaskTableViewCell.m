@@ -1,14 +1,14 @@
 //
-//  STDTaskDetailsTableViewCell.m
+//  STDTaskTableViewCell.m
 //  STD
 //
 //  Created by Lasha Efremidze on 6/29/14.
 //  Copyright (c) 2014 More Voltage. All rights reserved.
 //
 
-#import "STDTaskDetailsTableViewCell.h"
+#import "STDTaskTableViewCell.h"
 
-@implementation STDTaskDetailsTableViewCell
+@implementation STDTaskTableViewCell
 
 - (void)awakeFromNib
 {
