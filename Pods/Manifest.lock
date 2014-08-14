@@ -1,16 +1,19 @@
 PODS:
   - HPReorderTableView (0.2)
   - MagicalRecord/Shorthand (2.2)
+  - PureLayout (1.0.1)
   - SZTextView (1.1.5)
 
 DEPENDENCIES:
   - HPReorderTableView (= 0.2)
   - MagicalRecord/Shorthand (= 2.2)
+  - PureLayout (= 1.0.1)
   - SZTextView (= 1.1.5)
 
 SPEC CHECKSUMS:
   HPReorderTableView: 245322ad8ca898bffd5f121fd2385ea962ff2b4c
   MagicalRecord: 2b471584fc9e3137f3d0a56967917baa4979e224
+  PureLayout: 972964b21dbcbc5cc36785aed16aba03176f057d
   SZTextView: ba45928294d012591c720ae476e58b0bc4c56a44
 
 COCOAPODS: 0.33.1
