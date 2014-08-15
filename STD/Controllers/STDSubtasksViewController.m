@@ -15,6 +15,7 @@
 #define kTextViewFont [UIFont systemFontOfSize:17]
 
 static char kTextViewKey;
+static char kDummyTextViewKey;
 
 @interface STDSubtasksViewController () <UITableViewDataSource, UITableViewDelegate, UITextViewDelegate>
 
@@ -41,10 +42,10 @@ static char kTextViewKey;
 
 - (void)styleTableView
 {
+    self.tableView.estimatedRowHeight = UITableViewAutomaticDimension;
+    
     self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectZero];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
-    
-    [self.tableView registerNib:[UINib nibWithNibName:NSStringFromClass([STDSubtaskTableViewCell class]) bundle:nil] forCellReuseIdentifier:NSStringFromClass([STDSubtaskTableViewCell class])];
 }
 
 #pragma mark - Load
@@ -66,6 +67,25 @@ static char kTextViewKey;
     return subtask;
 }
 
+- (NSString *)textForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITextView *textView = [self associatedObjectForKey:&kTextViewKey];
+    if (textView) {
+        NSInteger row = textView.superview.tag;
+        if (indexPath.row == row)
+            return textView.text;
+    }
+    
+    STDSubtask *subtask = [self subtaskForRowAtIndexPath:indexPath];
+    return subtask.name;
+}
+
+- (CGFloat)heightForTextView:(UITextView *)textView
+{
+    CGSize size = [textView sizeThatFits:(CGSize){320.0f, FLT_MAX}];
+    return MAX(44.0f, size.height + 2.0f);
+}
+
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -76,25 +96,21 @@ static char kTextViewKey;
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     STDSubtaskTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass([STDSubtaskTableViewCell class])];
-    
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    if (!cell) {
+        cell = [[STDSubtaskTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:NSStringFromClass([STDSubtaskTableViewCell class])];
+        
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        
+        cell.textView.delegate = self;
+        cell.textView.font = kTextViewFont;
+        cell.textView.placeholder = @"New Subtask";
+    }
     
     cell.contentView.tag = indexPath.row;
     
-    cell.textView.delegate = self;
-    cell.textView.font = kTextViewFont;
-//    cell.textView.placeholder = @"New Subtask";
-
     STDSubtask *subtask = [self subtaskForRowAtIndexPath:indexPath];
     cell.textView.text = subtask.name;
     cell.textView.userInteractionEnabled = !subtask;
-    
-    CGRect rect = cell.textView.frame;
-    rect.size.height = [self textViewHeightForString:cell.textView.text];
-    cell.textView.frame = rect;
-    
-//    if (!subtask)
-//        [cell.textView becomeFirstResponder];
     
     return cell;
 }
@@ -103,10 +119,17 @@ static char kTextViewKey;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return [self textViewHeightForRowAtIndexPath:indexPath];
+    UITextView *textView = [self associatedObjectForKey:&kDummyTextViewKey];
+    if (!textView) {
+        textView = [UITextView new];
+        textView.font = kTextViewFont;
+        [self setAssociatedObject:textView forKey:&kDummyTextViewKey];
+    }
+    textView.text = [self textForRowAtIndexPath:indexPath];
+    return [self heightForTextView:textView];
 }
 
-#pragma mark - HPGrowingTextViewDelegate
+#pragma mark - UITextViewDelegate
 
 - (void)textViewDidBeginEditing:(UITextView *)textView
 {
@@ -157,49 +180,21 @@ static char kTextViewKey;
 
 - (void)textViewDidChange:(UITextView *)textView
 {
-    CGRect rect = textView.frame;
-    rect.size.height = [self textViewHeightForString:textView.text];
-    if (!CGRectEqualToRect(textView.frame, rect)) {
-        textView.frame = rect;
-        
+    CGFloat oldHeight = textView.frame.size.height;
+    CGFloat newHeight = [self heightForTextView:textView] - 0.5f;
+    if (oldHeight != newHeight) {
         [self.tableView beginUpdates];
         [self.tableView endUpdates];
+        
+        [self scrollToTextView:textView animated:YES];
     }
 }
 
-#pragma mark - Helpers
-
-- (CGRect)boundingRectForString:(NSString *)string
+- (void)scrollToTextView:(UITextView *)textView animated:(BOOL)animated
 {
-    if (!string.length)
-        return CGRectZero;
-    
-    NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:string attributes:@{NSFontAttributeName: kTextViewFont}];
-    return [attributedText boundingRectWithSize:(CGSize){292, CGFLOAT_MAX} options:NSStringDrawingUsesLineFragmentOrigin context:nil];
-}
-
-- (CGFloat)textViewHeightForString:(NSString *)string
-{
-    CGRect rect = [self boundingRectForString:string];
-    return MAX(44.0f, ceilf(rect.size.height) + 23.0f);
-}
-
-- (CGFloat)textViewHeightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return [self textViewHeightForString:[self stringForIndexPath:indexPath]];
-}
-
-- (NSString *)stringForIndexPath:(NSIndexPath *)indexPath
-{
-    UITextView *textView = [self associatedObjectForKey:&kTextViewKey];
-    if (textView) {
-        NSInteger row = textView.superview.tag;
-        if (indexPath.row == row)
-            return textView.text;
-    }
-    
-    STDSubtask *subtask = [self subtaskForRowAtIndexPath:indexPath];
-    return subtask.name;
+    NSInteger row = textView.superview.tag;
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:0];
+    [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:animated];
 }
 
 #pragma mark - Keyboard

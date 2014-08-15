@@ -65,18 +65,18 @@
 
 - (void)textViewDidChange:(UITextView *)textView
 {
-    [self showTextViewCaretPosition:textView];
+    [self showTextViewCaretPosition:textView animated:YES];
 }
 
 - (void)textViewDidChangeSelection:(UITextView *)textView
 {
-    [self showTextViewCaretPosition:textView];
+    [self showTextViewCaretPosition:textView animated:YES];
 }
 
-- (void)showTextViewCaretPosition:(UITextView *)textView
+- (void)showTextViewCaretPosition:(UITextView *)textView animated:(BOOL)animated
 {
     CGRect caretRect = [textView caretRectForPosition:textView.selectedTextRange.end];
-    [textView scrollRectToVisible:caretRect animated:YES];
+    [textView scrollRectToVisible:caretRect animated:animated];
 }
 
 #pragma mark - Keyboard

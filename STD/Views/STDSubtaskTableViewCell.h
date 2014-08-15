@@ -7,9 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SZTextView.h"
 
 @interface STDSubtaskTableViewCell : UITableViewCell
 
-@property (weak, nonatomic) IBOutlet UITextView *textView;
+@property (strong, nonatomic) SZTextView *textView;
 
 @end

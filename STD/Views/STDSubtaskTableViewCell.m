@@ -10,11 +10,20 @@
 
 @implementation STDSubtaskTableViewCell
 
-- (void)awakeFromNib
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
-    self.textView.scrollEnabled = NO;
-    self.textView.scrollsToTop = NO;
-    self.textView.textContainer.lineBreakMode = NSLineBreakByWordWrapping;
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    if (self) {
+        self.textView = [[SZTextView alloc] initWithFrame:self.bounds];
+        self.textView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
+        self.textView.scrollsToTop = NO;
+        self.textView.scrollEnabled = NO;
+        self.textView.showsVerticalScrollIndicator = NO;
+        self.textView.showsHorizontalScrollIndicator = NO;
+        [self.contentView addSubview:self.textView];
+    }
+    
+    return self;
 }
 
 @end

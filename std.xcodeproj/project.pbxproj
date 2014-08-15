@@ -61,7 +61,6 @@
 		C0C462571932BFEC0031E256 /* STDNotesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C0C462561932BFEC0031E256 /* STDNotesViewController.m */; };
 		C0C4625A1932BFFD0031E256 /* STDSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C0C462591932BFFD0031E256 /* STDSettingsViewController.m */; };
 		C0F933331986178A00FC7329 /* STDSubtaskTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C0F933311986178A00FC7329 /* STDSubtaskTableViewCell.m */; };
-		C0F933341986178A00FC7329 /* STDSubtaskTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C0F933321986178A00FC7329 /* STDSubtaskTableViewCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -138,7 +137,6 @@
 		C0C462591932BFFD0031E256 /* STDSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STDSettingsViewController.m; sourceTree = "<group>"; };
 		C0F933301986178A00FC7329 /* STDSubtaskTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STDSubtaskTableViewCell.h; sourceTree = "<group>"; };
 		C0F933311986178A00FC7329 /* STDSubtaskTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STDSubtaskTableViewCell.m; sourceTree = "<group>"; };
-		C0F933321986178A00FC7329 /* STDSubtaskTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = STDSubtaskTableViewCell.xib; sourceTree = "<group>"; };
 		CE5729C3CBEE4252A6670778 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -254,7 +252,6 @@
 			children = (
 				C0F933301986178A00FC7329 /* STDSubtaskTableViewCell.h */,
 				C0F933311986178A00FC7329 /* STDSubtaskTableViewCell.m */,
-				C0F933321986178A00FC7329 /* STDSubtaskTableViewCell.xib */,
 				C06F19CB1960D308000BEDD8 /* STDTaskTableViewCell.h */,
 				C06F19CC1960D308000BEDD8 /* STDTaskTableViewCell.m */,
 				C06F19CD1960D308000BEDD8 /* STDTaskTableViewCell.xib */,
@@ -450,7 +447,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				C06F19CF1960D308000BEDD8 /* STDTaskTableViewCell.xib in Resources */,
-				C0F933341986178A00FC7329 /* STDSubtaskTableViewCell.xib in Resources */,
 				C01CB78B19281EC000499B28 /* STD-Info.plist in Resources */,
 				C01CB78519281EC000499B28 /* InfoPlist.strings in Resources */,
 				C01CB78819281EC000499B28 /* Images.xcassets in Resources */,
