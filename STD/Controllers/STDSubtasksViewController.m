@@ -82,8 +82,8 @@ static char kDummyTextViewKey;
 
 - (CGFloat)heightForTextView:(UITextView *)textView
 {
-    CGSize size = [textView sizeThatFits:(CGSize){320.0f, FLT_MAX}];
-    return MAX(44.0f, size.height + 2.0f);
+    CGSize size = [textView sizeThatFits:(CGSize){292.0f, FLT_MAX}];
+    return MAX(38.0f, size.height + 0.5f);
 }
 
 #pragma mark - UITableViewDataSource
@@ -166,7 +166,14 @@ static char kDummyTextViewKey;
     
     [[NSManagedObjectContext contextForCurrentThread] saveOnlySelfAndWait];
     
-    [self.tableView reloadData];
+    [self.tableView beginUpdates];
+    
+    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+
+    if (row == (self.subtasks.count - 1))
+        [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:self.subtasks.count inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+    
+    [self.tableView endUpdates];
 }
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text;

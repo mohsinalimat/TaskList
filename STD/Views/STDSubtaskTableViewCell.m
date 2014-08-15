@@ -14,7 +14,7 @@
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        self.textView = [[SZTextView alloc] initWithFrame:self.bounds];
+        self.textView = [[SZTextView alloc] initWithFrame:(CGRect){14.0f, CGRectGetMinY(self.bounds), 292.0f, CGRectGetHeight(self.bounds)}];
         self.textView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
         self.textView.scrollsToTop = NO;
         self.textView.scrollEnabled = NO;
