@@ -7,6 +7,8 @@
 //
 
 #import "STDSettingsViewController.h"
+
+#import "iRate.h"
 #import <MessageUI/MessageUI.h>
 
 @interface STDSettingsViewController () <UITableViewDataSource, UITableViewDelegate, MFMailComposeViewControllerDelegate>
@@ -55,7 +57,7 @@
     if (indexPath.row == 0) {
         
     } else if (indexPath.row == 1) {
-        
+        [[iRate sharedInstance] promptForRating];
     } else if (indexPath.row == 2) {
         if ([MFMailComposeViewController canSendMail]) {
             MFMailComposeViewController *mailComposeViewController = [MFMailComposeViewController new];

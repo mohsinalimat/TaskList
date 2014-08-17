@@ -9,7 +9,18 @@
 #import "STDAppDelegate.h"
 #import "STDUserDefaults.h"
 
+#import "iRate.h"
+
 @implementation STDAppDelegate
+
++ (void)initialize
+{
+    //configure iRate
+    [iRate sharedInstance].daysUntilPrompt = 1;
+    [iRate sharedInstance].remindPeriod = 5;
+    [iRate sharedInstance].onlyPromptIfLatestVersion = YES;
+    [iRate sharedInstance].previewMode = NO;
+}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
