@@ -13,6 +13,7 @@
 
 #import "STDSubtasksViewController.h"
 #import "STDNotesViewController.h"
+#import "STDSettingsViewController.h"
 
 #define kButton 100
 
@@ -23,7 +24,7 @@
 
 @interface STDHomepageViewController () <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, STDTaskTableViewCellDelegate>
 
-@property (strong, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 @property (strong, nonatomic) NSMutableArray *categories;
 
@@ -63,6 +64,12 @@
 }
 
 #pragma mark - IBAction
+
+- (IBAction)didTouchOnSettingsButton:(id)sender
+{
+    STDSettingsViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"STDSettingsViewControllerId"];
+    [self.navigationController pushViewController:viewController animated:YES];
+}
 
 - (IBAction)didTouchOnButton:(id)sender
 {

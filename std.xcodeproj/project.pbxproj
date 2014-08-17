@@ -29,6 +29,8 @@
 		C01CB78919281EC000499B28 /* STDAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C01CB78019281EC000499B28 /* STDAppDelegate.m */; };
 		C01CB78A19281EC000499B28 /* Storyboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C01CB78119281EC000499B28 /* Storyboard.storyboard */; };
 		C01CB78B19281EC000499B28 /* STD-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C01CB78319281EC000499B28 /* STD-Info.plist */; };
+		C01D74C819A141BA00905EBD /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = C01D74C719A141BA00905EBD /* Settings.bundle */; };
+		C01D74CB19A1445200905EBD /* STDUserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = C01D74CA19A1445200905EBD /* STDUserDefaults.m */; };
 		C06F19CE1960D308000BEDD8 /* STDTaskTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C06F19CC1960D308000BEDD8 /* STDTaskTableViewCell.m */; };
 		C06F19CF1960D308000BEDD8 /* STDTaskTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C06F19CD1960D308000BEDD8 /* STDTaskTableViewCell.xib */; };
 		C07F7C8D1957CB2900CF0C92 /* NSObject+Extras.m in Sources */ = {isa = PBXBuildFile; fileRef = C07F7C8C1957CB2900CF0C92 /* NSObject+Extras.m */; };
@@ -91,6 +93,9 @@
 		C01CB78019281EC000499B28 /* STDAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STDAppDelegate.m; sourceTree = "<group>"; };
 		C01CB78119281EC000499B28 /* Storyboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Storyboard.storyboard; sourceTree = "<group>"; };
 		C01CB78319281EC000499B28 /* STD-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "STD-Info.plist"; sourceTree = "<group>"; };
+		C01D74C719A141BA00905EBD /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
+		C01D74C919A1445200905EBD /* STDUserDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STDUserDefaults.h; sourceTree = "<group>"; };
+		C01D74CA19A1445200905EBD /* STDUserDefaults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STDUserDefaults.m; sourceTree = "<group>"; };
 		C06F19CB1960D308000BEDD8 /* STDTaskTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STDTaskTableViewCell.h; sourceTree = "<group>"; };
 		C06F19CC1960D308000BEDD8 /* STDTaskTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STDTaskTableViewCell.m; sourceTree = "<group>"; };
 		C06F19CD1960D308000BEDD8 /* STDTaskTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = STDTaskTableViewCell.xib; sourceTree = "<group>"; };
@@ -194,6 +199,8 @@
 			isa = PBXGroup;
 			children = (
 				C082BE19193C17D900A60D8E /* Categories */,
+				C01D74C919A1445200905EBD /* STDUserDefaults.h */,
+				C01D74CA19A1445200905EBD /* STDUserDefaults.m */,
 			);
 			path = Library;
 			sourceTree = "<group>";
@@ -227,6 +234,7 @@
 			children = (
 				C01CB77B19281EC000499B28 /* main.m */,
 				C01CB77C19281EC000499B28 /* STD-Prefix.pch */,
+				C01D74C719A141BA00905EBD /* Settings.bundle */,
 			);
 			path = "Other sources";
 			sourceTree = "<group>";
@@ -450,6 +458,7 @@
 				C01CB78B19281EC000499B28 /* STD-Info.plist in Resources */,
 				C01CB78519281EC000499B28 /* InfoPlist.strings in Resources */,
 				C01CB78819281EC000499B28 /* Images.xcassets in Resources */,
+				C01D74C819A141BA00905EBD /* Settings.bundle in Resources */,
 				C01CB78A19281EC000499B28 /* Storyboard.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -528,6 +537,7 @@
 				C080EF901981F8C8009EF488 /* UIViewController+BHTKeyboardNotifications.m in Sources */,
 				C07F7C8D1957CB2900CF0C92 /* NSObject+Extras.m in Sources */,
 				C082BE11193BD86C00A60D8E /* STDCategory.m in Sources */,
+				C01D74CB19A1445200905EBD /* STDUserDefaults.m in Sources */,
 				C01CB78919281EC000499B28 /* STDAppDelegate.m in Sources */,
 				C0C462571932BFEC0031E256 /* STDNotesViewController.m in Sources */,
 				C01CB78719281EC000499B28 /* main.m in Sources */,

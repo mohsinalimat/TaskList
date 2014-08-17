@@ -7,11 +7,15 @@
 //
 
 #import "STDAppDelegate.h"
+#import "STDUserDefaults.h"
 
 @implementation STDAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    // settings bundle
+    [STDUserDefaults setObject:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"] forKey:@"version_preference"];
+    
     // Magical Record
     [MagicalRecord setupCoreDataStackWithAutoMigratingSqliteStoreNamed:@"STD.sqlite"];
     NSString *contentNameKey = [[[NSBundle mainBundle] infoDictionary] objectForKey:(id)kCFBundleIdentifierKey];
@@ -29,6 +33,7 @@
     self.window.rootViewController = navigationController;
     
     [self.window makeKeyAndVisible];
+    
     return YES;
 }
 
@@ -44,6 +49,8 @@
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
     
     [[NSManagedObjectContext defaultContext] saveToPersistentStoreWithCompletion:nil];
+    
+    [STDUserDefaults save];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application

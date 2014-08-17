@@ -7,43 +7,70 @@
 //
 
 #import "STDSettingsViewController.h"
+#import <MessageUI/MessageUI.h>
 
-@interface STDSettingsViewController ()
+@interface STDSettingsViewController () <UITableViewDataSource, UITableViewDelegate, MFMailComposeViewControllerDelegate>
+
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 @end
 
 @implementation STDSettingsViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+#pragma mark - UITableViewDataSource
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
+    return 3;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *CellIdentifier = @"TableViewCellStyleDefault";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (!cell) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        
+        cell.textLabel.textColor = [UIColor colorWithHue:(210.0f / 360.0f) saturation:0.94f brightness:1.0f alpha:1.0f];
+        cell.textLabel.font = [UIFont boldSystemFontOfSize:18.0f];
     }
-    return self;
+    
+    if (indexPath.row == 0) {
+        cell.textLabel.text = @"Completed Tasks";
+    } else if (indexPath.row == 1) {
+        cell.textLabel.text = @"Rate Us";
+    } else if (indexPath.row == 2) {
+        cell.textLabel.text = @"Contact Us";
+    }
+    
+    return cell;
 }
 
-- (void)viewDidLoad
+#pragma mark - UITableViewDelegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [super viewDidLoad];
-    // Do any additional setup after loading the view.
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    if (indexPath.row == 0) {
+        
+    } else if (indexPath.row == 1) {
+        
+    } else if (indexPath.row == 2) {
+        if ([MFMailComposeViewController canSendMail]) {
+            MFMailComposeViewController *mailComposeViewController = [MFMailComposeViewController new];
+            mailComposeViewController.mailComposeDelegate = self;
+            [mailComposeViewController setToRecipients:@[@"support@morevoltage.com"]];
+            [self presentViewController:mailComposeViewController animated:YES completion:nil];
+        }
+    }
 }
 
-- (void)didReceiveMemoryWarning
+#pragma mark - MFMailComposeViewControllerDelegate
+
+- (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
 {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end
