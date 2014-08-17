@@ -6,12 +6,6 @@
 // project.
 
 
-// HPReorderTableView
-#define COCOAPODS_POD_AVAILABLE_HPReorderTableView
-#define COCOAPODS_VERSION_MAJOR_HPReorderTableView 0
-#define COCOAPODS_VERSION_MINOR_HPReorderTableView 2
-#define COCOAPODS_VERSION_PATCH_HPReorderTableView 0
-
 // MagicalRecord/Shorthand
 #define COCOAPODS_POD_AVAILABLE_MagicalRecord_Shorthand
 #define COCOAPODS_VERSION_MAJOR_MagicalRecord_Shorthand 2

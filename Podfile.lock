@@ -1,17 +1,14 @@
 PODS:
-  - HPReorderTableView (0.2)
   - iRate (1.10.3)
   - MagicalRecord/Shorthand (2.2)
   - SZTextView (1.1.5)
 
 DEPENDENCIES:
-  - HPReorderTableView (= 0.2)
   - iRate (= 1.10.3)
   - MagicalRecord/Shorthand (= 2.2)
   - SZTextView (= 1.1.5)
 
 SPEC CHECKSUMS:
-  HPReorderTableView: 245322ad8ca898bffd5f121fd2385ea962ff2b4c
   iRate: 40ebea2bb1e88866cef7393bd0abeae232cc5d38
   MagicalRecord: 2b471584fc9e3137f3d0a56967917baa4979e224
   SZTextView: ba45928294d012591c720ae476e58b0bc4c56a44
