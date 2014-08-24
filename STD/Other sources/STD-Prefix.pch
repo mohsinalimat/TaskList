@@ -20,7 +20,6 @@
     #import "STDSubtask.h"
     #import "STDTask.h"
 
-    #define MR_ENABLE_ACTIVE_RECORD_LOGGING 0
     #define MR_SHORTHAND
     #import "CoreData+MagicalRecord.h"
 #endif

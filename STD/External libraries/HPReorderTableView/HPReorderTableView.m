@@ -131,6 +131,11 @@ static NSString *HPReorderTableViewCellReuseIdentifier = @"HPReorderTableViewCel
     }
 }
 
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return [_realDataSource numberOfSectionsInTableView:self];
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return [_realDataSource tableView:self numberOfRowsInSection:section];

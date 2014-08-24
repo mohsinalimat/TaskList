@@ -28,10 +28,11 @@
 		C01CB78819281EC000499B28 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C01CB77E19281EC000499B28 /* Images.xcassets */; };
 		C01CB78919281EC000499B28 /* STDAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C01CB78019281EC000499B28 /* STDAppDelegate.m */; };
 		C01CB78A19281EC000499B28 /* Storyboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C01CB78119281EC000499B28 /* Storyboard.storyboard */; };
-		C01CB78B19281EC000499B28 /* STD-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C01CB78319281EC000499B28 /* STD-Info.plist */; };
 		C01D74C819A141BA00905EBD /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = C01D74C719A141BA00905EBD /* Settings.bundle */; };
 		C01D74CB19A1445200905EBD /* STDUserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = C01D74CA19A1445200905EBD /* STDUserDefaults.m */; };
 		C029D53C19A16A750029D605 /* HPReorderTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = C029D53B19A16A750029D605 /* HPReorderTableView.m */; };
+		C03033F319A1786200D0C285 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = C03033F019A1786200D0C285 /* .gitignore */; };
+		C03033F419A1786200D0C285 /* BVReorderTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = C03033F219A1786200D0C285 /* BVReorderTableView.m */; };
 		C06F19CE1960D308000BEDD8 /* STDTaskTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C06F19CC1960D308000BEDD8 /* STDTaskTableViewCell.m */; };
 		C06F19CF1960D308000BEDD8 /* STDTaskTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C06F19CD1960D308000BEDD8 /* STDTaskTableViewCell.xib */; };
 		C07F7C8D1957CB2900CF0C92 /* NSObject+Extras.m in Sources */ = {isa = PBXBuildFile; fileRef = C07F7C8C1957CB2900CF0C92 /* NSObject+Extras.m */; };
@@ -99,6 +100,9 @@
 		C01D74CA19A1445200905EBD /* STDUserDefaults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STDUserDefaults.m; sourceTree = "<group>"; };
 		C029D53A19A16A750029D605 /* HPReorderTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HPReorderTableView.h; sourceTree = "<group>"; };
 		C029D53B19A16A750029D605 /* HPReorderTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HPReorderTableView.m; sourceTree = "<group>"; };
+		C03033F019A1786200D0C285 /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		C03033F119A1786200D0C285 /* BVReorderTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BVReorderTableView.h; sourceTree = "<group>"; };
+		C03033F219A1786200D0C285 /* BVReorderTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BVReorderTableView.m; sourceTree = "<group>"; };
 		C06F19CB1960D308000BEDD8 /* STDTaskTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STDTaskTableViewCell.h; sourceTree = "<group>"; };
 		C06F19CC1960D308000BEDD8 /* STDTaskTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STDTaskTableViewCell.m; sourceTree = "<group>"; };
 		C06F19CD1960D308000BEDD8 /* STDTaskTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = STDTaskTableViewCell.xib; sourceTree = "<group>"; };
@@ -279,6 +283,16 @@
 			path = HPReorderTableView;
 			sourceTree = "<group>";
 		};
+		C03033EF19A1786200D0C285 /* BVReorderTableView */ = {
+			isa = PBXGroup;
+			children = (
+				C03033F019A1786200D0C285 /* .gitignore */,
+				C03033F119A1786200D0C285 /* BVReorderTableView.h */,
+				C03033F219A1786200D0C285 /* BVReorderTableView.m */,
+			);
+			path = BVReorderTableView;
+			sourceTree = "<group>";
+		};
 		C080EF8D1981F8C8009EF488 /* BHTKeyboardAnimationBlocks */ = {
 			isa = PBXGroup;
 			children = (
@@ -292,6 +306,7 @@
 			isa = PBXGroup;
 			children = (
 				C080EF8D1981F8C8009EF488 /* BHTKeyboardAnimationBlocks */,
+				C03033EF19A1786200D0C285 /* BVReorderTableView */,
 				C029D53919A16A750029D605 /* HPReorderTableView */,
 			);
 			path = "External libraries";
@@ -427,7 +442,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = STD;
-				LastUpgradeCheck = 0510;
+				LastUpgradeCheck = 0600;
 				ORGANIZATIONNAME = "More Voltage";
 				TargetAttributes = {
 					C08FE1DF1928163D0012F7D2 = {
@@ -468,7 +483,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C06F19CF1960D308000BEDD8 /* STDTaskTableViewCell.xib in Resources */,
-				C01CB78B19281EC000499B28 /* STD-Info.plist in Resources */,
+				C03033F319A1786200D0C285 /* .gitignore in Resources */,
 				C01CB78519281EC000499B28 /* InfoPlist.strings in Resources */,
 				C01CB78819281EC000499B28 /* Images.xcassets in Resources */,
 				C01D74C819A141BA00905EBD /* Settings.bundle in Resources */,
@@ -555,6 +570,7 @@
 				C01CB78919281EC000499B28 /* STDAppDelegate.m in Sources */,
 				C0C462571932BFEC0031E256 /* STDNotesViewController.m in Sources */,
 				C01CB78719281EC000499B28 /* main.m in Sources */,
+				C03033F419A1786200D0C285 /* BVReorderTableView.m in Sources */,
 				C0C462511932BDF20031E256 /* STDHomepageViewController.m in Sources */,
 				C01CB78619281EC000499B28 /* STD.xcdatamodeld in Sources */,
 				C082BE1C193C17D900A60D8E /* UIImage+Extras.m in Sources */,
@@ -684,12 +700,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = STD/STD.entitlements;
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "STD/Other sources/STD-Prefix.pch";
 				INFOPLIST_FILE = "$(SRCROOT)/STD/Supporting files/STD-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "3785BFA1-B7CB-4770-B566-F8EBEA4C17F5";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -701,12 +717,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = STD/STD.entitlements;
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "STD/Other sources/STD-Prefix.pch";
 				INFOPLIST_FILE = "$(SRCROOT)/STD/Supporting files/STD-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "3785BFA1-B7CB-4770-B566-F8EBEA4C17F5";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

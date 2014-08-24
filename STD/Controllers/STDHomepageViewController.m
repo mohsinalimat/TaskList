@@ -10,6 +10,7 @@
 #import "STDTaskTableViewCell.h"
 #import "UIViewController+BHTKeyboardNotifications.h"
 #import "UIImage+Extras.h"
+#import "BVReorderTableView.h"
 
 #import "STDSubtasksViewController.h"
 #import "STDNotesViewController.h"
@@ -29,6 +30,8 @@
 @property (strong, nonatomic) NSMutableArray *categories;
 
 @property (strong, nonatomic) NSMutableArray *expandedItems;
+
+@property (strong, nonatomic) STDTask *dummyTask;
 
 @end
 
@@ -218,6 +221,12 @@
     return cell;
 }
 
+- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    STDTask *task = [self taskForIndexPath:indexPath];
+    return (task != nil);
+}
+
 #pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -286,6 +295,97 @@
     [view addGestureRecognizer:singleTap];
     
     return view;
+}
+
+- (NSIndexPath *)tableView:(UITableView *)tableView targetIndexPathForMoveFromRowAtIndexPath:(NSIndexPath *)sourceIndexPath toProposedIndexPath:(NSIndexPath *)proposedDestinationIndexPath
+{
+//    //    if ([destinationItem isKindOfClass:[STDCategory class]])
+//    //        if (destinationTreeNodeInfo.children.count)
+//    //            if (!destinationTreeNodeInfo.expanded)
+//    //                [treeView expandRowForItem:destinationItem];
+//    
+//    //    // collapse expanded category
+//    //    if ([sourceItem isKindOfClass:[STDTask class]])
+//    //        if ([destinationItem isKindOfClass:[STDTask class]])
+//    //            if (![((STDTask *)sourceItem).category.category_id isEqualToString:((STDTask *)destinationItem).category.category_id])
+//    //                if (destinationTreeNodeInfo.parent.expanded)
+//    //                    [treeView collapseRowForItem:destinationTreeNodeInfo.parent.item];
+//    
+//    // expand expanded category
+//    if ([sourceItem isKindOfClass:[STDCategory class]] && [destinationItem isKindOfClass:[STDTask class]]) {
+//        if (![((STDCategory *)sourceItem).category_id isEqualToString:((STDTask *)destinationItem).category.category_id]) {
+//            if (destinationTreeNodeInfo.parent.expanded) {
+//                //                [self.expandedItems removeObject:destinationTreeNodeInfo.parent.item];
+//                //                [treeView collapseRowForItem:destinationTreeNodeInfo.parent.item];
+//                return destinationTreeNodeInfo.parent.item;
+//            }
+//        }
+//    }
+    
+    STDTask *task = [self taskForIndexPath:proposedDestinationIndexPath];
+    if (task)
+        return proposedDestinationIndexPath;
+    return sourceIndexPath;
+}
+
+#pragma mark - ReorderTableViewDelegate
+
+// This method is called when starting the re-ording process. You insert a blank row object into your
+// data source and return the object you want to save for later. This method is only called once.
+- (id)saveObjectAndInsertBlankRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    STDTask *task = [self taskForIndexPath:indexPath];
+    STDCategory *category = task.category;
+    
+    if (!self.dummyTask)
+        self.dummyTask = [STDTask createEntity];
+    self.dummyTask.index = task.index;
+
+    [category removeTasksObject:task];
+    [category addTasksObject:self.dummyTask];
+    
+    return task;
+}
+
+// This method is called when the selected row is dragged to a new position. You simply update your
+// data source to reflect that the rows have switched places. This can be called multiple times
+// during the reordering process.
+- (void)moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
+{
+    STDTask *sourceTask = [self taskForIndexPath:fromIndexPath];
+    STDCategory *sourceCategory = sourceTask.category;
+
+    [sourceCategory removeTasksObject:sourceTask];
+
+    STDTask *destinationTask = [self taskForIndexPath:toIndexPath];
+    STDCategory *destinationCategory = destinationTask.category;
+
+    sourceTask.index = destinationTask.index;
+    
+    [destinationCategory addTasksObject:sourceTask];
+    
+//    STDTask *sourceTask = [self taskForIndexPath:fromIndexPath];
+//    STDTask *destinationTask = [self taskForIndexPath:toIndexPath];
+//    if (sourceTask.category != destinationTask.category) {
+//        STDCategory *category = sourceTask.category;
+//        sourceTask.category = destinationTask.category;
+//        destinationTask.category = category;
+//    }
+//    
+//    NSNumber *index = sourceTask.index;
+//    sourceTask.index = destinationTask.index;
+//    destinationTask.index = index;
+//
+//    [[NSManagedObjectContext contextForCurrentThread] saveOnlySelfAndWait];
+}
+
+// This method is called when the selected row is released to its new position. The object is the same
+// object you returned in saveObjectAndInsertBlankRowAtIndexPath:. Simply update the data source so the
+// object is in its new position. You should do any saving/cleanup here.
+- (void)finishReorderingWithObject:(id)object atIndexPath:(NSIndexPath *)indexPath;
+{
+//    [section replaceObjectAtIndex:indexPath.row withObject:object];
+    // do any additional cleanup here
 }
 
 #pragma mark - STDTaskTableViewCellDelegate

@@ -28,10 +28,7 @@
     [STDUserDefaults setObject:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"] forKey:@"version_preference"];
     
     // Magical Record
-    [MagicalRecord setupCoreDataStackWithAutoMigratingSqliteStoreNamed:@"STD.sqlite"];
-    NSString *contentNameKey = [[[NSBundle mainBundle] infoDictionary] objectForKey:(id)kCFBundleIdentifierKey];
-    contentNameKey = [contentNameKey stringByReplacingOccurrencesOfString:@"." withString:@"_" options:NSCaseInsensitiveSearch range:NSMakeRange(0, contentNameKey.length)];
-    [MagicalRecord setupCoreDataStackWithiCloudContainer:nil contentNameKey:contentNameKey localStoreNamed:@"STD.sqlite" cloudStorePathComponent:nil];
+    [MagicalRecord setupAutoMigratingCoreDataStack];
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
@@ -58,8 +55,6 @@
 {
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-    
-    [[NSManagedObjectContext defaultContext] saveToPersistentStoreWithCompletion:nil];
     
     [STDUserDefaults save];
 }
