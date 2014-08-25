@@ -170,8 +170,8 @@ static char kDummyTextViewKey;
     
     [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
 
-    if (row == (self.subtasks.count - 1))
-        [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:self.subtasks.count inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+    if (indexPath.row == ([self.tableView numberOfRowsInSection:indexPath.section] - 1))
+        [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:indexPath.row + 1 inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationFade];
     
     [self.tableView endUpdates];
 }

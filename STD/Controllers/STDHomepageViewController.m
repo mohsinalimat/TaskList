@@ -449,7 +449,14 @@
         
         [[NSManagedObjectContext contextForCurrentThread] saveOnlySelfAndWait];
         
-        [self.tableView reloadData];
+        [self.tableView beginUpdates];
+
+        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:section] withRowAnimation:UITableViewRowAnimationNone];
+        
+        if (section == ([self.tableView numberOfSections] - 1))
+            [self.tableView insertSections:[NSIndexSet indexSetWithIndex:section + 1] withRowAnimation:UITableViewRowAnimationFade];
+        
+        [self.tableView endUpdates];
     } else if (textField.tag == kTextFieldTask) {
         CGPoint hitPoint = [textField convertPoint:CGPointZero toView:self.tableView];
         NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:hitPoint];
@@ -466,7 +473,14 @@
                 
                 [[NSManagedObjectContext contextForCurrentThread] saveOnlySelfAndWait];
                 
-                [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:indexPath.section] withRowAnimation:UITableViewRowAnimationNone];
+                [self.tableView beginUpdates];
+                
+                [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+
+                if (indexPath.row == ([self.tableView numberOfRowsInSection:indexPath.section] - 1))
+                    [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:indexPath.row + 1 inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationFade];
+                
+                [self.tableView endUpdates];
             }
         }
     }
