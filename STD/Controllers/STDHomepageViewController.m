@@ -16,10 +16,9 @@
 #import "STDNotesViewController.h"
 #import "STDSettingsViewController.h"
 
-#define kButton 100
-
-#define kTextFieldCategory 10
-#define kTextFieldTask 20
+#define kButton 1000
+#define kTextFieldCategory 2000
+#define kTextFieldTask 3000
 
 #define kNumberOfRowsInSection category.tasks.count + 1
 
@@ -78,6 +77,14 @@
 {
     UIButton *button = sender;
     NSInteger section = button.superview.tag;
+    STDCategory *category = [self categoryForSection:section];
+    if (category) {
+        
+    } else {
+        UIView *view = [self.tableView headerViewForSection:section];
+        UITextField *textField = (UITextField *)[view viewWithTag:kTextFieldCategory];
+        [textField becomeFirstResponder];
+    }
 }
 
 - (void)tapGestureRecognized:(UITapGestureRecognizer *)recognizer
@@ -120,6 +127,8 @@
 
 - (void)styleTableView
 {
+    self.tableView.contentInset = (UIEdgeInsets){0, 0, 44, 0};
+    
     self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectZero];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     
@@ -264,37 +273,53 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
+    static NSString *CellIdentifier = @"HeaderFooterView";
+    UITableViewHeaderFooterView *headerFooterView = [tableView dequeueReusableHeaderFooterViewWithIdentifier:CellIdentifier];
+    if (!headerFooterView) {
+        headerFooterView = [[UITableViewHeaderFooterView alloc] initWithReuseIdentifier:CellIdentifier];
+
+        headerFooterView.frame = (CGRect){0, 0, 320, 44};
+        headerFooterView.contentView.backgroundColor = [UIColor whiteColor];
+        
+        UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGestureRecognized:)];
+        singleTap.numberOfTapsRequired = 1;
+        [headerFooterView addGestureRecognizer:singleTap];
+    }
+    
+    headerFooterView.tag = section;
+    
     STDCategory *category = [self categoryForSection:section];
     
-    UIView *view = [[UIView alloc] initWithFrame:(CGRect){0, 0, 320, 44}];
-    view.backgroundColor = [UIColor whiteColor];
-    view.tag = section;
+    UITextField *textField = (UITextField *)[headerFooterView viewWithTag:kTextFieldCategory];
+    if (!textField) {
+        textField = [[UITextField alloc] initWithFrame:(CGRect){14, 0, 276, 44}];
+        textField.textColor = [UIColor colorWithHue:(210.0f / 360.0f) saturation:0.94f brightness:1.0f alpha:1.0f];
+        textField.placeholder = @"New Category";
+        textField.font = [UIFont boldSystemFontOfSize:18.0f];
+        textField.delegate = self;
+        textField.tag = kTextFieldCategory;
+        [headerFooterView addSubview:textField];
+    }
     
-    UITextField *textField = [[UITextField alloc] initWithFrame:(CGRect){14, 0, 276, 44}];
     textField.text = [category.name uppercaseString];
-    textField.textColor = [UIColor colorWithHue:(210.0f / 360.0f) saturation:0.94f brightness:1.0f alpha:1.0f];
-    textField.placeholder = @"New Category";
-    textField.font = [UIFont boldSystemFontOfSize:18.0f];
     textField.userInteractionEnabled = !category;
-    textField.delegate = self;
-    textField.tag = kTextFieldCategory;
-    [view addSubview:textField];
     
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
-    button.frame = (CGRect){276, 0, 44, 44};
-    button.titleLabel.font = [UIFont systemFontOfSize:18.0f];
-    button.tintColor = [UIColor darkGrayColor];
-    [button addTarget:self action:@selector(didTouchOnButton:) forControlEvents:UIControlEventTouchUpInside];
+    UIButton *button = (UIButton *)[headerFooterView viewWithTag:kButton];
+    if (!button) {
+        button = [UIButton buttonWithType:UIButtonTypeSystem];
+        button.frame = (CGRect){276, 0, 44, 44};
+        button.titleLabel.font = [UIFont systemFontOfSize:18.0f];
+        button.tintColor = [UIColor darkGrayColor];
+        [button addTarget:self action:@selector(didTouchOnButton:) forControlEvents:UIControlEventTouchUpInside];
+        button.tag = kButton;
+        [headerFooterView addSubview:button];
+    }
+    
     NSUInteger count = category.tasks.count;
     NSString *title = (count ? [NSString stringWithFormat:@"(%d)", count] : @"+");
     [button setTitle:title forState:UIControlStateNormal];
-    [view addSubview:button];
     
-    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGestureRecognized:)];
-    singleTap.numberOfTapsRequired = 1;
-    [view addGestureRecognizer:singleTap];
-    
-    return view;
+    return headerFooterView;
 }
 
 - (NSIndexPath *)tableView:(UITableView *)tableView targetIndexPathForMoveFromRowAtIndexPath:(NSIndexPath *)sourceIndexPath toProposedIndexPath:(NSIndexPath *)proposedDestinationIndexPath
