@@ -112,6 +112,8 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectZero];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     
+    self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
+    
     [self.tableView registerNib:[UINib nibWithNibName:NSStringFromClass([STDTaskTableViewCell class]) bundle:nil] forCellReuseIdentifier:NSStringFromClass([STDTaskTableViewCell class])];
 }
 
