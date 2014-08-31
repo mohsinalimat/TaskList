@@ -22,6 +22,8 @@
 
 #define kNumberOfRowsInSection category.tasks.count + 1
 
+static CGFloat const kBottomInset = 44.0f;
+
 typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     UITableViewSectionActionExpand,
     UITableViewSectionActionCollapse
@@ -105,7 +107,7 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
 
 - (void)styleTableView
 {
-    self.tableView.contentInset = (UIEdgeInsets){0, 0, 44, 0};
+    self.tableView.contentInset = (UIEdgeInsets){0, 0, kBottomInset, 0};
     
     self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectZero];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
@@ -583,7 +585,7 @@ static CGFloat contentOffsetForBottom(CGRect keyboardFrame) {
         return;
     
     UIEdgeInsets edgeInsets = self.tableView.contentInset;
-    edgeInsets.bottom = MAX(0.0f, contentOffsetForBottom(newFrame));
+    edgeInsets.bottom = MAX(kBottomInset, contentOffsetForBottom(newFrame));
     self.tableView.contentInset = edgeInsets;
 }
 
