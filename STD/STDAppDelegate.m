@@ -28,12 +28,8 @@
     [STDUserDefaults setObject:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"] forKey:@"version_preference"];
     
     // Magical Record
-    NSString *localStoreName = [MagicalRecord defaultStoreName];
-    [MagicalRecord setupCoreDataStackWithAutoMigratingSqliteStoreNamed:localStoreName];
-    NSString *contentNameKey = [[[NSBundle mainBundle] infoDictionary] objectForKey:(id)kCFBundleIdentifierKey];
-    contentNameKey = [contentNameKey stringByReplacingOccurrencesOfString:@"." withString:@"~" options:NSCaseInsensitiveSearch range:NSMakeRange(0, contentNameKey.length)];
-    [MagicalRecord setupCoreDataStackWithiCloudContainer:nil contentNameKey:contentNameKey localStoreNamed:localStoreName cloudStorePathComponent:nil];
-
+    [MagicalRecord setupAutoMigratingCoreDataStack];
+    
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];
