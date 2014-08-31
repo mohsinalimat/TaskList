@@ -22,6 +22,11 @@
 
 #define kNumberOfRowsInSection category.tasks.count + 1
 
+typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
+    UITableViewSectionActionExpand,
+    UITableViewSectionActionCollapse
+};
+
 @interface STDHomepageViewController () <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, STDTaskTableViewCellDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -79,7 +84,10 @@
     NSInteger section = button.superview.tag;
     STDCategory *category = [self categoryForSection:section];
     if (category) {
-        
+        [self animateSection:section withAction:UITableViewSectionActionExpand completion:^{
+            STDTaskTableViewCell *cell = (STDTaskTableViewCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:([self.tableView numberOfRowsInSection:section] - 1) inSection:section]];
+            [cell.textField becomeFirstResponder];
+        }];
     } else {
         UIView *view = [self.tableView headerViewForSection:section];
         UITextField *textField = (UITextField *)[view viewWithTag:kTextFieldCategory];
@@ -90,37 +98,7 @@
 - (void)tapGestureRecognized:(UITapGestureRecognizer *)recognizer
 {
     NSInteger section = recognizer.view.tag;
-    STDCategory *category = [self categoryForSection:section];
-    
-    NSMutableArray *indexes = [NSMutableArray array];
-    for (NSInteger index = 0; index < kNumberOfRowsInSection; index++) {
-        [indexes addObject:[NSIndexPath indexPathForRow:index inSection:section]];
-    }
-    
-    [CATransaction begin];
-    [CATransaction setCompletionBlock:^{
-        if ([self.expandedItems containsObject:category])
-            if (![[self.tableView indexPathsForVisibleRows] containsObject:indexes.lastObject])
-                [self.tableView scrollToRowAtIndexPath:indexes.lastObject atScrollPosition:UITableViewScrollPositionBottom animated:YES];
-    }];
-    
-    [self.tableView beginUpdates];
-
-    if (!self.expandedItems)
-        self.expandedItems = [NSMutableArray array];
-    if ([self.expandedItems containsObject:category]) {
-        [self.expandedItems removeObject:category];
-        
-        [self.tableView deleteRowsAtIndexPaths:indexes withRowAnimation:UITableViewRowAnimationFade];
-    } else  {
-        [self.expandedItems addObject:category];
-        
-        [self.tableView insertRowsAtIndexPaths:indexes withRowAnimation:UITableViewRowAnimationFade];
-    }
-    
-    [self.tableView endUpdates];
-    
-    [CATransaction commit];
+    [self toggleSection:section];
 }
 
 #pragma mark - Styling
@@ -204,7 +182,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     STDCategory *category = [self categoryForSection:section];
-    return [self.expandedItems containsObject:category] ? kNumberOfRowsInSection : 0;
+    return [self isCategoryExpanded:category] ? kNumberOfRowsInSection : 0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -246,7 +224,7 @@
     
     if (!self.expandedItems)
         self.expandedItems = [NSMutableArray array];
-    if ([self.expandedItems containsObject:task]) {
+    if ([self isTaskExpanded:task]) {
         [self.expandedItems removeObject:task];
     } else  {
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"class == %@", [STDTask class]];
@@ -263,7 +241,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     STDTask *task = [self taskForIndexPath:indexPath];
-    return [self.expandedItems containsObject:task] ? 88.0f : 44.0f;
+    return [self isTaskExpanded:task] ? 88.0f : 44.0f;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -411,6 +389,67 @@
 {
 //    [section replaceObjectAtIndex:indexPath.row withObject:object];
     // do any additional cleanup here
+}
+
+#pragma mark - Expand/Collapse
+
+- (void)toggleSection:(NSInteger)section
+{
+    STDCategory *category = [self categoryForSection:section];
+    UITableViewSectionAction action = ([self isCategoryExpanded:category] ? UITableViewSectionActionCollapse : UITableViewSectionActionExpand);
+    [self animateSection:section withAction:action completion:nil];
+}
+
+- (void)animateSection:(NSInteger)section withAction:(UITableViewSectionAction)action completion:(void (^)(void))completion
+{
+    BOOL expand = (action == UITableViewSectionActionExpand);
+    BOOL collapse = (action == UITableViewSectionActionCollapse);
+    
+    STDCategory *category = [self categoryForSection:section];
+    
+    NSMutableArray *indexes = [NSMutableArray array];
+    for (NSInteger index = 0; index < kNumberOfRowsInSection; index++) {
+        [indexes addObject:[NSIndexPath indexPathForRow:index inSection:section]];
+    }
+    
+    [CATransaction begin];
+    [CATransaction setCompletionBlock:^{
+        if ([self isCategoryExpanded:category] && expand)
+            if (![[self.tableView indexPathsForVisibleRows] containsObject:indexes.lastObject])
+                [self.tableView scrollToRowAtIndexPath:indexes.lastObject atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+        
+        if (completion)
+            completion();
+    }];
+    
+    [self.tableView beginUpdates];
+    
+    if (!self.expandedItems)
+        self.expandedItems = [NSMutableArray array];
+    BOOL expanded = [self isCategoryExpanded:category];
+    if (expanded && collapse) {
+        [self.expandedItems removeObject:category];
+        
+        [self.tableView deleteRowsAtIndexPaths:indexes withRowAnimation:UITableViewRowAnimationFade];
+    } else if (!expanded && expand) {
+        [self.expandedItems addObject:category];
+        
+        [self.tableView insertRowsAtIndexPaths:indexes withRowAnimation:UITableViewRowAnimationFade];
+    }
+    
+    [self.tableView endUpdates];
+    
+    [CATransaction commit];
+}
+
+- (BOOL)isCategoryExpanded:(STDCategory *)category
+{
+    return [self.expandedItems containsObject:category];
+}
+
+- (BOOL)isTaskExpanded:(STDTask *)task
+{
+    return [self.expandedItems containsObject:task];
 }
 
 #pragma mark - STDTaskTableViewCellDelegate
