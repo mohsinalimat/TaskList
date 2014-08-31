@@ -12,6 +12,12 @@
 #define COCOAPODS_VERSION_MINOR_MagicalRecord_Shorthand 2
 #define COCOAPODS_VERSION_PATCH_MagicalRecord_Shorthand 0
 
+// SWTableViewCell
+#define COCOAPODS_POD_AVAILABLE_SWTableViewCell
+#define COCOAPODS_VERSION_MAJOR_SWTableViewCell 0
+#define COCOAPODS_VERSION_MINOR_SWTableViewCell 3
+#define COCOAPODS_VERSION_PATCH_SWTableViewCell 3
+
 // SZTextView
 #define COCOAPODS_POD_AVAILABLE_SZTextView
 #define COCOAPODS_VERSION_MAJOR_SZTextView 1
