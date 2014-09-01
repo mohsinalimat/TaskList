@@ -10,6 +10,7 @@
 #import "STDTaskTableViewCell.h"
 #import "UIViewController+BHTKeyboardNotifications.h"
 #import "UIImage+Extras.h"
+#import "NSObject+Extras.h"
 #import "BVReorderTableView.h"
 
 #import "STDSubtasksViewController.h"
@@ -20,16 +21,20 @@
 #define kTextFieldCategory 2000
 #define kTextFieldTask 3000
 
+#define kAlertViewCompleteSubtasks 100
+
 #define kNumberOfRowsInSection category.tasks.count + 1
 
 static CGFloat const kBottomInset = 44.0f;
+
+static char kTaskKey;
 
 typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     UITableViewSectionActionExpand,
     UITableViewSectionActionCollapse
 };
 
-@interface STDHomepageViewController () <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, STDTaskTableViewCellDelegate>
+@interface STDHomepageViewController () <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, UIAlertViewDelegate, STDTaskTableViewCellDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
@@ -114,8 +119,6 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     
     self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
-    
-    [self.tableView registerNib:[UINib nibWithNibName:NSStringFromClass([STDTaskTableViewCell class]) bundle:nil] forCellReuseIdentifier:NSStringFromClass([STDTaskTableViewCell class])];
 }
 
 - (void)styleNavigationController
@@ -193,35 +196,66 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     STDTaskTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass([STDTaskTableViewCell class])];
-    
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    
-    cell.clipsToBounds = YES;
-    
-    // SWTableViewCell right buttons
-    cell.leftUtilityButtons = [self buttons];
-    cell.rightUtilityButtons = [self buttons];
-    
-    cell.delegate = self;
+    if (!cell) {
+        cell = (STDTaskTableViewCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([STDTaskTableViewCell class]) owner:self options:nil] firstObject];
+        
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        
+        cell.clipsToBounds = YES;
+        
+        cell.delegate = self;
+        
+        cell.textField.placeholder = @"New Task";
+        cell.textField.tag = kTextFieldTask;
+        cell.textField.delegate = self;
+    }
     
     STDTask *task = [self taskForIndexPath:indexPath];
 
     cell.task = task;
     
     cell.textField.text = task.name;
-    cell.textField.placeholder = @"New Task";
     cell.textField.userInteractionEnabled = !task;
-    cell.textField.tag = kTextFieldTask;
-    cell.textField.delegate = self;
+    
+    if (task) {
+        [cell setDefaultColor:[UIColor lightGrayColor]];
+
+        UIView *checkView = [self viewWithImageName:@"check.png"];
+        UIColor *greenColor = [UIColor colorWithRed:85.0 / 255.0 green:213.0 / 255.0 blue:80.0 / 255.0 alpha:1.0];
+        
+        // Adding gestures per state basis.
+        [cell setSwipeGestureWithView:checkView color:greenColor mode:MCSwipeTableViewCellModeSwitch state:(MCSwipeTableViewCellState1 | MCSwipeTableViewCellState3) completionBlock:^(MCSwipeTableViewCell *cell, MCSwipeTableViewCellState state, MCSwipeTableViewCellMode mode) {
+            NSLog(@"Did swipe \"Checkmark\" cell");
+            
+            STDTask *task = ((STDTaskTableViewCell *)cell).task;
+            
+            task.completed = @YES;
+            task.completion_date = [NSDate date];
+            
+            [[NSManagedObjectContext contextForCurrentThread] saveOnlySelfAndWait];
+            
+            // check for uncompleted subtasks
+            NSPredicate *predicate = [NSPredicate predicateWithFormat:@"completedValue == NO"];
+            NSSet *uncompleted = [task.subtasks filteredSetUsingPredicate:predicate];
+            if (uncompleted.count) {
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"Mark all subtasks complete? If yes, all subtasks will be marked as finished because you're done! If you choose keep, the task will still be viewable until you mark all subtasks completed." delegate:self cancelButtonTitle:@"Keep" otherButtonTitles:@"Yes", nil];
+                alertView.tag = kAlertViewCompleteSubtasks;
+                [alertView show];
+                
+                [self setAssociatedObject:task forKey:&kTaskKey];
+            }
+        }];
+    }
 
     return cell;
 }
 
-- (NSMutableArray *)buttons
+- (UIView *)viewWithImageName:(NSString *)imageName
 {
-    NSMutableArray *buttons = [NSMutableArray array];
-    [buttons sw_addUtilityButtonWithColor:[UIColor colorWithRed:0.07 green:0.75f blue:0.16f alpha:1.0] icon:[UIImage imageNamed:@"check.png"]];
-    return buttons;
+    UIImage *image = [UIImage imageNamed:imageName];
+    UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
+    imageView.contentMode = UIViewContentModeCenter;
+    return imageView;
 }
 
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
@@ -490,24 +524,21 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     [self.navigationController pushViewController:viewController animated:YES];
 }
 
-- (BOOL)swipeableTableViewCell:(STDTaskTableViewCell *)cell canSwipeToState:(SWCellState)state;
-{
-    return (cell.task != nil);
-}
+#pragma mark - UIAlertViewDelegate
 
-- (void)swipeableTableViewCell:(SWTableViewCell *)cell didTriggerRightUtilityButtonWithIndex:(NSInteger)index
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    switch (index) {
-        case 0:
-            NSLog(@"check button was pressed");
-            break;
-        case 1:
-            NSLog(@"cross button was pressed");
-            break;
-        case 2:
-            NSLog(@"list button was pressed");
-        default:
-            break;
+    if (alertView.tag == kAlertViewCompleteSubtasks) {
+        if (buttonIndex != alertView.cancelButtonIndex) {
+            STDTask *task = [self associatedObjectForKey:&kTaskKey];
+            
+            for (STDSubtask *subtask in task.subtasks) {
+                subtask.completed = @YES;
+                subtask.completion_date = [NSDate date];
+            }
+            
+            [[NSManagedObjectContext contextForCurrentThread] saveOnlySelfAndWait];
+        }
     }
 }
 

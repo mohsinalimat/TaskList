@@ -8,18 +8,18 @@
 
 #import <UIKit/UIKit.h>
 
-#import <SWTableViewCell.h>
+#import "MCSwipeTableViewCell.h"
 
 @class STDTaskTableViewCell;
 
-@protocol STDTaskTableViewCellDelegate <SWTableViewCellDelegate>
+@protocol STDTaskTableViewCellDelegate <MCSwipeTableViewCellDelegate>
 
 - (void)taskDetailsTableViewCell:(STDTaskTableViewCell *)cell didTouchOnTasksButton:(id)sender;
 - (void)taskDetailsTableViewCell:(STDTaskTableViewCell *)cell didTouchOnNotesButton:(id)sender;
 
 @end
 
-@interface STDTaskTableViewCell : SWTableViewCell
+@interface STDTaskTableViewCell : MCSwipeTableViewCell
 
 @property (weak, nonatomic) id<STDTaskTableViewCellDelegate> delegate;
 
