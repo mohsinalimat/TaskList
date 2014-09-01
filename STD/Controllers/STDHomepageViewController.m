@@ -199,12 +199,9 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     cell.clipsToBounds = YES;
     
     // SWTableViewCell right buttons
-    NSMutableArray *rightUtilityButtons = [NSMutableArray array];
-    [rightUtilityButtons sw_addUtilityButtonWithColor:[UIColor colorWithRed:0.07 green:0.75f blue:0.16f alpha:1.0] icon:[UIImage imageNamed:@"check.png"]];
-    [rightUtilityButtons sw_addUtilityButtonWithColor:[UIColor colorWithRed:1.0f green:0.231f blue:0.188f alpha:1.0] icon:[UIImage imageNamed:@"cross.png"]];
-    [rightUtilityButtons sw_addUtilityButtonWithColor:[UIColor colorWithRed:0.55f green:0.27f blue:0.07f alpha:1.0] icon:[UIImage imageNamed:@"list.png"]];
-    cell.rightUtilityButtons = rightUtilityButtons;
-
+    cell.leftUtilityButtons = [self buttons];
+    cell.rightUtilityButtons = [self buttons];
+    
     cell.delegate = self;
     
     STDTask *task = [self taskForIndexPath:indexPath];
@@ -218,6 +215,13 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     cell.textField.delegate = self;
 
     return cell;
+}
+
+- (NSMutableArray *)buttons
+{
+    NSMutableArray *buttons = [NSMutableArray array];
+    [buttons sw_addUtilityButtonWithColor:[UIColor colorWithRed:0.07 green:0.75f blue:0.16f alpha:1.0] icon:[UIImage imageNamed:@"check.png"]];
+    return buttons;
 }
 
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
