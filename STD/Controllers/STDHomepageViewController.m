@@ -229,24 +229,13 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
+    
     STDTask *task = [self taskForIndexPath:indexPath];
     if (!task)
         return;
     
-    if (!self.expandedItems)
-        self.expandedItems = [NSMutableArray array];
-    if ([self isTaskExpanded:task]) {
-        [self.expandedItems removeObject:task];
-    } else  {
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"class == %@", [STDTask class]];
-        NSArray *tasks = [self.expandedItems filteredArrayUsingPredicate:predicate];
-        [self.expandedItems removeObjectsInArray:tasks];
-
-        [self.expandedItems addObject:task];
-    }
-    
-    [self.tableView beginUpdates];
-    [self.tableView endUpdates];
+    [self toggleTask:task];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -451,6 +440,26 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     [self.tableView endUpdates];
     
     [CATransaction commit];
+}
+
+- (void)toggleTask:(STDTask *)task
+{
+    [self.tableView beginUpdates];
+
+    if (!self.expandedItems)
+        self.expandedItems = [NSMutableArray array];
+    BOOL expanded = [self isTaskExpanded:task];
+    if (expanded) {
+        [self.expandedItems removeObject:task];
+    } else {
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"class == %@", [STDTask class]];
+        NSArray *tasks = [self.expandedItems filteredArrayUsingPredicate:predicate];
+        [self.expandedItems removeObjectsInArray:tasks];
+        
+        [self.expandedItems addObject:task];
+    }
+    
+    [self.tableView endUpdates];
 }
 
 - (BOOL)isCategoryExpanded:(STDCategory *)category
