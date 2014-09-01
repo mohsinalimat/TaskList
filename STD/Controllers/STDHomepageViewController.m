@@ -22,11 +22,13 @@
 #define kTextFieldTask 3000
 
 #define kAlertViewCompleteSubtasks 100
+#define kAlertViewDeleteCategory 200
 
 #define kNumberOfRowsInSection category.tasks.count + 1
 
 static CGFloat const kBottomInset = 44.0f;
 
+static char kCategoryKey;
 static char kTaskKey;
 
 typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
@@ -102,11 +104,20 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     }
 }
 
-- (void)tapGestureRecognized:(UITapGestureRecognizer *)recognizer
+- (void)singleTapGestureRecognized:(UITapGestureRecognizer *)recognizer
 {
     NSInteger section = recognizer.view.tag;
     STDCategory *category = [self categoryForSection:section];
     [self toggleCategory:category];
+}
+
+- (void)doubleTapGestureRecognized:(UITapGestureRecognizer *)recognizer
+{
+    NSInteger section = recognizer.view.tag;
+    UIView *view = [self.tableView headerViewForSection:section];
+    UITextField *textField = (UITextField *)[view viewWithTag:kTextFieldCategory];
+    textField.userInteractionEnabled = YES;
+    [textField becomeFirstResponder];
 }
 
 #pragma mark - Styling
@@ -298,9 +309,15 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
         headerFooterView.frame = (CGRect){0, 0, 320, 44};
         headerFooterView.contentView.backgroundColor = [UIColor whiteColor];
         
-        UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGestureRecognized:)];
+        UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(singleTapGestureRecognized:)];
         singleTap.numberOfTapsRequired = 1;
         [headerFooterView addGestureRecognizer:singleTap];
+        
+        UITapGestureRecognizer *doubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(doubleTapGestureRecognized:)];
+        doubleTap.numberOfTapsRequired = 2;
+        [headerFooterView addGestureRecognizer:doubleTap];
+        
+        [singleTap requireGestureRecognizerToFail:doubleTap];
     }
     
     headerFooterView.tag = section;
@@ -315,6 +332,7 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
         textField.font = [UIFont boldSystemFontOfSize:18.0f];
         textField.delegate = self;
         textField.tag = kTextFieldCategory;
+        textField.clearButtonMode = UITextFieldViewModeWhileEditing;
         [headerFooterView addSubview:textField];
     }
     
@@ -539,10 +557,42 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
             
             [[NSManagedObjectContext contextForCurrentThread] saveOnlySelfAndWait];
         }
+    } else if (alertView.tag == kAlertViewDeleteCategory) {
+        if (buttonIndex != alertView.cancelButtonIndex) {
+            STDCategory *category = [self associatedObjectForKey:&kCategoryKey];
+            
+            NSInteger section = [self.categories indexOfObject:category];
+            
+            [self.categories removeObject:category];
+
+            [category deleteEntity];
+            
+            [[NSManagedObjectContext contextForCurrentThread] saveOnlySelfAndWait];
+            
+            [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:section] withRowAnimation:UITableViewRowAnimationFade];
+        }
     }
 }
 
 #pragma mark - UITextFieldDelegate
+
+- (BOOL)textFieldShouldClear:(UITextField *)textField;
+{
+    if (textField.tag == kTextFieldCategory) {
+        NSInteger section = textField.superview.tag;
+        STDCategory *category = [self categoryForSection:section];
+        if (category) {
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"Are you sure you want to delete this category? All associated tasks will be deleted." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Yes", nil];
+            alertView.tag = kAlertViewDeleteCategory;
+            [alertView show];
+            
+            [self setAssociatedObject:category forKey:&kCategoryKey];
+            
+            return NO;
+        }
+    }
+    return YES;
+}
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
