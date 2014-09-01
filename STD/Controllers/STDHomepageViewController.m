@@ -196,6 +196,13 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
     cell.clipsToBounds = YES;
+    
+    // SWTableViewCell right buttons
+    NSMutableArray *rightUtilityButtons = [NSMutableArray array];
+    [rightUtilityButtons sw_addUtilityButtonWithColor:[UIColor colorWithRed:0.07 green:0.75f blue:0.16f alpha:1.0] icon:[UIImage imageNamed:@"check.png"]];
+    [rightUtilityButtons sw_addUtilityButtonWithColor:[UIColor colorWithRed:1.0f green:0.231f blue:0.188f alpha:1.0] icon:[UIImage imageNamed:@"cross.png"]];
+    [rightUtilityButtons sw_addUtilityButtonWithColor:[UIColor colorWithRed:0.55f green:0.27f blue:0.07f alpha:1.0] icon:[UIImage imageNamed:@"list.png"]];
+    cell.rightUtilityButtons = rightUtilityButtons;
 
     cell.delegate = self;
     
@@ -298,7 +305,7 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     }
     
     NSUInteger count = category.tasks.count;
-    NSString *title = (count ? [NSString stringWithFormat:@"(%d)", count] : @"+");
+    NSString *title = (count ? [NSString stringWithFormat:@"%d", count] : @"+");
     [button setTitle:title forState:UIControlStateNormal];
     
     return headerFooterView;
@@ -470,6 +477,27 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     STDNotesViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"STDNotesViewControllerId"];
     viewController.task = cell.task;
     [self.navigationController pushViewController:viewController animated:YES];
+}
+
+- (BOOL)swipeableTableViewCell:(STDTaskTableViewCell *)cell canSwipeToState:(SWCellState)state;
+{
+    return (cell.task != nil);
+}
+
+- (void)swipeableTableViewCell:(SWTableViewCell *)cell didTriggerRightUtilityButtonWithIndex:(NSInteger)index
+{
+    switch (index) {
+        case 0:
+            NSLog(@"check button was pressed");
+            break;
+        case 1:
+            NSLog(@"cross button was pressed");
+            break;
+        case 2:
+            NSLog(@"list button was pressed");
+        default:
+            break;
+    }
 }
 
 #pragma mark - UITextFieldDelegate

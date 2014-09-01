@@ -64,6 +64,10 @@
 		C0C462541932BFD10031E256 /* STDSubtasksViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C0C462531932BFD10031E256 /* STDSubtasksViewController.m */; };
 		C0C462571932BFEC0031E256 /* STDNotesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C0C462561932BFEC0031E256 /* STDNotesViewController.m */; };
 		C0C4625A1932BFFD0031E256 /* STDSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C0C462591932BFFD0031E256 /* STDSettingsViewController.m */; };
+		C0D5C6BF19B3EF1E0010C13A /* check@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C0D5C6BB19B3EF1E0010C13A /* check@2x.png */; };
+		C0D5C6C019B3EF1E0010C13A /* clock@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C0D5C6BC19B3EF1E0010C13A /* clock@2x.png */; };
+		C0D5C6C119B3EF1E0010C13A /* cross@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C0D5C6BD19B3EF1E0010C13A /* cross@2x.png */; };
+		C0D5C6C219B3EF1E0010C13A /* list@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C0D5C6BE19B3EF1E0010C13A /* list@2x.png */; };
 		C0F933331986178A00FC7329 /* STDSubtaskTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C0F933311986178A00FC7329 /* STDSubtaskTableViewCell.m */; };
 /* End PBXBuildFile section */
 
@@ -147,6 +151,10 @@
 		C0C462561932BFEC0031E256 /* STDNotesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STDNotesViewController.m; sourceTree = "<group>"; };
 		C0C462581932BFFD0031E256 /* STDSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STDSettingsViewController.h; sourceTree = "<group>"; };
 		C0C462591932BFFD0031E256 /* STDSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STDSettingsViewController.m; sourceTree = "<group>"; };
+		C0D5C6BB19B3EF1E0010C13A /* check@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "check@2x.png"; sourceTree = "<group>"; };
+		C0D5C6BC19B3EF1E0010C13A /* clock@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "clock@2x.png"; sourceTree = "<group>"; };
+		C0D5C6BD19B3EF1E0010C13A /* cross@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cross@2x.png"; sourceTree = "<group>"; };
+		C0D5C6BE19B3EF1E0010C13A /* list@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "list@2x.png"; sourceTree = "<group>"; };
 		C0F933301986178A00FC7329 /* STDSubtaskTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STDSubtaskTableViewCell.h; sourceTree = "<group>"; };
 		C0F933311986178A00FC7329 /* STDSubtaskTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STDSubtaskTableViewCell.m; sourceTree = "<group>"; };
 		CE5729C3CBEE4252A6670778 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -249,6 +257,7 @@
 		C01CB77D19281EC000499B28 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				C0D5C6BA19B3EF1E0010C13A /* Images */,
 				C01CB77E19281EC000499B28 /* Images.xcassets */,
 			);
 			path = Resources;
@@ -394,6 +403,17 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		C0D5C6BA19B3EF1E0010C13A /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				C0D5C6BB19B3EF1E0010C13A /* check@2x.png */,
+				C0D5C6BC19B3EF1E0010C13A /* clock@2x.png */,
+				C0D5C6BD19B3EF1E0010C13A /* cross@2x.png */,
+				C0D5C6BE19B3EF1E0010C13A /* list@2x.png */,
+			);
+			path = Images;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -487,7 +507,11 @@
 				C01CB78519281EC000499B28 /* InfoPlist.strings in Resources */,
 				C01CB78819281EC000499B28 /* Images.xcassets in Resources */,
 				C01D74C819A141BA00905EBD /* Settings.bundle in Resources */,
+				C0D5C6C119B3EF1E0010C13A /* cross@2x.png in Resources */,
+				C0D5C6C219B3EF1E0010C13A /* list@2x.png in Resources */,
+				C0D5C6C019B3EF1E0010C13A /* clock@2x.png in Resources */,
 				C01CB78A19281EC000499B28 /* Storyboard.storyboard in Resources */,
+				C0D5C6BF19B3EF1E0010C13A /* check@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

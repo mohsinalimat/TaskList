@@ -8,16 +8,18 @@
 
 #import <UIKit/UIKit.h>
 
+#import <SWTableViewCell.h>
+
 @class STDTaskTableViewCell;
 
-@protocol STDTaskTableViewCellDelegate <NSObject>
+@protocol STDTaskTableViewCellDelegate <SWTableViewCellDelegate>
 
 - (void)taskDetailsTableViewCell:(STDTaskTableViewCell *)cell didTouchOnTasksButton:(id)sender;
 - (void)taskDetailsTableViewCell:(STDTaskTableViewCell *)cell didTouchOnNotesButton:(id)sender;
 
 @end
 
-@interface STDTaskTableViewCell : UITableViewCell
+@interface STDTaskTableViewCell : SWTableViewCell
 
 @property (weak, nonatomic) id<STDTaskTableViewCellDelegate> delegate;
 
