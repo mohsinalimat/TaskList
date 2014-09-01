@@ -86,7 +86,7 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     NSInteger section = button.superview.tag;
     STDCategory *category = [self categoryForSection:section];
     if (category) {
-        [self animateSection:section withAction:UITableViewSectionActionExpand completion:^{
+        [self animateCategory:category withAction:UITableViewSectionActionExpand completion:^{
             STDTaskTableViewCell *cell = (STDTaskTableViewCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:([self.tableView numberOfRowsInSection:section] - 1) inSection:section]];
             [cell.textField becomeFirstResponder];
         }];
@@ -100,7 +100,8 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
 - (void)tapGestureRecognized:(UITapGestureRecognizer *)recognizer
 {
     NSInteger section = recognizer.view.tag;
-    [self toggleSection:section];
+    STDCategory *category = [self categoryForSection:section];
+    [self toggleCategory:category];
 }
 
 #pragma mark - Styling
@@ -393,23 +394,20 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
 
 #pragma mark - Expand/Collapse
 
-- (void)toggleSection:(NSInteger)section
+- (void)toggleCategory:(STDCategory *)category
 {
-    STDCategory *category = [self categoryForSection:section];
     UITableViewSectionAction action = ([self isCategoryExpanded:category] ? UITableViewSectionActionCollapse : UITableViewSectionActionExpand);
-    [self animateSection:section withAction:action completion:nil];
+    [self animateCategory:category withAction:action completion:nil];
 }
 
-- (void)animateSection:(NSInteger)section withAction:(UITableViewSectionAction)action completion:(void (^)(void))completion
+- (void)animateCategory:(STDCategory *)category withAction:(UITableViewSectionAction)action completion:(void (^)(void))completion
 {
     BOOL expand = (action == UITableViewSectionActionExpand);
     BOOL collapse = (action == UITableViewSectionActionCollapse);
     
-    STDCategory *category = [self categoryForSection:section];
-    
     NSMutableArray *indexes = [NSMutableArray array];
     for (NSInteger index = 0; index < kNumberOfRowsInSection; index++) {
-        [indexes addObject:[NSIndexPath indexPathForRow:index inSection:section]];
+        [indexes addObject:[NSIndexPath indexPathForRow:index inSection:[self.categories indexOfObject:category]]];
     }
     
     [CATransaction begin];
