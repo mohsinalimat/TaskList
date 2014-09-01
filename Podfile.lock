@@ -1,19 +1,19 @@
 PODS:
   - iRate (1.10.3)
   - MagicalRecord/Shorthand (2.2)
-  - SWTableViewCell (0.3.3)
+  - MCSwipeTableViewCell (2.1.0)
   - SZTextView (1.1.5)
 
 DEPENDENCIES:
   - iRate (= 1.10.3)
   - MagicalRecord/Shorthand (= 2.2)
-  - SWTableViewCell (= 0.3.3)
+  - MCSwipeTableViewCell (= 2.1.0)
   - SZTextView (= 1.1.5)
 
 SPEC CHECKSUMS:
   iRate: 40ebea2bb1e88866cef7393bd0abeae232cc5d38
   MagicalRecord: 2b471584fc9e3137f3d0a56967917baa4979e224
-  SWTableViewCell: 32bc77dd4e8b2675c7c0bed8e6976c56e22ac3e3
+  MCSwipeTableViewCell: 713086e29ce3c2171a0102fc594bf583fa7dd323
   SZTextView: ba45928294d012591c720ae476e58b0bc4c56a44
 
 COCOAPODS: 0.33.1
