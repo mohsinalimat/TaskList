@@ -153,14 +153,6 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
         category2.name = @"Work";
         category2.indexValue = 1;
         
-//        STDTask *task1 = [STDTask createEntity];
-//        task1.name = @"task1";
-//        [category1 addTasksObject:task1];
-//        
-//        STDTask *task2 = [STDTask createEntity];
-//        task2.name = @"task2";
-//        [category2 addTasksObject:task2];
-        
         [[NSManagedObjectContext contextForCurrentThread] saveOnlySelfAndWait];
         
         categories = [STDCategory findAllSortedBy:NSStringFromSelector(@selector(index)) ascending:YES];
@@ -599,7 +591,7 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
                 
                 [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
 
-                if (indexPath.row == category.tasks.count)
+                if (indexPath.row == ([self.tableView numberOfRowsInSection:indexPath.section] - 1))
                     [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:indexPath.row + 1 inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationFade];
                 
                 [self.tableView endUpdates];
