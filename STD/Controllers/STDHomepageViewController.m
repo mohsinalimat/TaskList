@@ -11,7 +11,7 @@
 #import "UIViewController+BHTKeyboardNotifications.h"
 #import "UIImage+Extras.h"
 #import "NSObject+Extras.h"
-#import "BVReorderTableView.h"
+#import "UITableView+LongPressReorder.h"
 
 #import "STDSubtasksViewController.h"
 #import "STDNotesViewController.h"
@@ -43,8 +43,6 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
 @property (strong, nonatomic) NSMutableArray *categories;
 
 @property (strong, nonatomic) NSMutableArray *expandedItems;
-
-@property (strong, nonatomic) STDTask *dummyTask;
 
 @end
 
@@ -90,11 +88,11 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
 - (IBAction)didTouchOnButton:(id)sender
 {
     UIButton *button = sender;
-    NSInteger section = button.superview.tag;
-    STDCategory *category = [self categoryForSection:section];
+    STDCategory *category = [button.superview associatedObjectForKey:&kCategoryKey];
+    NSInteger section = [self sectionForCategory:category];
     if (category) {
         [self animateCategory:category withAction:UITableViewSectionActionExpand completion:^{
-            STDTaskTableViewCell *cell = (STDTaskTableViewCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:([self.tableView numberOfRowsInSection:section] - 1) inSection:section]];
+            STDTaskTableViewCell *cell = (STDTaskTableViewCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:category.tasks.count inSection:section]];
             [cell.textField becomeFirstResponder];
         }];
     } else {
@@ -106,14 +104,14 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
 
 - (void)singleTapGestureRecognized:(UITapGestureRecognizer *)recognizer
 {
-    NSInteger section = recognizer.view.tag;
-    STDCategory *category = [self categoryForSection:section];
+    STDCategory *category = [recognizer.view associatedObjectForKey:&kCategoryKey];
     [self toggleCategory:category];
 }
 
 - (void)doubleTapGestureRecognized:(UITapGestureRecognizer *)recognizer
 {
-    NSInteger section = recognizer.view.tag;
+    STDCategory *category = [recognizer.view associatedObjectForKey:&kCategoryKey];
+    NSInteger section = [self sectionForCategory:category];
     UIView *view = [self.tableView headerViewForSection:section];
     UITextField *textField = (UITextField *)[view viewWithTag:kTextFieldCategory];
     textField.userInteractionEnabled = YES;
@@ -130,6 +128,9 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     
     self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
+    
+    self.tableView.longPressReorderEnabled = YES;
+    self.tableView.lprDelegate = (id)self;
 }
 
 - (void)styleNavigationController
@@ -178,6 +179,11 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     if (self.categories.count > section)
         return self.categories[section];
     return nil;
+}
+
+- (NSUInteger)sectionForCategory:(STDCategory *)category
+{
+    return [self.categories indexOfObject:category];
 }
 
 - (STDTask *)taskForIndexPath:(NSIndexPath *)indexPath
@@ -231,11 +237,13 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     if (task) {
         [cell setDefaultColor:[UIColor lightGrayColor]];
 
-        UIView *checkView = [self viewWithImageName:@"check.png"];
+        UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"check.png"]];
+        imageView.contentMode = UIViewContentModeCenter;
+
         UIColor *greenColor = [UIColor colorWithRed:85.0 / 255.0 green:213.0 / 255.0 blue:80.0 / 255.0 alpha:1.0];
         
         // Adding gestures per state basis.
-        [cell setSwipeGestureWithView:checkView color:greenColor mode:MCSwipeTableViewCellModeSwitch state:(MCSwipeTableViewCellState1 | MCSwipeTableViewCellState3) completionBlock:^(MCSwipeTableViewCell *cell, MCSwipeTableViewCellState state, MCSwipeTableViewCellMode mode) {
+        [cell setSwipeGestureWithView:imageView color:greenColor mode:MCSwipeTableViewCellModeSwitch state:(MCSwipeTableViewCellState1 | MCSwipeTableViewCellState3) completionBlock:^(MCSwipeTableViewCell *cell, MCSwipeTableViewCellState state, MCSwipeTableViewCellMode mode) {
             NSLog(@"Did swipe \"Checkmark\" cell");
             
             STDTask *task = ((STDTaskTableViewCell *)cell).task;
@@ -259,20 +267,6 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     }
 
     return cell;
-}
-
-- (UIView *)viewWithImageName:(NSString *)imageName
-{
-    UIImage *image = [UIImage imageNamed:imageName];
-    UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
-    imageView.contentMode = UIViewContentModeCenter;
-    return imageView;
-}
-
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    STDTask *task = [self taskForIndexPath:indexPath];
-    return (task != nil);
 }
 
 #pragma mark - UITableViewDelegate
@@ -320,9 +314,9 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
         [singleTap requireGestureRecognizerToFail:doubleTap];
     }
     
-    headerFooterView.tag = section;
-    
     STDCategory *category = [self categoryForSection:section];
+    
+    [headerFooterView setAssociatedObject:category forKey:&kCategoryKey];
     
     UITextField *textField = (UITextField *)[headerFooterView viewWithTag:kTextFieldCategory];
     if (!textField) {
@@ -333,6 +327,7 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
         textField.delegate = self;
         textField.tag = kTextFieldCategory;
         textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+        textField.autocapitalizationType = UITextAutocapitalizationTypeAllCharacters;
         [headerFooterView addSubview:textField];
     }
     
@@ -357,95 +352,33 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     return headerFooterView;
 }
 
+#pragma mark
+
+- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    STDTask *task = [self taskForIndexPath:indexPath];
+    return (task != nil);
+}
+
+- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath
+{
+    STDTask *sourceTask = [self taskForIndexPath:sourceIndexPath];
+    
+    STDTask *destinationTask = [self taskForIndexPath:destinationIndexPath];
+    STDCategory *destinationCategory = destinationTask.category;
+    
+    sourceTask.category = destinationCategory;
+    
+    sourceTask.indexValue = destinationIndexPath.row;
+}
+
 - (NSIndexPath *)tableView:(UITableView *)tableView targetIndexPathForMoveFromRowAtIndexPath:(NSIndexPath *)sourceIndexPath toProposedIndexPath:(NSIndexPath *)proposedDestinationIndexPath
 {
-//    //    if ([destinationItem isKindOfClass:[STDCategory class]])
-//    //        if (destinationTreeNodeInfo.children.count)
-//    //            if (!destinationTreeNodeInfo.expanded)
-//    //                [treeView expandRowForItem:destinationItem];
-//    
-//    //    // collapse expanded category
-//    //    if ([sourceItem isKindOfClass:[STDTask class]])
-//    //        if ([destinationItem isKindOfClass:[STDTask class]])
-//    //            if (![((STDTask *)sourceItem).category.category_id isEqualToString:((STDTask *)destinationItem).category.category_id])
-//    //                if (destinationTreeNodeInfo.parent.expanded)
-//    //                    [treeView collapseRowForItem:destinationTreeNodeInfo.parent.item];
-//    
-//    // expand expanded category
-//    if ([sourceItem isKindOfClass:[STDCategory class]] && [destinationItem isKindOfClass:[STDTask class]]) {
-//        if (![((STDCategory *)sourceItem).category_id isEqualToString:((STDTask *)destinationItem).category.category_id]) {
-//            if (destinationTreeNodeInfo.parent.expanded) {
-//                //                [self.expandedItems removeObject:destinationTreeNodeInfo.parent.item];
-//                //                [treeView collapseRowForItem:destinationTreeNodeInfo.parent.item];
-//                return destinationTreeNodeInfo.parent.item;
-//            }
-//        }
-//    }
-    
     STDTask *task = [self taskForIndexPath:proposedDestinationIndexPath];
     if (task)
         return proposedDestinationIndexPath;
+    
     return sourceIndexPath;
-}
-
-#pragma mark - ReorderTableViewDelegate
-
-// This method is called when starting the re-ording process. You insert a blank row object into your
-// data source and return the object you want to save for later. This method is only called once.
-- (id)saveObjectAndInsertBlankRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    STDTask *task = [self taskForIndexPath:indexPath];
-    STDCategory *category = task.category;
-    
-    if (!self.dummyTask)
-        self.dummyTask = [STDTask createEntity];
-    self.dummyTask.index = task.index;
-
-    [category removeTasksObject:task];
-    [category addTasksObject:self.dummyTask];
-    
-    return task;
-}
-
-// This method is called when the selected row is dragged to a new position. You simply update your
-// data source to reflect that the rows have switched places. This can be called multiple times
-// during the reordering process.
-- (void)moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-    STDTask *sourceTask = [self taskForIndexPath:fromIndexPath];
-    STDCategory *sourceCategory = sourceTask.category;
-
-    [sourceCategory removeTasksObject:sourceTask];
-
-    STDTask *destinationTask = [self taskForIndexPath:toIndexPath];
-    STDCategory *destinationCategory = destinationTask.category;
-
-    sourceTask.index = destinationTask.index;
-    
-    [destinationCategory addTasksObject:sourceTask];
-    
-//    STDTask *sourceTask = [self taskForIndexPath:fromIndexPath];
-//    STDTask *destinationTask = [self taskForIndexPath:toIndexPath];
-//    if (sourceTask.category != destinationTask.category) {
-//        STDCategory *category = sourceTask.category;
-//        sourceTask.category = destinationTask.category;
-//        destinationTask.category = category;
-//    }
-//    
-//    NSNumber *index = sourceTask.index;
-//    sourceTask.index = destinationTask.index;
-//    destinationTask.index = index;
-//
-//    [[NSManagedObjectContext contextForCurrentThread] saveOnlySelfAndWait];
-}
-
-// This method is called when the selected row is released to its new position. The object is the same
-// object you returned in saveObjectAndInsertBlankRowAtIndexPath:. Simply update the data source so the
-// object is in its new position. You should do any saving/cleanup here.
-- (void)finishReorderingWithObject:(id)object atIndexPath:(NSIndexPath *)indexPath;
-{
-//    [section replaceObjectAtIndex:indexPath.row withObject:object];
-    // do any additional cleanup here
 }
 
 #pragma mark - Expand/Collapse
@@ -463,7 +396,7 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     
     NSMutableArray *indexes = [NSMutableArray array];
     for (NSInteger index = 0; index < kNumberOfRowsInSection; index++) {
-        [indexes addObject:[NSIndexPath indexPathForRow:index inSection:[self.categories indexOfObject:category]]];
+        [indexes addObject:[NSIndexPath indexPathForRow:index inSection:[self sectionForCategory:category]]];
     }
     
     [CATransaction begin];
@@ -561,7 +494,7 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
         if (buttonIndex != alertView.cancelButtonIndex) {
             STDCategory *category = [self associatedObjectForKey:&kCategoryKey];
             
-            NSInteger section = [self.categories indexOfObject:category];
+            NSInteger section = [self sectionForCategory:category];
             
             [self.categories removeObject:category];
 
@@ -579,8 +512,7 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
 - (BOOL)textFieldShouldClear:(UITextField *)textField;
 {
     if (textField.tag == kTextFieldCategory) {
-        NSInteger section = textField.superview.tag;
-        STDCategory *category = [self categoryForSection:section];
+        STDCategory *category = [textField.superview associatedObjectForKey:&kCategoryKey];
         if (category) {
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"Are you sure you want to delete this category? All associated tasks will be deleted." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Yes", nil];
             alertView.tag = kAlertViewDeleteCategory;
@@ -588,6 +520,8 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
             
             [self setAssociatedObject:category forKey:&kCategoryKey];
             
+            [textField resignFirstResponder];
+
             return NO;
         }
     }
@@ -603,8 +537,7 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
 - (BOOL)textFieldShouldEndEditing:(UITextField *)textField
 {
     if (textField.tag == kTextFieldCategory) {
-        NSInteger section = textField.superview.tag;
-        STDCategory *category = [self categoryForSection:section];
+        STDCategory *category = [textField.superview associatedObjectForKey:&kCategoryKey];
         if (category)
             return textField.text.length;
     } else if (textField.tag == kTextFieldTask) {
@@ -626,8 +559,7 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
         return;
     
     if (textField.tag == kTextFieldCategory) {
-        NSInteger section = textField.superview.tag;
-        STDCategory *category = [self categoryForSection:section];
+        STDCategory *category = [textField.superview associatedObjectForKey:&kCategoryKey];
         if (!category) {
             category = [STDCategory createEntity];
             [self.categories addObject:category];
@@ -636,6 +568,8 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
         category.name = textField.text;
         
         [[NSManagedObjectContext contextForCurrentThread] saveOnlySelfAndWait];
+        
+        NSUInteger section = [self sectionForCategory:category];
         
         [self.tableView beginUpdates];
 
@@ -665,13 +599,25 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
                 
                 [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
 
-                if (indexPath.row == ([self.tableView numberOfRowsInSection:indexPath.section] - 1))
+                if (indexPath.row == category.tasks.count)
                     [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:indexPath.row + 1 inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationFade];
                 
                 [self.tableView endUpdates];
             }
         }
     }
+}
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    if (textField.tag == kTextFieldCategory) {
+        NSRange lowercaseRange = [string rangeOfCharacterFromSet:[NSCharacterSet lowercaseLetterCharacterSet]];
+        if (lowercaseRange.location != NSNotFound) {
+            textField.text = [textField.text stringByReplacingCharactersInRange:range withString:[string uppercaseString]];
+            return NO;
+        }
+    }
+    return YES;
 }
 
 #pragma mark - Keyboard

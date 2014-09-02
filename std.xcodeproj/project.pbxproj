@@ -33,6 +33,8 @@
 		C029D53C19A16A750029D605 /* HPReorderTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = C029D53B19A16A750029D605 /* HPReorderTableView.m */; };
 		C03033F319A1786200D0C285 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = C03033F019A1786200D0C285 /* .gitignore */; };
 		C03033F419A1786200D0C285 /* BVReorderTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = C03033F219A1786200D0C285 /* BVReorderTableView.m */; };
+		C05A476619B52F6500A13B25 /* UITableView+LongPressReorder.m in Sources */ = {isa = PBXBuildFile; fileRef = C05A476519B52F6500A13B25 /* UITableView+LongPressReorder.m */; };
+		C05A476919B5349600A13B25 /* NSManagedObject+Extras.m in Sources */ = {isa = PBXBuildFile; fileRef = C05A476819B5349600A13B25 /* NSManagedObject+Extras.m */; };
 		C06F19CE1960D308000BEDD8 /* STDTaskTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C06F19CC1960D308000BEDD8 /* STDTaskTableViewCell.m */; };
 		C06F19CF1960D308000BEDD8 /* STDTaskTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C06F19CD1960D308000BEDD8 /* STDTaskTableViewCell.xib */; };
 		C07F7C8D1957CB2900CF0C92 /* NSObject+Extras.m in Sources */ = {isa = PBXBuildFile; fileRef = C07F7C8C1957CB2900CF0C92 /* NSObject+Extras.m */; };
@@ -107,6 +109,10 @@
 		C03033F019A1786200D0C285 /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		C03033F119A1786200D0C285 /* BVReorderTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BVReorderTableView.h; sourceTree = "<group>"; };
 		C03033F219A1786200D0C285 /* BVReorderTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BVReorderTableView.m; sourceTree = "<group>"; };
+		C05A476419B52F6500A13B25 /* UITableView+LongPressReorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableView+LongPressReorder.h"; sourceTree = "<group>"; };
+		C05A476519B52F6500A13B25 /* UITableView+LongPressReorder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableView+LongPressReorder.m"; sourceTree = "<group>"; };
+		C05A476719B5349600A13B25 /* NSManagedObject+Extras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+Extras.h"; sourceTree = "<group>"; };
+		C05A476819B5349600A13B25 /* NSManagedObject+Extras.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObject+Extras.m"; sourceTree = "<group>"; };
 		C06F19CB1960D308000BEDD8 /* STDTaskTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STDTaskTableViewCell.h; sourceTree = "<group>"; };
 		C06F19CC1960D308000BEDD8 /* STDTaskTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STDTaskTableViewCell.m; sourceTree = "<group>"; };
 		C06F19CD1960D308000BEDD8 /* STDTaskTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = STDTaskTableViewCell.xib; sourceTree = "<group>"; };
@@ -302,6 +308,15 @@
 			path = BVReorderTableView;
 			sourceTree = "<group>";
 		};
+		C05A476319B52F6500A13B25 /* UITableView+LongPressReorder */ = {
+			isa = PBXGroup;
+			children = (
+				C05A476419B52F6500A13B25 /* UITableView+LongPressReorder.h */,
+				C05A476519B52F6500A13B25 /* UITableView+LongPressReorder.m */,
+			);
+			path = "UITableView+LongPressReorder";
+			sourceTree = "<group>";
+		};
 		C080EF8D1981F8C8009EF488 /* BHTKeyboardAnimationBlocks */ = {
 			isa = PBXGroup;
 			children = (
@@ -317,6 +332,7 @@
 				C080EF8D1981F8C8009EF488 /* BHTKeyboardAnimationBlocks */,
 				C03033EF19A1786200D0C285 /* BVReorderTableView */,
 				C029D53919A16A750029D605 /* HPReorderTableView */,
+				C05A476319B52F6500A13B25 /* UITableView+LongPressReorder */,
 			);
 			path = "External libraries";
 			sourceTree = "<group>";
@@ -324,6 +340,8 @@
 		C082BE19193C17D900A60D8E /* Categories */ = {
 			isa = PBXGroup;
 			children = (
+				C05A476719B5349600A13B25 /* NSManagedObject+Extras.h */,
+				C05A476819B5349600A13B25 /* NSManagedObject+Extras.m */,
 				C07F7C8B1957CB2900CF0C92 /* NSObject+Extras.h */,
 				C07F7C8C1957CB2900CF0C92 /* NSObject+Extras.m */,
 				C082BE1A193C17D900A60D8E /* UIImage+Extras.h */,
@@ -585,10 +603,12 @@
 				C082BE13193BD86C00A60D8E /* STDSubtask.m in Sources */,
 				C082BE08193BD86300A60D8E /* _STDTask.m in Sources */,
 				C0C4625A1932BFFD0031E256 /* STDSettingsViewController.m in Sources */,
+				C05A476919B5349600A13B25 /* NSManagedObject+Extras.m in Sources */,
 				C06F19CE1960D308000BEDD8 /* STDTaskTableViewCell.m in Sources */,
 				C082BE06193BD86300A60D8E /* _STDNote.m in Sources */,
 				C080EF901981F8C8009EF488 /* UIViewController+BHTKeyboardNotifications.m in Sources */,
 				C07F7C8D1957CB2900CF0C92 /* NSObject+Extras.m in Sources */,
+				C05A476619B52F6500A13B25 /* UITableView+LongPressReorder.m in Sources */,
 				C082BE11193BD86C00A60D8E /* STDCategory.m in Sources */,
 				C01D74CB19A1445200905EBD /* STDUserDefaults.m in Sources */,
 				C01CB78919281EC000499B28 /* STDAppDelegate.m in Sources */,
