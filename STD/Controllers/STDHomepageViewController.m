@@ -189,6 +189,52 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     return nil;
 }
 
+- (STDTask *)nextTaskForIndexPath:(NSIndexPath *)indexPath
+{
+    STDCategory *category = [self categoryForSection:indexPath.section];
+    if ((indexPath.row + 1) < category.tasks.count) {
+        NSArray *tasks = [self sortedTasksForCategory:category];
+        return tasks[indexPath.row + 1];
+    } else if ((indexPath.section + 1) < self.categories.count) {
+        NSInteger section = indexPath.section + 1;
+        NSArray *categories = [self.categories subarrayWithRange:NSMakeRange(section, self.categories.count - section)];
+        for (STDCategory *category in categories) {
+            if (category.tasks.count) {
+                NSArray *tasks = [self sortedTasksForCategory:category];
+                return [tasks firstObject];
+            }
+        }
+    }
+    return nil;
+}
+
+- (STDTask *)previousTaskForIndexPath:(NSIndexPath *)indexPath
+{
+    STDCategory *category = [self categoryForSection:indexPath.section];
+    if (indexPath.row > 0) {
+        NSArray *tasks = [self sortedTasksForCategory:category];
+        NSInteger row = MIN(indexPath.row - 1, tasks.count - 1);
+        return tasks[row];
+    } else if (indexPath.section > 0) {
+        NSInteger section = MIN(indexPath.section, self.categories.count);
+        NSArray *categories = [[[self.categories reverseObjectEnumerator] allObjects] subarrayWithRange:NSMakeRange(self.categories.count - section, section)];
+        for (STDCategory *category in categories) {
+            if (category.tasks.count) {
+                NSArray *tasks = [self sortedTasksForCategory:category];
+                return [tasks lastObject];
+            }
+        }
+    }
+    return nil;
+}
+
+- (NSIndexPath *)indexPathOfTask:(STDTask *)task
+{
+    STDCategory *category = task.category;
+    NSArray *tasks = [self sortedTasksForCategory:category];
+    return [NSIndexPath indexPathForRow:[tasks indexOfObject:task] inSection:[self.categories indexOfObject:category]];
+}
+
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -199,7 +245,8 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     STDCategory *category = [self categoryForSection:section];
-    return [self isCategoryExpanded:category] ? kNumberOfRowsInSection : 0;
+    NSInteger numberOfRows = [self isCategoryExpanded:category] ? kNumberOfRowsInSection : 0;
+    return numberOfRows + 1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -276,8 +323,12 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    STDTask *task = [self taskForIndexPath:indexPath];
-    return [self isTaskExpanded:task] ? 88.0f : 44.0f;
+    NSInteger numberOfRows = [self tableView:tableView numberOfRowsInSection:indexPath.section];
+    if (indexPath.row < (numberOfRows - 1)) {
+        STDTask *task = [self taskForIndexPath:indexPath];
+        return [self isTaskExpanded:task] ? 88.0f : 44.0f;
+    }
+    return 0.01f;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -356,20 +407,45 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
 {
     STDTask *sourceTask = [self taskForIndexPath:sourceIndexPath];
     
-    STDTask *destinationTask = [self taskForIndexPath:destinationIndexPath];
-    STDCategory *destinationCategory = destinationTask.category;
-    
-    sourceTask.category = destinationCategory;
+    STDCategory *taskCategory = [self categoryForSection:sourceIndexPath.section];
+    STDCategory *destinationCategory = [self categoryForSection:destinationIndexPath.section];
     
     sourceTask.indexValue = destinationIndexPath.row;
+    
+    [taskCategory removeTasksObject:sourceTask];
+    [destinationCategory addTasksObject:sourceTask];
 }
 
 - (NSIndexPath *)tableView:(UITableView *)tableView targetIndexPathForMoveFromRowAtIndexPath:(NSIndexPath *)sourceIndexPath toProposedIndexPath:(NSIndexPath *)proposedDestinationIndexPath
 {
-    STDTask *task = [self taskForIndexPath:proposedDestinationIndexPath];
-    if (task)
-        return proposedDestinationIndexPath;
-    
+    STDCategory *category = [self categoryForSection:proposedDestinationIndexPath.section];
+    if (category) {
+        if (![self isCategoryExpanded:category]) {
+            [self animateCategory:category withAction:UITableViewSectionActionExpand completion:nil];
+            return sourceIndexPath;
+        }
+        
+        if (proposedDestinationIndexPath.row == 0)
+            return proposedDestinationIndexPath;
+        
+        STDTask *task = [self taskForIndexPath:proposedDestinationIndexPath];
+        if (!task) {
+            if ([sourceIndexPath compare:proposedDestinationIndexPath] == NSOrderedDescending) {
+                task = [self previousTaskForIndexPath:proposedDestinationIndexPath];
+                if (!task) {
+                    task = [self nextTaskForIndexPath:proposedDestinationIndexPath];
+                }
+            } else if ([sourceIndexPath compare:proposedDestinationIndexPath] == NSOrderedAscending) {
+                task = [self nextTaskForIndexPath:proposedDestinationIndexPath];
+                if (!task) {
+                    task = [self previousTaskForIndexPath:proposedDestinationIndexPath];
+                }
+            }
+        }
+        
+        if (task)
+            return [self indexPathOfTask:task];
+    }
     return sourceIndexPath;
 }
 
