@@ -26,7 +26,7 @@
             }
         }
     }
-    NSLog(@"%@", [properties componentsJoinedByString:@", "]);
+    NSLog(@"%@: %@", [self class], [properties componentsJoinedByString:@", "]);
 }
 
 @end

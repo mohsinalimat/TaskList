@@ -12,6 +12,7 @@
 #import "UIImage+Extras.h"
 #import "NSObject+Extras.h"
 #import "UITableView+LongPressReorder.h"
+#import "NSManagedObject+Extras.h"
 
 #import "STDSubtasksViewController.h"
 #import "STDNotesViewController.h"
@@ -235,6 +236,13 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     return [NSIndexPath indexPathForRow:[tasks indexOfObject:task] inSection:[self.categories indexOfObject:category]];
 }
 
+- (void)updateIndexesForTasks:(NSArray *)tasks
+{
+    for (STDTask *task in tasks) {
+        task.indexValue = [tasks indexOfObject:task];
+    }
+}
+
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -407,13 +415,21 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
 {
     STDTask *sourceTask = [self taskForIndexPath:sourceIndexPath];
     
-    STDCategory *taskCategory = [self categoryForSection:sourceIndexPath.section];
+    STDCategory *sourceCategory = [self categoryForSection:sourceIndexPath.section];
     STDCategory *destinationCategory = [self categoryForSection:destinationIndexPath.section];
     
-    sourceTask.indexValue = destinationIndexPath.row;
+    [sourceCategory removeTasksObject:sourceTask];
     
-    [taskCategory removeTasksObject:sourceTask];
-    [destinationCategory addTasksObject:sourceTask];
+    if (sourceIndexPath.section != destinationIndexPath.section) {
+        NSArray *sourceTasks = [self sortedTasksForCategory:sourceCategory];
+        [self updateIndexesForTasks:sourceTasks];
+    }
+    
+    NSMutableArray *destinationTasks = [NSMutableArray arrayWithArray:[self sortedTasksForCategory:destinationCategory]];
+    [destinationTasks insertObject:sourceTask atIndex:destinationIndexPath.row];
+    destinationCategory.tasks = [NSSet setWithArray:destinationTasks];
+    
+    [self updateIndexesForTasks:destinationTasks];
 }
 
 - (NSIndexPath *)tableView:(UITableView *)tableView targetIndexPathForMoveFromRowAtIndexPath:(NSIndexPath *)sourceIndexPath toProposedIndexPath:(NSIndexPath *)proposedDestinationIndexPath
