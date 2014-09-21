@@ -430,6 +430,8 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     destinationCategory.tasks = [NSSet setWithArray:destinationTasks];
     
     [self updateIndexesForTasks:destinationTasks];
+    
+    [[NSManagedObjectContext contextForCurrentThread] saveOnlySelfAndWait];
 }
 
 - (NSIndexPath *)tableView:(UITableView *)tableView targetIndexPathForMoveFromRowAtIndexPath:(NSIndexPath *)sourceIndexPath toProposedIndexPath:(NSIndexPath *)proposedDestinationIndexPath
