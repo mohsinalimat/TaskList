@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+typedef void(^Block)();
+
 @interface STDHomepageViewController : UIViewController
 
 @end

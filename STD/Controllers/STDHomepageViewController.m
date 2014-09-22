@@ -31,6 +31,8 @@ static CGFloat const kBottomInset = 44.0f;
 static char kCategoryKey;
 static char kTaskKey;
 
+static char kBlockKey;
+
 typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     UITableViewSectionActionExpand,
     UITableViewSectionActionCollapse
@@ -505,21 +507,28 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     [self animateCategory:category withAction:action completion:nil];
 }
 
-- (void)animateCategory:(STDCategory *)category withAction:(UITableViewSectionAction)action completion:(void (^)(void))completion
+- (void)animateCategory:(STDCategory *)category withAction:(UITableViewSectionAction)action completion:(Block)completion
 {
     BOOL expand = (action == UITableViewSectionActionExpand);
     BOOL collapse = (action == UITableViewSectionActionCollapse);
     
+    NSUInteger section = [self sectionForCategory:category];
+    
     NSMutableArray *indexes = [NSMutableArray array];
     for (NSInteger index = 0; index < kNumberOfRowsInSection; index++) {
-        [indexes addObject:[NSIndexPath indexPathForRow:index inSection:[self sectionForCategory:category]]];
+        [indexes addObject:[NSIndexPath indexPathForRow:index inSection:section]];
     }
     
     [CATransaction begin];
     [CATransaction setCompletionBlock:^{
-        if ([self isCategoryExpanded:category] && expand)
-            if (![[self.tableView indexPathsForVisibleRows] containsObject:indexes.lastObject])
+        BOOL expanded = [self isCategoryExpanded:category];
+        if (expanded && expand) {
+            if (![[self.tableView indexPathsForVisibleRows] containsObject:indexes.lastObject]) {
                 [self.tableView scrollToRowAtIndexPath:indexes.lastObject atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+                [self setAssociatedObject:completion forKey:&kBlockKey];
+                return;
+            }
+        }
         
         if (completion)
             completion();
@@ -573,6 +582,14 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
 - (BOOL)isTaskExpanded:(STDTask *)task
 {
     return [self.expandedItems containsObject:task];
+}
+
+#pragma mark - UIScrollViewDelegate
+
+- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
+{
+    Block block = [self associatedObjectForKey:&kBlockKey];
+    if (block) block();
 }
 
 #pragma mark - STDTaskTableViewCellDelegate
