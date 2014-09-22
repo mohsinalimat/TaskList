@@ -8,6 +8,7 @@
 
 #import "STDAppDelegate.h"
 #import "STDUserDefaults.h"
+#import "UIImage+Extras.h"
 
 #import "iRate.h"
 
@@ -39,6 +40,12 @@
     UIViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"STDHomepageViewControllerId"];
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
     self.window.rootViewController = navigationController;
+    
+    [[UINavigationBar appearance] setBackgroundImage:[UIImage imageFromColor:[UIColor colorWithWhite:1.0f alpha:0.8f]] forBarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
+    [[UINavigationBar appearance] setShadowImage:[UIImage new]];
+    
+    [[UIToolbar appearance] setBackgroundImage:[UIImage imageFromColor:[UIColor colorWithWhite:1.0f alpha:0.8f]] forToolbarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
+    [[UIToolbar appearance] setShadowImage:[UIImage new] forToolbarPosition:UIBarPositionAny];
     
     [self.window makeKeyAndVisible];
     

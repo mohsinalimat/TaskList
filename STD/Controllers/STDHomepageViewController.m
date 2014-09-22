@@ -9,7 +9,6 @@
 #import "STDHomepageViewController.h"
 #import "STDTaskTableViewCell.h"
 #import "UIViewController+BHTKeyboardNotifications.h"
-#import "UIImage+Extras.h"
 #import "NSObject+Extras.h"
 #import "UITableView+LongPressReorder.h"
 #import "NSManagedObject+Extras.h"
@@ -53,7 +52,7 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
 {
     [super viewWillAppear:animated];
     
-    [self.navigationController setNavigationBarHidden:YES animated:YES];
+    [self.navigationController setNavigationBarHidden:YES animated:animated];
 }
 
 - (void)viewDidLoad
@@ -71,9 +70,16 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     [self.tableView reloadData];
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [self.navigationController setToolbarHidden:NO animated:animated];
+}
+
 - (void)viewWillDisappear:(BOOL)animated
 {
-    [self.navigationController setNavigationBarHidden:NO animated:YES];
+    [self.navigationController setNavigationBarHidden:NO animated:animated];
     
     [super viewWillDisappear:animated];
 }
@@ -83,7 +89,7 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
 - (IBAction)didTouchOnSettingsButton:(id)sender
 {
     STDSettingsViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"STDSettingsViewControllerId"];
-    [self.navigationController pushViewController:viewController animated:YES];
+    [self pushViewController:viewController];
 }
 
 - (IBAction)didTouchOnButton:(id)sender
@@ -121,6 +127,13 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     [textField becomeFirstResponder];
 }
 
+- (void)pushViewController:(UIViewController *)viewController
+{
+    [self.navigationController setToolbarHidden:YES];
+    
+    [self.navigationController pushViewController:viewController animated:YES];
+}
+
 #pragma mark - Styling
 
 - (void)styleTableView
@@ -138,8 +151,9 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
 
 - (void)styleNavigationController
 {
-    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageFromColor:[UIColor colorWithWhite:1.0f alpha:0.8f]] forBarMetrics:UIBarMetricsDefault];
-    self.navigationController.navigationBar.shadowImage = [UIImage new];
+    UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithTitle:@"\u2699" style:UIBarButtonItemStylePlain target:self action:@selector(didTouchOnSettingsButton:)];
+    [settingsButton setTitleTextAttributes:@{NSFontAttributeName: [UIFont boldSystemFontOfSize:24.0]} forState:UIControlStateNormal];
+    self.toolbarItems = @[settingsButton];
 }
 
 #pragma mark - Load
@@ -567,14 +581,14 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
 {
     STDSubtasksViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"STDSubtasksViewControllerId"];
     viewController.task = cell.task;
-    [self.navigationController pushViewController:viewController animated:YES];
+    [self pushViewController:viewController];
 }
 
 - (void)taskDetailsTableViewCell:(STDTaskTableViewCell *)cell didTouchOnNotesButton:(id)sender
 {
     STDNotesViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"STDNotesViewControllerId"];
     viewController.task = cell.task;
-    [self.navigationController pushViewController:viewController animated:YES];
+    [self pushViewController:viewController];
 }
 
 #pragma mark - UIAlertViewDelegate
