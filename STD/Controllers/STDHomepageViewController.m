@@ -105,6 +105,8 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
 
 - (void)singleTapGestureRecognized:(UITapGestureRecognizer *)recognizer
 {
+    [self.view endEditing:YES];
+    
     STDCategory *category = [recognizer.view associatedObjectForKey:&kCategoryKey];
     [self toggleCategory:category];
 }
@@ -241,6 +243,21 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     for (STDTask *task in tasks) {
         task.indexValue = [tasks indexOfObject:task];
     }
+}
+
+- (NSString *)taskCountStringForCategory:(STDCategory *)category
+{
+    NSUInteger count = category.tasks.count;
+    return (count ? [NSString stringWithFormat:@"%d", count] : @"+");
+}
+
+- (void)reloadHeaderViewForCategory:(STDCategory *)category
+{
+    NSInteger section = [self sectionForCategory:category];
+    UIView *view = [self.tableView headerViewForSection:section];
+    UIButton *button = (UIButton *)[view viewWithTag:kButton];
+    NSString *title = [self taskCountStringForCategory:category];
+    [button setTitle:title forState:UIControlStateNormal];
 }
 
 #pragma mark - UITableViewDataSource
@@ -396,8 +413,7 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
         [headerFooterView addSubview:button];
     }
     
-    NSUInteger count = category.tasks.count;
-    NSString *title = (count ? [NSString stringWithFormat:@"%d", count] : @"+");
+    NSString *title = [self taskCountStringForCategory:category];
     [button setTitle:title forState:UIControlStateNormal];
     
     return headerFooterView;
@@ -685,10 +701,12 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
                 
                 [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
 
-                if (indexPath.row == ([self.tableView numberOfRowsInSection:indexPath.section] - 1))
+                if (indexPath.row == ([self.tableView numberOfRowsInSection:indexPath.section] - 2))
                     [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:indexPath.row + 1 inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationFade];
                 
                 [self.tableView endUpdates];
+                
+                [self reloadHeaderViewForCategory:category];
             }
         }
     }

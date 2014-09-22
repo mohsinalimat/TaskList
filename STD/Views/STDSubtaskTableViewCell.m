@@ -22,7 +22,6 @@
         self.textView.showsHorizontalScrollIndicator = NO;
         [self.contentView addSubview:self.textView];
     }
-    
     return self;
 }
 
