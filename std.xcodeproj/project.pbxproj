@@ -30,9 +30,8 @@
 		C01CB78A19281EC000499B28 /* Storyboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C01CB78119281EC000499B28 /* Storyboard.storyboard */; };
 		C01D74C819A141BA00905EBD /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = C01D74C719A141BA00905EBD /* Settings.bundle */; };
 		C01D74CB19A1445200905EBD /* STDUserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = C01D74CA19A1445200905EBD /* STDUserDefaults.m */; };
-		C029D53C19A16A750029D605 /* HPReorderTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = C029D53B19A16A750029D605 /* HPReorderTableView.m */; };
-		C03033F319A1786200D0C285 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = C03033F019A1786200D0C285 /* .gitignore */; };
-		C03033F419A1786200D0C285 /* BVReorderTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = C03033F219A1786200D0C285 /* BVReorderTableView.m */; };
+		C03A5C7019D8D13100437500 /* JRSwizzle.m in Sources */ = {isa = PBXBuildFile; fileRef = C03A5C6F19D8D13100437500 /* JRSwizzle.m */; };
+		C03A5C7319D8D16200437500 /* UITableView+Separator.m in Sources */ = {isa = PBXBuildFile; fileRef = C03A5C7219D8D16200437500 /* UITableView+Separator.m */; };
 		C05A476619B52F6500A13B25 /* UITableView+LongPressReorder.m in Sources */ = {isa = PBXBuildFile; fileRef = C05A476519B52F6500A13B25 /* UITableView+LongPressReorder.m */; };
 		C05A476919B5349600A13B25 /* NSManagedObject+Extras.m in Sources */ = {isa = PBXBuildFile; fileRef = C05A476819B5349600A13B25 /* NSManagedObject+Extras.m */; };
 		C06F19CE1960D308000BEDD8 /* STDTaskTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C06F19CC1960D308000BEDD8 /* STDTaskTableViewCell.m */; };
@@ -104,11 +103,10 @@
 		C01D74C719A141BA00905EBD /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		C01D74C919A1445200905EBD /* STDUserDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STDUserDefaults.h; sourceTree = "<group>"; };
 		C01D74CA19A1445200905EBD /* STDUserDefaults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STDUserDefaults.m; sourceTree = "<group>"; };
-		C029D53A19A16A750029D605 /* HPReorderTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HPReorderTableView.h; sourceTree = "<group>"; };
-		C029D53B19A16A750029D605 /* HPReorderTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HPReorderTableView.m; sourceTree = "<group>"; };
-		C03033F019A1786200D0C285 /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
-		C03033F119A1786200D0C285 /* BVReorderTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BVReorderTableView.h; sourceTree = "<group>"; };
-		C03033F219A1786200D0C285 /* BVReorderTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BVReorderTableView.m; sourceTree = "<group>"; };
+		C03A5C6E19D8D13100437500 /* JRSwizzle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JRSwizzle.h; sourceTree = "<group>"; };
+		C03A5C6F19D8D13100437500 /* JRSwizzle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JRSwizzle.m; sourceTree = "<group>"; };
+		C03A5C7119D8D16200437500 /* UITableView+Separator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableView+Separator.h"; sourceTree = "<group>"; };
+		C03A5C7219D8D16200437500 /* UITableView+Separator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableView+Separator.m"; sourceTree = "<group>"; };
 		C05A476419B52F6500A13B25 /* UITableView+LongPressReorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableView+LongPressReorder.h"; sourceTree = "<group>"; };
 		C05A476519B52F6500A13B25 /* UITableView+LongPressReorder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableView+LongPressReorder.m"; sourceTree = "<group>"; };
 		C05A476719B5349600A13B25 /* NSManagedObject+Extras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+Extras.h"; sourceTree = "<group>"; };
@@ -289,23 +287,13 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
-		C029D53919A16A750029D605 /* HPReorderTableView */ = {
+		C03A5C6D19D8D13100437500 /* JRSwizzle */ = {
 			isa = PBXGroup;
 			children = (
-				C029D53A19A16A750029D605 /* HPReorderTableView.h */,
-				C029D53B19A16A750029D605 /* HPReorderTableView.m */,
+				C03A5C6E19D8D13100437500 /* JRSwizzle.h */,
+				C03A5C6F19D8D13100437500 /* JRSwizzle.m */,
 			);
-			path = HPReorderTableView;
-			sourceTree = "<group>";
-		};
-		C03033EF19A1786200D0C285 /* BVReorderTableView */ = {
-			isa = PBXGroup;
-			children = (
-				C03033F019A1786200D0C285 /* .gitignore */,
-				C03033F119A1786200D0C285 /* BVReorderTableView.h */,
-				C03033F219A1786200D0C285 /* BVReorderTableView.m */,
-			);
-			path = BVReorderTableView;
+			path = JRSwizzle;
 			sourceTree = "<group>";
 		};
 		C05A476319B52F6500A13B25 /* UITableView+LongPressReorder */ = {
@@ -329,9 +317,8 @@
 		C0827F6F19675232000383D3 /* External libraries */ = {
 			isa = PBXGroup;
 			children = (
+				C03A5C6D19D8D13100437500 /* JRSwizzle */,
 				C080EF8D1981F8C8009EF488 /* BHTKeyboardAnimationBlocks */,
-				C03033EF19A1786200D0C285 /* BVReorderTableView */,
-				C029D53919A16A750029D605 /* HPReorderTableView */,
 				C05A476319B52F6500A13B25 /* UITableView+LongPressReorder */,
 			);
 			path = "External libraries";
@@ -346,6 +333,8 @@
 				C07F7C8C1957CB2900CF0C92 /* NSObject+Extras.m */,
 				C082BE1A193C17D900A60D8E /* UIImage+Extras.h */,
 				C082BE1B193C17D900A60D8E /* UIImage+Extras.m */,
+				C03A5C7119D8D16200437500 /* UITableView+Separator.h */,
+				C03A5C7219D8D16200437500 /* UITableView+Separator.m */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -521,7 +510,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				C06F19CF1960D308000BEDD8 /* STDTaskTableViewCell.xib in Resources */,
-				C03033F319A1786200D0C285 /* .gitignore in Resources */,
 				C01CB78519281EC000499B28 /* InfoPlist.strings in Resources */,
 				C01CB78819281EC000499B28 /* Images.xcassets in Resources */,
 				C01D74C819A141BA00905EBD /* Settings.bundle in Resources */,
@@ -597,11 +585,12 @@
 				C082BE12193BD86C00A60D8E /* STDNote.m in Sources */,
 				C0C462541932BFD10031E256 /* STDSubtasksViewController.m in Sources */,
 				C082BE05193BD86300A60D8E /* _STDCategory.m in Sources */,
-				C029D53C19A16A750029D605 /* HPReorderTableView.m in Sources */,
 				C0F933331986178A00FC7329 /* STDSubtaskTableViewCell.m in Sources */,
 				C082BE14193BD86C00A60D8E /* STDTask.m in Sources */,
 				C082BE13193BD86C00A60D8E /* STDSubtask.m in Sources */,
 				C082BE08193BD86300A60D8E /* _STDTask.m in Sources */,
+				C03A5C7319D8D16200437500 /* UITableView+Separator.m in Sources */,
+				C03A5C7019D8D13100437500 /* JRSwizzle.m in Sources */,
 				C0C4625A1932BFFD0031E256 /* STDSettingsViewController.m in Sources */,
 				C05A476919B5349600A13B25 /* NSManagedObject+Extras.m in Sources */,
 				C06F19CE1960D308000BEDD8 /* STDTaskTableViewCell.m in Sources */,
@@ -614,7 +603,6 @@
 				C01CB78919281EC000499B28 /* STDAppDelegate.m in Sources */,
 				C0C462571932BFEC0031E256 /* STDNotesViewController.m in Sources */,
 				C01CB78719281EC000499B28 /* main.m in Sources */,
-				C03033F419A1786200D0C285 /* BVReorderTableView.m in Sources */,
 				C0C462511932BDF20031E256 /* STDHomepageViewController.m in Sources */,
 				C01CB78619281EC000499B28 /* STD.xcdatamodeld in Sources */,
 				C082BE1C193C17D900A60D8E /* UIImage+Extras.m in Sources */,
