@@ -14,7 +14,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zTO-0C-lx4" customClass="SZTextView">
-                        <rect key="frame" x="14" y="0.0" width="292" height="87"/>
+                        <rect key="frame" x="14" y="0.0" width="292" height="88"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -56,7 +56,7 @@
                     <constraint firstItem="Fpk-G8-X9t" firstAttribute="top" secondItem="zTO-0C-lx4" secondAttribute="bottom" id="i5Q-QS-Eb7"/>
                     <constraint firstAttribute="trailing" secondItem="Fpk-G8-X9t" secondAttribute="trailing" id="nVq-1j-p3R"/>
                     <constraint firstItem="Fpk-G8-X9t" firstAttribute="top" secondItem="zTO-0C-lx4" secondAttribute="bottom" id="ubm-ay-zEN"/>
-                    <constraint firstAttribute="bottom" secondItem="Fpk-G8-X9t" secondAttribute="bottom" id="vz6-9u-Udi"/>
+                    <constraint firstAttribute="bottom" secondItem="Fpk-G8-X9t" secondAttribute="bottom" constant="-1" id="vz6-9u-Udi"/>
                 </constraints>
                 <variation key="default">
                     <mask key="constraints">

@@ -101,7 +101,12 @@ static char kDummyTextViewKey;
 - (CGFloat)heightForTextView:(UITextView *)textView
 {
     CGSize size = [textView sizeThatFits:(CGSize){CGRectGetWidth(self.view.bounds) - 28.0f, FLT_MAX}];
-    return MAX(38.0f, size.height + 0.5f);
+    return [self adjustHeight:size.height];
+}
+
+- (CGFloat)adjustHeight:(CGFloat)height
+{
+    return MAX(44.0f, height + 2.5f);
 }
 
 #pragma mark - UITableViewDataSource
@@ -296,8 +301,8 @@ static char kDummyTextViewKey;
 
 - (void)textViewDidChange:(UITextView *)textView
 {
-    CGFloat oldHeight = textView.frame.size.height;
-    CGFloat newHeight = [self heightForTextView:textView] - 0.5f;
+    CGFloat oldHeight = [self adjustHeight:textView.bounds.size.height];
+    CGFloat newHeight = [self heightForTextView:textView];
     if (oldHeight != newHeight) {
         [self.tableView beginUpdates];
         [self.tableView endUpdates];
