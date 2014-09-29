@@ -12,9 +12,6 @@ const struct STDNoteRelationships STDNoteRelationships = {
 	.task = @"task",
 };
 
-const struct STDNoteFetchedProperties STDNoteFetchedProperties = {
-};
-
 @implementation STDNoteID
 @end
 
@@ -40,35 +37,15 @@ const struct STDNoteFetchedProperties STDNoteFetchedProperties = {
 
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
-	
 
 	return keyPaths;
 }
 
-
-
-
 @dynamic body;
-
-
-
-
-
 
 @dynamic note_id;
 
-
-
-
-
-
 @dynamic task;
 
-	
-
-
-
-
-
-
 @end
+

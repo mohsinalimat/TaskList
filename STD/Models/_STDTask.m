@@ -17,9 +17,6 @@ const struct STDTaskRelationships STDTaskRelationships = {
 	.subtasks = @"subtasks",
 };
 
-const struct STDTaskFetchedProperties STDTaskFetchedProperties = {
-};
-
 @implementation STDTaskID
 @end
 
@@ -45,7 +42,7 @@ const struct STDTaskFetchedProperties STDTaskFetchedProperties = {
 
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
-	
+
 	if ([key isEqualToString:@"completedValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"completed"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
@@ -60,12 +57,7 @@ const struct STDTaskFetchedProperties STDTaskFetchedProperties = {
 	return keyPaths;
 }
 
-
-
-
 @dynamic completed;
-
-
 
 - (BOOL)completedValue {
 	NSNumber *result = [self completed];
@@ -85,20 +77,9 @@ const struct STDTaskFetchedProperties STDTaskFetchedProperties = {
 	[self setPrimitiveCompleted:[NSNumber numberWithBool:value_]];
 }
 
-
-
-
-
 @dynamic completion_date;
 
-
-
-
-
-
 @dynamic index;
-
-
 
 - (int16_t)indexValue {
 	NSNumber *result = [self index];
@@ -118,48 +99,24 @@ const struct STDTaskFetchedProperties STDTaskFetchedProperties = {
 	[self setPrimitiveIndex:[NSNumber numberWithShort:value_]];
 }
 
-
-
-
-
 @dynamic name;
-
-
-
-
-
 
 @dynamic task_id;
 
-
-
-
-
-
 @dynamic category;
-
-	
 
 @dynamic note;
 
-	
-
 @dynamic subtasks;
 
-	
 - (NSMutableSet*)subtasksSet {
 	[self willAccessValueForKey:@"subtasks"];
-  
+
 	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"subtasks"];
-  
+
 	[self didAccessValueForKey:@"subtasks"];
 	return result;
 }
-	
-
-
-
-
-
 
 @end
+

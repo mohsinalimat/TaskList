@@ -3,14 +3,8 @@
 
 #import "_STDSubtask.h"
 
-const struct STDSubtaskAttributes STDSubtaskAttributes = {
-};
-
 const struct STDSubtaskRelationships STDSubtaskRelationships = {
 	.task = @"task",
-};
-
-const struct STDSubtaskFetchedProperties STDSubtaskFetchedProperties = {
 };
 
 @implementation STDSubtaskID
@@ -38,21 +32,11 @@ const struct STDSubtaskFetchedProperties STDSubtaskFetchedProperties = {
 
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
-	
 
 	return keyPaths;
 }
 
-
-
-
 @dynamic task;
 
-	
-
-
-
-
-
-
 @end
+

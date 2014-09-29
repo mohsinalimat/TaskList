@@ -3,7 +3,6 @@
 
 #import <CoreData/CoreData.h>
 
-
 extern const struct STDTaskAttributes {
 	__unsafe_unretained NSString *completed;
 	__unsafe_unretained NSString *completion_date;
@@ -18,18 +17,9 @@ extern const struct STDTaskRelationships {
 	__unsafe_unretained NSString *subtasks;
 } STDTaskRelationships;
 
-extern const struct STDTaskFetchedProperties {
-} STDTaskFetchedProperties;
-
 @class STDCategory;
 @class STDNote;
 @class STDSubtask;
-
-
-
-
-
-
 
 @interface STDTaskID : NSManagedObjectID {}
 @end
@@ -38,96 +28,51 @@ extern const struct STDTaskFetchedProperties {
 + (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_;
 + (NSString*)entityName;
 + (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
-- (STDTaskID*)objectID;
-
-
-
-
+@property (nonatomic, readonly, strong) STDTaskID* objectID;
 
 @property (nonatomic, strong) NSNumber* completed;
 
-
-
-@property BOOL completedValue;
+@property (atomic) BOOL completedValue;
 - (BOOL)completedValue;
 - (void)setCompletedValue:(BOOL)value_;
 
 //- (BOOL)validateCompleted:(id*)value_ error:(NSError**)error_;
 
-
-
-
-
 @property (nonatomic, strong) NSDate* completion_date;
-
-
 
 //- (BOOL)validateCompletion_date:(id*)value_ error:(NSError**)error_;
 
-
-
-
-
 @property (nonatomic, strong) NSNumber* index;
 
-
-
-@property int16_t indexValue;
+@property (atomic) int16_t indexValue;
 - (int16_t)indexValue;
 - (void)setIndexValue:(int16_t)value_;
 
 //- (BOOL)validateIndex:(id*)value_ error:(NSError**)error_;
 
-
-
-
-
 @property (nonatomic, strong) NSString* name;
-
-
 
 //- (BOOL)validateName:(id*)value_ error:(NSError**)error_;
 
-
-
-
-
 @property (nonatomic, strong) NSString* task_id;
 
-
-
 //- (BOOL)validateTask_id:(id*)value_ error:(NSError**)error_;
-
-
-
-
 
 @property (nonatomic, strong) STDCategory *category;
 
 //- (BOOL)validateCategory:(id*)value_ error:(NSError**)error_;
 
-
-
-
 @property (nonatomic, strong) STDNote *note;
 
 //- (BOOL)validateNote:(id*)value_ error:(NSError**)error_;
-
-
-
 
 @property (nonatomic, strong) NSSet *subtasks;
 
 - (NSMutableSet*)subtasksSet;
 
-
-
-
-
 @end
 
-@interface _STDTask (CoreDataGeneratedAccessors)
-
+@interface _STDTask (SubtasksCoreDataGeneratedAccessors)
 - (void)addSubtasks:(NSSet*)value_;
 - (void)removeSubtasks:(NSSet*)value_;
 - (void)addSubtasksObject:(STDSubtask*)value_;
@@ -137,21 +82,14 @@ extern const struct STDTaskFetchedProperties {
 
 @interface _STDTask (CoreDataGeneratedPrimitiveAccessors)
 
-
 - (NSNumber*)primitiveCompleted;
 - (void)setPrimitiveCompleted:(NSNumber*)value;
 
 - (BOOL)primitiveCompletedValue;
 - (void)setPrimitiveCompletedValue:(BOOL)value_;
 
-
-
-
 - (NSDate*)primitiveCompletion_date;
 - (void)setPrimitiveCompletion_date:(NSDate*)value;
-
-
-
 
 - (NSNumber*)primitiveIndex;
 - (void)setPrimitiveIndex:(NSNumber*)value;
@@ -159,34 +97,19 @@ extern const struct STDTaskFetchedProperties {
 - (int16_t)primitiveIndexValue;
 - (void)setPrimitiveIndexValue:(int16_t)value_;
 
-
-
-
 - (NSString*)primitiveName;
 - (void)setPrimitiveName:(NSString*)value;
-
-
-
 
 - (NSString*)primitiveTask_id;
 - (void)setPrimitiveTask_id:(NSString*)value;
 
-
-
-
-
 - (STDCategory*)primitiveCategory;
 - (void)setPrimitiveCategory:(STDCategory*)value;
-
-
 
 - (STDNote*)primitiveNote;
 - (void)setPrimitiveNote:(STDNote*)value;
 
-
-
 - (NSMutableSet*)primitiveSubtasks;
 - (void)setPrimitiveSubtasks:(NSMutableSet*)value;
-
 
 @end

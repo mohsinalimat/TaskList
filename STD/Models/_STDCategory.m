@@ -13,9 +13,6 @@ const struct STDCategoryRelationships STDCategoryRelationships = {
 	.tasks = @"tasks",
 };
 
-const struct STDCategoryFetchedProperties STDCategoryFetchedProperties = {
-};
-
 @implementation STDCategoryID
 @end
 
@@ -41,7 +38,7 @@ const struct STDCategoryFetchedProperties STDCategoryFetchedProperties = {
 
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
-	
+
 	if ([key isEqualToString:@"indexValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"index"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
@@ -51,19 +48,9 @@ const struct STDCategoryFetchedProperties STDCategoryFetchedProperties = {
 	return keyPaths;
 }
 
-
-
-
 @dynamic category_id;
 
-
-
-
-
-
 @dynamic index;
-
-
 
 - (int16_t)indexValue {
 	NSNumber *result = [self index];
@@ -83,33 +70,18 @@ const struct STDCategoryFetchedProperties STDCategoryFetchedProperties = {
 	[self setPrimitiveIndex:[NSNumber numberWithShort:value_]];
 }
 
-
-
-
-
 @dynamic name;
-
-
-
-
-
 
 @dynamic tasks;
 
-	
 - (NSMutableSet*)tasksSet {
 	[self willAccessValueForKey:@"tasks"];
-  
+
 	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"tasks"];
-  
+
 	[self didAccessValueForKey:@"tasks"];
 	return result;
 }
-	
-
-
-
-
-
 
 @end
+
