@@ -10,6 +10,9 @@
 #import "STDSubtaskTableViewCell.h"
 #import "UIViewController+BHTKeyboardNotifications.h"
 #import "NSObject+Extras.h"
+#import "UITableView+LongPressReorder.h"
+
+#import "STDNotesViewController.h"
 
 #define kNumberOfRowsInSection self.subtasks.count + 1
 #define kTextViewFont [UIFont systemFontOfSize:17]
@@ -49,6 +52,11 @@ static char kDummyTextViewKey;
     
     self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectZero];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    
+    self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
+    
+    self.tableView.longPressReorderEnabled = YES;
+    self.tableView.lprDelegate = (id)self;
 }
 
 #pragma mark - Load
@@ -62,7 +70,14 @@ static char kDummyTextViewKey;
     return _subtasks;
 }
 
-- (STDSubtask *)subtaskForRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)updateIndexesForSubtasks:(NSArray *)subtasks
+{
+    for (STDSubtask *subtask in subtasks) {
+        subtask.indexValue = [subtasks indexOfObject:subtask];
+    }
+}
+
+- (STDSubtask *)subtaskForIndexPath:(NSIndexPath *)indexPath
 {
     STDSubtask *subtask;
     if (self.subtasks.count > indexPath.row)
@@ -70,7 +85,7 @@ static char kDummyTextViewKey;
     return subtask;
 }
 
-- (NSString *)textForRowAtIndexPath:(NSIndexPath *)indexPath
+- (NSString *)textForIndexPath:(NSIndexPath *)indexPath
 {
     UITextView *textView = [self associatedObjectForKey:&kTextViewKey];
     if (textView) {
@@ -79,7 +94,7 @@ static char kDummyTextViewKey;
             return textView.text;
     }
     
-    STDSubtask *subtask = [self subtaskForRowAtIndexPath:indexPath];
+    STDSubtask *subtask = [self subtaskForIndexPath:indexPath];
     return subtask.name;
 }
 
@@ -115,7 +130,7 @@ static char kDummyTextViewKey;
     
     cell.contentView.tag = indexPath.row;
     
-    STDSubtask *subtask = [self subtaskForRowAtIndexPath:indexPath];
+    STDSubtask *subtask = [self subtaskForIndexPath:indexPath];
     cell.textView.text = subtask.name;
     cell.textView.userInteractionEnabled = !subtask;
     
@@ -128,7 +143,7 @@ static char kDummyTextViewKey;
 {
     [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
     
-    STDSubtask *subtask = [self subtaskForRowAtIndexPath:indexPath];
+    STDSubtask *subtask = [self subtaskForIndexPath:indexPath];
     if (!subtask)
         return;
     
@@ -143,14 +158,43 @@ static char kDummyTextViewKey;
         textView.font = kTextViewFont;
         [self setAssociatedObject:textView forKey:&kDummyTextViewKey];
     }
-    textView.text = [self textForRowAtIndexPath:indexPath];
+    textView.text = [self textForIndexPath:indexPath];
     CGFloat height = [self heightForTextView:textView];
     
-    STDSubtask *subtask = [self subtaskForRowAtIndexPath:indexPath];
+    STDSubtask *subtask = [self subtaskForIndexPath:indexPath];
     if ([self isSubtaskExpanded:subtask])
         height += 44.0f;
     
     return height;
+}
+
+#pragma mark - Reorder
+
+- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    STDSubtask *subtask = [self subtaskForIndexPath:indexPath];
+    return (subtask != nil);
+}
+
+- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath
+{
+    STDSubtask *subtask = [self subtaskForIndexPath:sourceIndexPath];
+    
+    [self.task removeSubtasksObject:subtask];
+    
+    NSMutableArray *subtasks = [NSMutableArray arrayWithArray:self.subtasks];
+    [subtasks insertObject:subtask atIndex:destinationIndexPath.row];
+    self.task.subtasks = [NSSet setWithArray:subtasks];
+    
+    [self updateIndexesForSubtasks:subtasks];
+    
+    [[NSManagedObjectContext contextForCurrentThread] saveOnlySelfAndWait];
+}
+
+- (NSIndexPath *)tableView:(UITableView *)tableView targetIndexPathForMoveFromRowAtIndexPath:(NSIndexPath *)sourceIndexPath toProposedIndexPath:(NSIndexPath *)proposedDestinationIndexPath
+{
+    STDSubtask *subtask = [self subtaskForIndexPath:proposedDestinationIndexPath];
+    return (subtask ? proposedDestinationIndexPath : sourceIndexPath);
 }
 
 #pragma mark - Expand/Collapse
@@ -184,7 +228,9 @@ static char kDummyTextViewKey;
 
 - (void)subtaskTableViewCell:(STDSubtaskTableViewCell *)cell didTouchOnNotesButton:(id)sender;
 {
-    
+    STDNotesViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"STDNotesViewControllerId"];
+    viewController.task = self.task;
+    [self.navigationController pushViewController:viewController animated:YES];
 }
 
 - (void)subtaskTableViewCell:(STDSubtaskTableViewCell *)cell didTouchOnMoveButton:(id)sender;
@@ -203,7 +249,7 @@ static char kDummyTextViewKey;
 {
     NSInteger row = textView.superview.tag;
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:0];
-    STDSubtask *subtask = [self subtaskForRowAtIndexPath:indexPath];
+    STDSubtask *subtask = [self subtaskForIndexPath:indexPath];
     if (subtask)
         return textView.text.length;
     
@@ -219,7 +265,7 @@ static char kDummyTextViewKey;
     
     NSInteger row = textView.superview.tag;
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:0];
-    STDSubtask *subtask = [self subtaskForRowAtIndexPath:indexPath];
+    STDSubtask *subtask = [self subtaskForIndexPath:indexPath];
     if (!subtask) {
         subtask = [STDSubtask createEntity];
         [self.task addSubtasksObject:subtask];

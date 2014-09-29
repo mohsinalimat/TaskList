@@ -438,7 +438,7 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     return headerFooterView;
 }
 
-#pragma mark
+#pragma mark - Reorder
 
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
 {
