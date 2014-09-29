@@ -445,6 +445,8 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
 
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath
 {
+    BOOL isSameCategory = (sourceIndexPath.section == destinationIndexPath.section);
+    
     STDTask *sourceTask = [self taskForIndexPath:sourceIndexPath];
     
     STDCategory *sourceCategory = [self categoryForSection:sourceIndexPath.section];
@@ -452,7 +454,7 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     
     [sourceCategory removeTasksObject:sourceTask];
     
-    if (sourceIndexPath.section != destinationIndexPath.section) {
+    if (!isSameCategory) {
         NSArray *sourceTasks = [self sortedTasksForCategory:sourceCategory];
         [self updateIndexesForTasks:sourceTasks];
     }
@@ -462,6 +464,11 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     destinationCategory.tasks = [NSSet setWithArray:destinationTasks];
     
     [self updateIndexesForTasks:destinationTasks];
+    
+    if (!isSameCategory) {
+        [self reloadHeaderViewForCategory:sourceCategory];
+        [self reloadHeaderViewForCategory:destinationCategory];
+    }
     
     [[NSManagedObjectContext contextForCurrentThread] saveOnlySelfAndWait];
 }
