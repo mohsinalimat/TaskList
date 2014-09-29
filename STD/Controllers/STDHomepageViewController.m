@@ -11,7 +11,6 @@
 #import "UIViewController+BHTKeyboardNotifications.h"
 #import "NSObject+Extras.h"
 #import "UITableView+LongPressReorder.h"
-#import "NSManagedObject+Extras.h"
 
 #import "STDSubtasksViewController.h"
 #import "STDNotesViewController.h"
@@ -24,6 +23,7 @@
 #define kAlertViewCompleteSubtasks 100
 #define kAlertViewDeleteCategory 200
 
+#define kNumberOfSections self.categories.count + 1
 #define kNumberOfRowsInSection category.tasks.count + 1
 
 static CGFloat const kBottomInset = 44.0f;
@@ -140,6 +140,9 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
 
 - (void)styleTableView
 {
+    self.tableView.rowHeight = UITableViewAutomaticDimension;
+    self.tableView.estimatedRowHeight = 44.0f;
+
     self.tableView.contentInset = (UIEdgeInsets){0, 0, kBottomInset, 0};
     
     self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectZero];
@@ -280,7 +283,7 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return self.categories.count + 1;
+    return kNumberOfSections;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -384,7 +387,7 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     if (!headerFooterView) {
         headerFooterView = [[UITableViewHeaderFooterView alloc] initWithReuseIdentifier:CellIdentifier];
 
-        headerFooterView.frame = (CGRect){0, 0, 320, 44};
+        headerFooterView.frame = (CGRect){0, 0, CGRectGetWidth(self.view.bounds), 44};
         headerFooterView.contentView.backgroundColor = [UIColor whiteColor];
         
         UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(singleTapGestureRecognized:)];
@@ -571,7 +574,7 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     if (expanded) {
         [self.expandedItems removeObject:task];
     } else {
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"class == %@", [STDTask class]];
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"class == %@", [task class]];
         NSArray *tasks = [self.expandedItems filteredArrayUsingPredicate:predicate];
         [self.expandedItems removeObjectsInArray:tasks];
         
@@ -601,14 +604,14 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
 
 #pragma mark - STDTaskTableViewCellDelegate
 
-- (void)taskDetailsTableViewCell:(STDTaskTableViewCell *)cell didTouchOnTasksButton:(id)sender
+- (void)taskTableViewCell:(STDTaskTableViewCell *)cell didTouchOnTasksButton:(id)sender
 {
     STDSubtasksViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"STDSubtasksViewControllerId"];
     viewController.task = cell.task;
     [self pushViewController:viewController];
 }
 
-- (void)taskDetailsTableViewCell:(STDTaskTableViewCell *)cell didTouchOnNotesButton:(id)sender
+- (void)taskTableViewCell:(STDTaskTableViewCell *)cell didTouchOnNotesButton:(id)sender
 {
     STDNotesViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"STDNotesViewControllerId"];
     viewController.task = cell.task;

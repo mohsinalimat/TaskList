@@ -10,19 +10,27 @@
 
 @implementation STDSubtaskTableViewCell
 
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+- (void)awakeFromNib
 {
-    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
-    if (self) {
-        self.textView = [[SZTextView alloc] initWithFrame:(CGRect){14.0f, CGRectGetMinY(self.bounds), 292.0f, CGRectGetHeight(self.bounds)}];
-        self.textView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
-        self.textView.scrollsToTop = NO;
-        self.textView.scrollEnabled = NO;
-        self.textView.showsVerticalScrollIndicator = NO;
-        self.textView.showsHorizontalScrollIndicator = NO;
-        [self.contentView addSubview:self.textView];
+    for (UIButton *button in self.buttons) {
+        button.tintColor = [UIColor blackColor];
     }
-    return self;
+    
+    self.textView.scrollsToTop = NO;
+}
+
+- (IBAction)didTouchOnNotesButton:(id)sender
+{
+    if ([self.delegate respondsToSelector:@selector(subtaskTableViewCell:didTouchOnNotesButton:)]) {
+        [self.delegate subtaskTableViewCell:self didTouchOnNotesButton:sender];
+    }
+}
+
+- (IBAction)didTouchOnMoveButton:(id)sender
+{
+    if ([self.delegate respondsToSelector:@selector(subtaskTableViewCell:didTouchOnMoveButton:)]) {
+        [self.delegate subtaskTableViewCell:self didTouchOnMoveButton:sender];
+    }
 }
 
 @end

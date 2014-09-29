@@ -17,11 +17,13 @@
 static char kTextViewKey;
 static char kDummyTextViewKey;
 
-@interface STDSubtasksViewController () <UITableViewDataSource, UITableViewDelegate, UITextViewDelegate>
+@interface STDSubtasksViewController () <UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, STDSubtaskTableViewCellDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 @property (strong, nonatomic) NSArray *subtasks;
+
+@property (strong, nonatomic) NSMutableArray *expandedItems;
 
 @end
 
@@ -42,7 +44,8 @@ static char kDummyTextViewKey;
 
 - (void)styleTableView
 {
-    self.tableView.estimatedRowHeight = UITableViewAutomaticDimension;
+    self.tableView.rowHeight = UITableViewAutomaticDimension;
+    self.tableView.estimatedRowHeight = 44.0f;
     
     self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectZero];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
@@ -82,7 +85,7 @@ static char kDummyTextViewKey;
 
 - (CGFloat)heightForTextView:(UITextView *)textView
 {
-    CGSize size = [textView sizeThatFits:(CGSize){292.0f, FLT_MAX}];
+    CGSize size = [textView sizeThatFits:(CGSize){CGRectGetWidth(self.view.bounds) - 28.0f, FLT_MAX}];
     return MAX(38.0f, size.height + 0.5f);
 }
 
@@ -97,9 +100,13 @@ static char kDummyTextViewKey;
 {
     STDSubtaskTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass([STDSubtaskTableViewCell class])];
     if (!cell) {
-        cell = [[STDSubtaskTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:NSStringFromClass([STDSubtaskTableViewCell class])];
+        cell = (STDSubtaskTableViewCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([STDSubtaskTableViewCell class]) owner:self options:nil] firstObject];
         
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        
+        cell.clipsToBounds = YES;
+        
+        cell.delegate = self;
         
         cell.textView.delegate = self;
         cell.textView.font = kTextViewFont;
@@ -117,6 +124,17 @@ static char kDummyTextViewKey;
 
 #pragma mark - UITableViewDelegate
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
+    
+    STDSubtask *subtask = [self subtaskForRowAtIndexPath:indexPath];
+    if (!subtask)
+        return;
+    
+    [self toggleSubtask:subtask];
+}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITextView *textView = [self associatedObjectForKey:&kDummyTextViewKey];
@@ -126,7 +144,52 @@ static char kDummyTextViewKey;
         [self setAssociatedObject:textView forKey:&kDummyTextViewKey];
     }
     textView.text = [self textForRowAtIndexPath:indexPath];
-    return [self heightForTextView:textView];
+    CGFloat height = [self heightForTextView:textView];
+    
+    STDSubtask *subtask = [self subtaskForRowAtIndexPath:indexPath];
+    if ([self isSubtaskExpanded:subtask])
+        height += 44.0f;
+    
+    return height;
+}
+
+#pragma mark - Expand/Collapse
+
+- (void)toggleSubtask:(STDSubtask *)subtask
+{
+    [self.tableView beginUpdates];
+    
+    if (!self.expandedItems)
+        self.expandedItems = [NSMutableArray array];
+    BOOL expanded = [self isSubtaskExpanded:subtask];
+    if (expanded) {
+        [self.expandedItems removeObject:subtask];
+    } else {
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"class == %@", [subtask class]];
+        NSArray *tasks = [self.expandedItems filteredArrayUsingPredicate:predicate];
+        [self.expandedItems removeObjectsInArray:tasks];
+        
+        [self.expandedItems addObject:subtask];
+    }
+    
+    [self.tableView endUpdates];
+}
+
+- (BOOL)isSubtaskExpanded:(STDSubtask *)subtask
+{
+    return [self.expandedItems containsObject:subtask];
+}
+
+#pragma mark - STDSubtaskTableViewCellDelegate
+
+- (void)subtaskTableViewCell:(STDSubtaskTableViewCell *)cell didTouchOnNotesButton:(id)sender;
+{
+    
+}
+
+- (void)subtaskTableViewCell:(STDSubtaskTableViewCell *)cell didTouchOnMoveButton:(id)sender;
+{
+    
 }
 
 #pragma mark - UITextViewDelegate

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6245" systemVersion="14A361c" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment defaultVersion="1808" identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="STDSubtaskTableViewCell" id="F9U-9P-UD3" customClass="STDSubtaskTableViewCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="88"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="F9U-9P-UD3" id="jPK-D4-6jx">
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zTO-0C-lx4" customClass="SZTextView">
+                        <rect key="frame" x="14" y="0.0" width="292" height="87"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                    </textView>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fpk-G8-X9t">
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AyH-FY-Az8">
+                                <rect key="frame" x="0.0" y="0.0" width="160" height="44"/>
+                                <state key="normal" title="Notes">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="didTouchOnNotesButton:" destination="F9U-9P-UD3" eventType="touchUpInside" id="ZZK-ha-zaC"/>
+                                </connections>
+                            </button>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FmX-yb-OIw">
+                                <rect key="frame" x="160" y="7" width="1" height="30"/>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yQ6-NK-xFM">
+                                <rect key="frame" x="160" y="0.0" width="160" height="44"/>
+                                <state key="normal" title="Move">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="didTouchOnMoveButton:" destination="F9U-9P-UD3" eventType="touchUpInside" id="NLN-Oz-Fbr"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="trailing" secondItem="zTO-0C-lx4" secondAttribute="trailing" constant="14" id="02q-1T-cRh"/>
+                    <constraint firstItem="Fpk-G8-X9t" firstAttribute="leading" secondItem="jPK-D4-6jx" secondAttribute="leading" id="6Fv-du-EtR"/>
+                    <constraint firstItem="zTO-0C-lx4" firstAttribute="top" secondItem="jPK-D4-6jx" secondAttribute="top" id="Fir-no-2Ya"/>
+                    <constraint firstItem="zTO-0C-lx4" firstAttribute="leading" secondItem="jPK-D4-6jx" secondAttribute="leading" constant="14" id="e3C-LC-t1S"/>
+                    <constraint firstItem="Fpk-G8-X9t" firstAttribute="top" secondItem="zTO-0C-lx4" secondAttribute="bottom" id="i5Q-QS-Eb7"/>
+                    <constraint firstAttribute="trailing" secondItem="Fpk-G8-X9t" secondAttribute="trailing" id="nVq-1j-p3R"/>
+                    <constraint firstItem="Fpk-G8-X9t" firstAttribute="top" secondItem="zTO-0C-lx4" secondAttribute="bottom" id="ubm-ay-zEN"/>
+                    <constraint firstAttribute="bottom" secondItem="Fpk-G8-X9t" secondAttribute="bottom" id="vz6-9u-Udi"/>
+                </constraints>
+                <variation key="default">
+                    <mask key="constraints">
+                        <exclude reference="ubm-ay-zEN"/>
+                    </mask>
+                </variation>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="expandedView" destination="Fpk-G8-X9t" id="8yN-Ow-U8K"/>
+                <outlet property="textView" destination="zTO-0C-lx4" id="LV5-Uv-kbB"/>
+                <outletCollection property="buttons" destination="AyH-FY-Az8" id="3vT-rm-pD7"/>
+                <outletCollection property="buttons" destination="yQ6-NK-xFM" id="Jvd-yb-CcR"/>
+            </connections>
+            <point key="canvasLocation" x="484" y="314"/>
+        </tableViewCell>
+    </objects>
+</document>

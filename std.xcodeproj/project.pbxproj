@@ -32,6 +32,7 @@
 		C01D74CB19A1445200905EBD /* STDUserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = C01D74CA19A1445200905EBD /* STDUserDefaults.m */; };
 		C03A5C7019D8D13100437500 /* JRSwizzle.m in Sources */ = {isa = PBXBuildFile; fileRef = C03A5C6F19D8D13100437500 /* JRSwizzle.m */; };
 		C03A5C7319D8D16200437500 /* UITableView+Separator.m in Sources */ = {isa = PBXBuildFile; fileRef = C03A5C7219D8D16200437500 /* UITableView+Separator.m */; };
+		C03A5C7519D8E0DB00437500 /* STDSubtaskTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C03A5C7419D8E0DB00437500 /* STDSubtaskTableViewCell.xib */; };
 		C05A476619B52F6500A13B25 /* UITableView+LongPressReorder.m in Sources */ = {isa = PBXBuildFile; fileRef = C05A476519B52F6500A13B25 /* UITableView+LongPressReorder.m */; };
 		C05A476919B5349600A13B25 /* NSManagedObject+Extras.m in Sources */ = {isa = PBXBuildFile; fileRef = C05A476819B5349600A13B25 /* NSManagedObject+Extras.m */; };
 		C06F19CE1960D308000BEDD8 /* STDTaskTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C06F19CC1960D308000BEDD8 /* STDTaskTableViewCell.m */; };
@@ -107,6 +108,7 @@
 		C03A5C6F19D8D13100437500 /* JRSwizzle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JRSwizzle.m; sourceTree = "<group>"; };
 		C03A5C7119D8D16200437500 /* UITableView+Separator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableView+Separator.h"; sourceTree = "<group>"; };
 		C03A5C7219D8D16200437500 /* UITableView+Separator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableView+Separator.m"; sourceTree = "<group>"; };
+		C03A5C7419D8E0DB00437500 /* STDSubtaskTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = STDSubtaskTableViewCell.xib; sourceTree = "<group>"; };
 		C05A476419B52F6500A13B25 /* UITableView+LongPressReorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableView+LongPressReorder.h"; sourceTree = "<group>"; };
 		C05A476519B52F6500A13B25 /* UITableView+LongPressReorder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableView+LongPressReorder.m"; sourceTree = "<group>"; };
 		C05A476719B5349600A13B25 /* NSManagedObject+Extras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+Extras.h"; sourceTree = "<group>"; };
@@ -280,6 +282,7 @@
 			children = (
 				C0F933301986178A00FC7329 /* STDSubtaskTableViewCell.h */,
 				C0F933311986178A00FC7329 /* STDSubtaskTableViewCell.m */,
+				C03A5C7419D8E0DB00437500 /* STDSubtaskTableViewCell.xib */,
 				C06F19CB1960D308000BEDD8 /* STDTaskTableViewCell.h */,
 				C06F19CC1960D308000BEDD8 /* STDTaskTableViewCell.m */,
 				C06F19CD1960D308000BEDD8 /* STDTaskTableViewCell.xib */,
@@ -514,6 +517,7 @@
 				C01CB78819281EC000499B28 /* Images.xcassets in Resources */,
 				C01D74C819A141BA00905EBD /* Settings.bundle in Resources */,
 				C0D5C6C119B3EF1E0010C13A /* cross@2x.png in Resources */,
+				C03A5C7519D8E0DB00437500 /* STDSubtaskTableViewCell.xib in Resources */,
 				C0D5C6C219B3EF1E0010C13A /* list@2x.png in Resources */,
 				C0D5C6C019B3EF1E0010C13A /* clock@2x.png in Resources */,
 				C01CB78A19281EC000499B28 /* Storyboard.storyboard in Resources */,

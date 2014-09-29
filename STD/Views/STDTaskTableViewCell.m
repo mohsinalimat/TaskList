@@ -21,15 +21,15 @@
 
 - (IBAction)didTouchOnTasksButton:(id)sender
 {
-    if ([self.delegate respondsToSelector:@selector(taskDetailsTableViewCell:didTouchOnTasksButton:)]) {
-        [self.delegate taskDetailsTableViewCell:self didTouchOnTasksButton:sender];
+    if ([self.delegate respondsToSelector:@selector(taskTableViewCell:didTouchOnTasksButton:)]) {
+        [self.delegate taskTableViewCell:self didTouchOnTasksButton:sender];
     }
 }
 
 - (IBAction)didTouchOnNotesButton:(id)sender
 {
-    if ([self.delegate respondsToSelector:@selector(taskDetailsTableViewCell:didTouchOnNotesButton:)]) {
-        [self.delegate taskDetailsTableViewCell:self didTouchOnNotesButton:sender];
+    if ([self.delegate respondsToSelector:@selector(taskTableViewCell:didTouchOnNotesButton:)]) {
+        [self.delegate taskTableViewCell:self didTouchOnNotesButton:sender];
     }
 }
 
