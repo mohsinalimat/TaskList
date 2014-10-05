@@ -6,6 +6,12 @@
 // project.
 
 
+// JRSwizzle
+#define COCOAPODS_POD_AVAILABLE_JRSwizzle
+#define COCOAPODS_VERSION_MAJOR_JRSwizzle 1
+#define COCOAPODS_VERSION_MINOR_JRSwizzle 0
+#define COCOAPODS_VERSION_PATCH_JRSwizzle 0
+
 // MagicalRecord/Shorthand
 #define COCOAPODS_POD_AVAILABLE_MagicalRecord_Shorthand
 #define COCOAPODS_VERSION_MAJOR_MagicalRecord_Shorthand 2
@@ -17,6 +23,12 @@
 #define COCOAPODS_VERSION_MAJOR_SZTextView 1
 #define COCOAPODS_VERSION_MINOR_SZTextView 1
 #define COCOAPODS_VERSION_PATCH_SZTextView 5
+
+// UIViewController+BHTKeyboardAnimationBlocks
+#define COCOAPODS_POD_AVAILABLE_UIViewController_BHTKeyboardAnimationBlocks
+#define COCOAPODS_VERSION_MAJOR_UIViewController_BHTKeyboardAnimationBlocks 0
+#define COCOAPODS_VERSION_MINOR_UIViewController_BHTKeyboardAnimationBlocks 0
+#define COCOAPODS_VERSION_PATCH_UIViewController_BHTKeyboardAnimationBlocks 2
 
 // iRate
 #define COCOAPODS_POD_AVAILABLE_iRate

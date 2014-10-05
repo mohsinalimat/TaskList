@@ -1,16 +1,22 @@
 PODS:
   - iRate (1.10.3)
+  - JRSwizzle (1.0)
   - MagicalRecord/Shorthand (2.2)
   - SZTextView (1.1.5)
+  - UIViewController+BHTKeyboardAnimationBlocks (0.0.2)
 
 DEPENDENCIES:
   - iRate (~> 1.10)
+  - JRSwizzle (~> 1.0)
   - MagicalRecord/Shorthand (~> 2.2)
   - SZTextView (~> 1.1)
+  - UIViewController+BHTKeyboardAnimationBlocks (~> 0.0)
 
 SPEC CHECKSUMS:
   iRate: 40ebea2bb1e88866cef7393bd0abeae232cc5d38
+  JRSwizzle: 30da7a2c539a4ebf954b16d15f6dd8221c9f6fa5
   MagicalRecord: 2b471584fc9e3137f3d0a56967917baa4979e224
   SZTextView: ba45928294d012591c720ae476e58b0bc4c56a44
+  UIViewController+BHTKeyboardAnimationBlocks: fa8f86b798147159ddc1b2aba3f8c49247f1c814
 
 COCOAPODS: 0.34.1

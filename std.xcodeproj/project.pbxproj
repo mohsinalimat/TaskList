@@ -495,53 +495,6 @@ fi
 			<key>targetProxy</key>
 			<string>C029468019859BF200C076F8</string>
 		</dict>
-		<key>C03A5C6D19D8D13100437500</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>C03A5C6E19D8D13100437500</string>
-				<string>C03A5C6F19D8D13100437500</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>path</key>
-			<string>JRSwizzle</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>C03A5C6E19D8D13100437500</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>JRSwizzle.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>C03A5C6F19D8D13100437500</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>JRSwizzle.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>C03A5C7019D8D13100437500</key>
-		<dict>
-			<key>fileRef</key>
-			<string>C03A5C6F19D8D13100437500</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
 		<key>C03A5C7119D8D16200437500</key>
 		<dict>
 			<key>fileEncoding</key>
@@ -761,59 +714,10 @@ fi
 			<key>isa</key>
 			<string>PBXBuildFile</string>
 		</dict>
-		<key>C080EF8D1981F8C8009EF488</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>C080EF8E1981F8C8009EF488</string>
-				<string>C080EF8F1981F8C8009EF488</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>path</key>
-			<string>BHTKeyboardAnimationBlocks</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>C080EF8E1981F8C8009EF488</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>UIViewController+BHTKeyboardNotifications.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>C080EF8F1981F8C8009EF488</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>UIViewController+BHTKeyboardNotifications.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>C080EF901981F8C8009EF488</key>
-		<dict>
-			<key>fileRef</key>
-			<string>C080EF8F1981F8C8009EF488</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
 		<key>C0827F6F19675232000383D3</key>
 		<dict>
 			<key>children</key>
 			<array>
-				<string>C03A5C6D19D8D13100437500</string>
-				<string>C080EF8D1981F8C8009EF488</string>
 				<string>C05A476319B52F6500A13B25</string>
 			</array>
 			<key>isa</key>
@@ -1274,12 +1178,10 @@ fi
 				<string>C082BE13193BD86C00A60D8E</string>
 				<string>C082BE08193BD86300A60D8E</string>
 				<string>C03A5C7319D8D16200437500</string>
-				<string>C03A5C7019D8D13100437500</string>
 				<string>C0C4625A1932BFFD0031E256</string>
 				<string>C05A476919B5349600A13B25</string>
 				<string>C06F19CE1960D308000BEDD8</string>
 				<string>C082BE06193BD86300A60D8E</string>
-				<string>C080EF901981F8C8009EF488</string>
 				<string>C07F7C8D1957CB2900CF0C92</string>
 				<string>C05A476619B52F6500A13B25</string>
 				<string>C082BE11193BD86C00A60D8E</string>
