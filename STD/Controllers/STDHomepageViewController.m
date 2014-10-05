@@ -20,16 +20,12 @@
 #define kTextFieldCategory 2000
 #define kTextFieldTask 3000
 
-#define kAlertViewCompleteSubtasks 100
-#define kAlertViewDeleteCategory 200
-
 #define kNumberOfSections self.categories.count + 1
 #define kNumberOfRowsInSection category.tasks.count + 1
 
 static CGFloat const kBottomInset = 44.0f;
 
 static char kCategoryKey;
-static char kTaskKey;
 
 static char kBlockKey;
 
@@ -38,7 +34,7 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     UITableViewSectionActionCollapse
 };
 
-@interface STDHomepageViewController () <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, UIAlertViewDelegate, STDTaskTableViewCellDelegate>
+@interface STDHomepageViewController () <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, STDTaskTableViewCellDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
@@ -267,7 +263,7 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
 - (NSString *)taskCountStringForCategory:(STDCategory *)category
 {
     NSUInteger count = category.tasks.count;
-    return (count ? [NSString stringWithFormat:@"%d", count] : @"+");
+    return (count ? [NSString stringWithFormat:@"%lu", count] : @"+");
 }
 
 - (void)reloadHeaderViewForCategory:(STDCategory *)category
@@ -318,17 +314,6 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     cell.textField.userInteractionEnabled = !task;
     
     if (task) {
-        [cell setDefaultColor:[UIColor lightGrayColor]];
-
-        UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"check.png"]];
-        imageView.contentMode = UIViewContentModeCenter;
-
-        UIColor *greenColor = [UIColor colorWithRed:85.0 / 255.0 green:213.0 / 255.0 blue:80.0 / 255.0 alpha:1.0];
-        
-        // Adding gestures per state basis.
-        [cell setSwipeGestureWithView:imageView color:greenColor mode:MCSwipeTableViewCellModeSwitch state:(MCSwipeTableViewCellState1 | MCSwipeTableViewCellState3) completionBlock:^(MCSwipeTableViewCell *cell, MCSwipeTableViewCellState state, MCSwipeTableViewCellMode mode) {
-            NSLog(@"Did swipe \"Checkmark\" cell");
-            
             STDTask *task = ((STDTaskTableViewCell *)cell).task;
             
             task.completed = @YES;
@@ -340,13 +325,17 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
             NSPredicate *predicate = [NSPredicate predicateWithFormat:@"completedValue == NO"];
             NSSet *uncompleted = [task.subtasks filteredSetUsingPredicate:predicate];
             if (uncompleted.count) {
-                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"Mark all subtasks complete? If yes, all subtasks will be marked as finished because you're done! If you choose keep, the task will still be viewable until you mark all subtasks completed." delegate:self cancelButtonTitle:@"Keep" otherButtonTitles:@"Yes", nil];
-                alertView.tag = kAlertViewCompleteSubtasks;
-                [alertView show];
-                
-                [self setAssociatedObject:task forKey:&kTaskKey];
+                [UIAlertView showAlertViewWithMessage:@"Mark all subtasks complete? If yes, all subtasks will be marked as finished because you're done! If you choose keep, the task will still be viewable until you mark all subtasks completed." title:nil cancelButtonTitle:@"Keep" otherButtonTitles:@[@"Yes"] handler:^(UIAlertView *alertView, NSInteger buttonIndex) {
+                    if (buttonIndex != alertView.cancelButtonIndex) {
+                        for (STDSubtask *subtask in task.subtasks) {
+                            subtask.completed = @YES;
+                            subtask.completion_date = [NSDate date];
+                        }
+                        
+                        [[NSManagedObjectContext contextForCurrentThread] saveOnlySelfAndWait];
+                    }
+                }];
             }
-        }];
     }
 
     return cell;
@@ -618,38 +607,6 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     [self pushViewController:viewController];
 }
 
-#pragma mark - UIAlertViewDelegate
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if (alertView.tag == kAlertViewCompleteSubtasks) {
-        if (buttonIndex != alertView.cancelButtonIndex) {
-            STDTask *task = [self associatedObjectForKey:&kTaskKey];
-            
-            for (STDSubtask *subtask in task.subtasks) {
-                subtask.completed = @YES;
-                subtask.completion_date = [NSDate date];
-            }
-            
-            [[NSManagedObjectContext contextForCurrentThread] saveOnlySelfAndWait];
-        }
-    } else if (alertView.tag == kAlertViewDeleteCategory) {
-        if (buttonIndex != alertView.cancelButtonIndex) {
-            STDCategory *category = [self associatedObjectForKey:&kCategoryKey];
-            
-            NSInteger section = [self sectionForCategory:category];
-            
-            [self.categories removeObject:category];
-
-            [category deleteEntity];
-            
-            [[NSManagedObjectContext contextForCurrentThread] saveOnlySelfAndWait];
-            
-            [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:section] withRowAnimation:UITableViewRowAnimationFade];
-        }
-    }
-}
-
 #pragma mark - UITextFieldDelegate
 
 - (BOOL)textFieldShouldClear:(UITextField *)textField;
@@ -657,11 +614,19 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     if (textField.tag == kTextFieldCategory) {
         STDCategory *category = [textField.superview associatedObjectForKey:&kCategoryKey];
         if (category) {
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"Are you sure you want to delete this category? All associated tasks will be deleted." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Yes", nil];
-            alertView.tag = kAlertViewDeleteCategory;
-            [alertView show];
-            
-            [self setAssociatedObject:category forKey:&kCategoryKey];
+            [UIAlertView showAlertViewWithMessage:@"Are you sure you want to delete this category? All associated tasks will be deleted." title:nil cancelButtonTitle:@"Cancel" otherButtonTitles:@[@"Yes"] handler:^(UIAlertView *alertView, NSInteger buttonIndex) {
+                if (buttonIndex != alertView.cancelButtonIndex) {
+                    NSInteger section = [self sectionForCategory:category];
+                    
+                    [self.categories removeObject:category];
+                    
+                    [category deleteEntity];
+                    
+                    [[NSManagedObjectContext contextForCurrentThread] saveOnlySelfAndWait];
+                    
+                    [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:section] withRowAnimation:UITableViewRowAnimationFade];
+                }
+            }];
             
             [textField resignFirstResponder];
 
