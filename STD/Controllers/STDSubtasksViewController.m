@@ -128,6 +128,8 @@ static char kDummyTextViewKey;
         
         cell.delegate = self;
         
+        cell.textView.scrollsToTop = NO;
+        cell.textView.contentInset = (UIEdgeInsets){2, 0, 0, 0};
         cell.textView.delegate = self;
         cell.textView.font = kTextViewFont;
         cell.textView.placeholder = @"New Subtask";

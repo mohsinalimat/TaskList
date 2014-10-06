@@ -301,6 +301,7 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
         
         cell.delegate = self;
         
+        cell.textField.font = [UIFont systemFontOfSize:14.0f];
         cell.textField.placeholder = @"New Task";
         cell.textField.tag = kTextFieldTask;
         cell.textField.delegate = self;
@@ -376,7 +377,7 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     if (!headerFooterView) {
         headerFooterView = [[UITableViewHeaderFooterView alloc] initWithReuseIdentifier:CellIdentifier];
 
-        headerFooterView.frame = (CGRect){0, 0, CGRectGetWidth(self.view.bounds), 44};
+        headerFooterView.frame = (CGRect){0, 0, CGRectGetWidth(tableView.bounds), 44};
         headerFooterView.contentView.backgroundColor = [UIColor whiteColor];
         
         UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(singleTapGestureRecognized:)];
@@ -396,7 +397,7 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     
     UITextField *textField = (UITextField *)[headerFooterView viewWithTag:kTextFieldCategory];
     if (!textField) {
-        textField = [[UITextField alloc] initWithFrame:(CGRect){14, 0, 276, 44}];
+        textField = [[UITextField alloc] initWithFrame:(CGRect){14, 0, CGRectGetWidth(tableView.bounds) - 44, 44}];
         textField.textColor = [UIColor colorWithHue:(210.0f / 360.0f) saturation:0.94f brightness:1.0f alpha:1.0f];
         textField.placeholder = @"New Category";
         textField.font = [UIFont boldSystemFontOfSize:18.0f];
@@ -413,7 +414,7 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     UIButton *button = (UIButton *)[headerFooterView viewWithTag:kButton];
     if (!button) {
         button = [UIButton buttonWithType:UIButtonTypeSystem];
-        button.frame = (CGRect){276, 0, 44, 44};
+        button.frame = (CGRect){CGRectGetWidth(tableView.bounds) - 44, 0, 44, 44};
         button.titleLabel.font = [UIFont systemFontOfSize:18.0f];
         button.tintColor = [UIColor darkGrayColor];
         [button addTarget:self action:@selector(didTouchOnButton:) forControlEvents:UIControlEventTouchUpInside];

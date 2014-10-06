@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6245" systemVersion="14A361c" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6245" systemVersion="14A379a" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment defaultVersion="1808" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
@@ -22,30 +22,72 @@
                     </textView>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fpk-G8-X9t">
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AyH-FY-Az8">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AyH-FY-Az8">
                                 <rect key="frame" x="0.0" y="0.0" width="160" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="160" id="12B-4G-m5C"/>
+                                    <constraint firstAttribute="height" constant="44" id="hps-ge-3HB"/>
+                                </constraints>
                                 <state key="normal" title="Notes">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="12B-4G-m5C"/>
+                                    </mask>
+                                </variation>
                                 <connections>
                                     <action selector="didTouchOnNotesButton:" destination="F9U-9P-UD3" eventType="touchUpInside" id="ZZK-ha-zaC"/>
                                 </connections>
                             </button>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FmX-yb-OIw">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FmX-yb-OIw">
                                 <rect key="frame" x="160" y="7" width="1" height="30"/>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="E44-jX-U4m"/>
+                                    <constraint firstAttribute="width" constant="1" id="Ghg-62-iUI"/>
+                                </constraints>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yQ6-NK-xFM">
-                                <rect key="frame" x="160" y="0.0" width="160" height="44"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yQ6-NK-xFM">
+                                <rect key="frame" x="161" y="0.0" width="159" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="160" id="bAQ-cC-DlE"/>
+                                    <constraint firstAttribute="height" constant="44" id="xy5-uR-ePX"/>
+                                </constraints>
                                 <state key="normal" title="Move">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="bAQ-cC-DlE"/>
+                                    </mask>
+                                </variation>
                                 <connections>
                                     <action selector="didTouchOnMoveButton:" destination="F9U-9P-UD3" eventType="touchUpInside" id="NLN-Oz-Fbr"/>
                                 </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="FmX-yb-OIw" firstAttribute="leading" secondItem="AyH-FY-Az8" secondAttribute="trailing" id="1la-ak-yRE"/>
+                            <constraint firstItem="FmX-yb-OIw" firstAttribute="top" secondItem="Fpk-G8-X9t" secondAttribute="top" constant="7" id="7Cq-vd-UBh"/>
+                            <constraint firstItem="FmX-yb-OIw" firstAttribute="leading" secondItem="AyH-FY-Az8" secondAttribute="trailing" id="LsA-py-Ug7"/>
+                            <constraint firstItem="yQ6-NK-xFM" firstAttribute="leading" secondItem="AyH-FY-Az8" secondAttribute="trailing" id="Pk8-tk-Td8"/>
+                            <constraint firstItem="yQ6-NK-xFM" firstAttribute="leading" secondItem="AyH-FY-Az8" secondAttribute="trailing" id="VMa-79-NrQ"/>
+                            <constraint firstItem="AyH-FY-Az8" firstAttribute="top" secondItem="Fpk-G8-X9t" secondAttribute="top" id="Vse-MW-3bE"/>
+                            <constraint firstAttribute="trailing" secondItem="yQ6-NK-xFM" secondAttribute="trailing" id="Ywf-ZP-TwB"/>
+                            <constraint firstItem="yQ6-NK-xFM" firstAttribute="top" secondItem="Fpk-G8-X9t" secondAttribute="top" id="bTN-Lb-YPO"/>
+                            <constraint firstAttribute="centerX" secondItem="FmX-yb-OIw" secondAttribute="centerX" id="gii-Hv-gK0"/>
+                            <constraint firstItem="AyH-FY-Az8" firstAttribute="leading" secondItem="Fpk-G8-X9t" secondAttribute="leading" id="h84-dL-YkL"/>
+                            <constraint firstItem="yQ6-NK-xFM" firstAttribute="leading" secondItem="FmX-yb-OIw" secondAttribute="trailing" id="u9w-hG-b8H"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="1la-ak-yRE"/>
+                                <exclude reference="Pk8-tk-Td8"/>
+                                <exclude reference="VMa-79-NrQ"/>
+                            </mask>
+                        </variation>
                     </view>
                 </subviews>
                 <constraints>

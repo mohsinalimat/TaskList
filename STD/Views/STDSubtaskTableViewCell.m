@@ -15,9 +15,6 @@
     for (UIButton *button in self.buttons) {
         button.tintColor = [UIColor blackColor];
     }
-    
-    self.textView.scrollsToTop = NO;
-    self.textView.contentInset = (UIEdgeInsets){2, 0, 0, 0};
 }
 
 - (IBAction)didTouchOnNotesButton:(id)sender
