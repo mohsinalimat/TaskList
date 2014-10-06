@@ -21,9 +21,7 @@
 #define kTextFieldTask 3000
 
 #define kNumberOfSections self.categories.count + 1
-#define kNumberOfRowsInSection category.tasks.count + 1
-
-static CGFloat const kBottomInset = 44.0f;
+#define kNumberOfRowsInSection [self countOfUncompletedTasksForCategory:category] + 1
 
 static char kCategoryKey;
 
@@ -97,7 +95,7 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     NSInteger section = [self sectionForCategory:category];
     if (category) {
         [self animateCategory:category withAction:UITableViewSectionActionExpand completion:^{
-            STDTaskTableViewCell *cell = (STDTaskTableViewCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:category.tasks.count inSection:section]];
+            STDTaskTableViewCell *cell = (STDTaskTableViewCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:[self countOfUncompletedTasksForCategory:category] inSection:section]];
             [cell.textField becomeFirstResponder];
         }];
     } else {
@@ -138,8 +136,6 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
 {
     self.tableView.rowHeight = UITableViewAutomaticDimension;
     self.tableView.estimatedRowHeight = 44.0f;
-
-    self.tableView.contentInset = (UIEdgeInsets){0, 0, kBottomInset, 0};
     
     self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectZero];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
@@ -178,10 +174,26 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     self.categories = [NSMutableArray arrayWithArray:categories];
 }
 
-- (NSArray *)sortedTasksForCategory:(STDCategory *)category
+- (NSSet *)uncompletedTasksForCategory:(STDCategory *)category
+{
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"completedValue == NO"];
+    return [category.tasks filteredSetUsingPredicate:predicate];
+}
+
+- (NSUInteger)countOfUncompletedTasksForCategory:(STDCategory *)category
+{
+    return [[self uncompletedTasksForCategory:category] count];
+}
+
+- (NSArray *)sortedUncompletedTasksForCategory:(STDCategory *)category
+{
+    return [self sortedArrayWithSet:[self uncompletedTasksForCategory:category]];
+}
+
+- (NSArray *)sortedArrayWithSet:(NSSet *)set
 {
     NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:NSStringFromSelector(@selector(index)) ascending:YES];
-    return [category.tasks sortedArrayUsingDescriptors:@[sortDescriptor]];
+    return [set sortedArrayUsingDescriptors:@[sortDescriptor]];
 }
 
 - (STDCategory *)categoryForSection:(NSInteger)section
@@ -196,11 +208,12 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     return [self.categories indexOfObject:category];
 }
 
+// TODO cache tasks for faster loading
 - (STDTask *)taskForIndexPath:(NSIndexPath *)indexPath
 {
     STDCategory *category = [self categoryForSection:indexPath.section];
     if (category) {
-        NSArray *tasks = [self sortedTasksForCategory:category];
+        NSArray *tasks = [self sortedUncompletedTasksForCategory:category];
         if (tasks.count > indexPath.row)
             return tasks[indexPath.row];
     }
@@ -210,15 +223,15 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
 - (STDTask *)nextTaskForIndexPath:(NSIndexPath *)indexPath
 {
     STDCategory *category = [self categoryForSection:indexPath.section];
-    if ((indexPath.row + 1) < category.tasks.count) {
-        NSArray *tasks = [self sortedTasksForCategory:category];
+    if ((indexPath.row + 1) < [self countOfUncompletedTasksForCategory:category]) {
+        NSArray *tasks = [self sortedUncompletedTasksForCategory:category];
         return tasks[indexPath.row + 1];
     } else if ((indexPath.section + 1) < self.categories.count) {
         NSInteger section = indexPath.section + 1;
         NSArray *categories = [self.categories subarrayWithRange:NSMakeRange(section, self.categories.count - section)];
         for (STDCategory *category in categories) {
-            if (category.tasks.count) {
-                NSArray *tasks = [self sortedTasksForCategory:category];
+            if ([self countOfUncompletedTasksForCategory:category]) {
+                NSArray *tasks = [self sortedUncompletedTasksForCategory:category];
                 return [tasks firstObject];
             }
         }
@@ -230,15 +243,15 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
 {
     STDCategory *category = [self categoryForSection:indexPath.section];
     if (indexPath.row > 0) {
-        NSArray *tasks = [self sortedTasksForCategory:category];
+        NSArray *tasks = [self sortedUncompletedTasksForCategory:category];
         NSInteger row = MIN(indexPath.row - 1, tasks.count - 1);
         return tasks[row];
     } else if (indexPath.section > 0) {
         NSInteger section = MIN(indexPath.section, self.categories.count);
         NSArray *categories = [[[self.categories reverseObjectEnumerator] allObjects] subarrayWithRange:NSMakeRange(self.categories.count - section, section)];
         for (STDCategory *category in categories) {
-            if (category.tasks.count) {
-                NSArray *tasks = [self sortedTasksForCategory:category];
+            if ([self countOfUncompletedTasksForCategory:category]) {
+                NSArray *tasks = [self sortedUncompletedTasksForCategory:category];
                 return [tasks lastObject];
             }
         }
@@ -249,7 +262,7 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
 - (NSIndexPath *)indexPathOfTask:(STDTask *)task
 {
     STDCategory *category = task.category;
-    NSArray *tasks = [self sortedTasksForCategory:category];
+    NSArray *tasks = [self sortedUncompletedTasksForCategory:category];
     return [NSIndexPath indexPathForRow:[tasks indexOfObject:task] inSection:[self.categories indexOfObject:category]];
 }
 
@@ -262,8 +275,8 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
 
 - (NSString *)taskCountStringForCategory:(STDCategory *)category
 {
-    NSUInteger count = category.tasks.count;
-    return (count ? [NSString stringWithFormat:@"%lu", count] : @"+");
+    NSUInteger count = [self countOfUncompletedTasksForCategory:category];
+    return (count ? [NSString stringWithFormat:@"%lu", (unsigned long)count] : @"+");
 }
 
 - (void)reloadHeaderViewForCategory:(STDCategory *)category
@@ -311,32 +324,11 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
 
     cell.task = task;
     
-    cell.textField.text = task.name;
     cell.textField.userInteractionEnabled = !task;
     
-    if (task) {
-            STDTask *task = ((STDTaskTableViewCell *)cell).task;
-            
-            task.completed = @YES;
-            task.completion_date = [NSDate date];
-            
-            [[NSManagedObjectContext contextForCurrentThread] saveOnlySelfAndWait];
-            
-            // check for uncompleted subtasks
-            NSPredicate *predicate = [NSPredicate predicateWithFormat:@"completedValue == NO"];
-            NSSet *uncompleted = [task.subtasks filteredSetUsingPredicate:predicate];
-            if (uncompleted.count) {
-                [UIAlertView showAlertViewWithMessage:@"Mark all subtasks complete? If yes, all subtasks will be marked as finished because you're done! If you choose keep, the task will still be viewable until you mark all subtasks completed." title:nil cancelButtonTitle:@"Keep" otherButtonTitles:@[@"Yes"] handler:^(UIAlertView *alertView, NSInteger buttonIndex) {
-                    if (buttonIndex != alertView.cancelButtonIndex) {
-                        for (STDSubtask *subtask in task.subtasks) {
-                            subtask.completed = @YES;
-                            subtask.completion_date = [NSDate date];
-                        }
-                        
-                        [[NSManagedObjectContext contextForCurrentThread] saveOnlySelfAndWait];
-                    }
-                }];
-            }
+    cell.textField.attributedText = nil;
+    if (task.name) {
+        cell.textField.attributedText = [[NSAttributedString alloc] initWithString:task.name attributes:@{NSFontAttributeName:cell.textField.font}];
     }
 
     return cell;
@@ -397,7 +389,7 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     
     UITextField *textField = (UITextField *)[headerFooterView viewWithTag:kTextFieldCategory];
     if (!textField) {
-        textField = [[UITextField alloc] initWithFrame:(CGRect){14, 0, CGRectGetWidth(tableView.bounds) - 44, 44}];
+        textField = [[UITextField alloc] initWithFrame:(CGRect){14, 0, CGRectGetWidth(tableView.bounds) - 44 - 7, 44}];
         textField.textColor = [UIColor colorWithHue:(210.0f / 360.0f) saturation:0.94f brightness:1.0f alpha:1.0f];
         textField.placeholder = @"New Category";
         textField.font = [UIFont boldSystemFontOfSize:18.0f];
@@ -448,11 +440,11 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     [sourceCategory removeTasksObject:sourceTask];
     
     if (!isSameCategory) {
-        NSArray *sourceTasks = [self sortedTasksForCategory:sourceCategory];
+        NSArray *sourceTasks = [self sortedUncompletedTasksForCategory:sourceCategory];
         [self updateIndexesForTasks:sourceTasks];
     }
     
-    NSMutableArray *destinationTasks = [NSMutableArray arrayWithArray:[self sortedTasksForCategory:destinationCategory]];
+    NSMutableArray *destinationTasks = [NSMutableArray arrayWithArray:[self sortedUncompletedTasksForCategory:destinationCategory]];
     [destinationTasks insertObject:sourceTask atIndex:destinationIndexPath.row];
     destinationCategory.tasks = [NSSet setWithArray:destinationTasks];
     
@@ -589,6 +581,7 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
 - (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
 {
     Block block = [self associatedObjectForKey:&kBlockKey];
+    [self setAssociatedObject:nil forKey:&kBlockKey];
     if (block) block();
 }
 
@@ -750,6 +743,7 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     }];
 }
 
+// TODO need to fix for including toolbar/tabbar
 static CGFloat contentOffsetForBottom(CGRect keyboardFrame) {
     UIWindow *window = [[UIApplication sharedApplication] keyWindow];
     UIView *view = window.rootViewController.view;
@@ -764,7 +758,7 @@ static CGFloat contentOffsetForBottom(CGRect keyboardFrame) {
         return;
     
     UIEdgeInsets edgeInsets = self.tableView.contentInset;
-    edgeInsets.bottom = MAX(kBottomInset, contentOffsetForBottom(newFrame));
+    edgeInsets.bottom = MAX(0, contentOffsetForBottom(newFrame));
     self.tableView.contentInset = edgeInsets;
 }
 

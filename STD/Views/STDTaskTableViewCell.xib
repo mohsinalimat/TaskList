@@ -17,13 +17,19 @@
                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="roQ-J8-IGJ">
                         <rect key="frame" x="14" y="7" width="292" height="30"/>
                         <constraints>
+                            <constraint firstAttribute="height" constant="30" id="UDV-wT-1zg"/>
                             <constraint firstAttribute="height" constant="30" id="UaS-8g-pnP"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="UaS-8g-pnP"/>
+                            </mask>
+                        </variation>
                     </textField>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ngj-f3-R3j">
-                        <rect key="frame" x="0.0" y="44" width="320" height="43"/>
+                        <rect key="frame" x="0.0" y="44" width="320" height="44"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VDo-Wc-s5G">
                                 <rect key="frame" x="0.0" y="0.0" width="160" height="44"/>
@@ -75,6 +81,7 @@
                             <constraint firstItem="rx0-gh-ony" firstAttribute="leading" secondItem="VDo-Wc-s5G" secondAttribute="trailing" id="EKq-Rw-elM"/>
                             <constraint firstItem="qlO-7c-AWc" firstAttribute="leading" secondItem="rx0-gh-ony" secondAttribute="trailing" id="RO5-Jh-lWK"/>
                             <constraint firstItem="qlO-7c-AWc" firstAttribute="leading" secondItem="VDo-Wc-s5G" secondAttribute="trailing" id="XfL-9h-rUh"/>
+                            <constraint firstAttribute="height" constant="44" id="ZzK-yC-nAY"/>
                             <constraint firstAttribute="trailing" secondItem="qlO-7c-AWc" secondAttribute="trailing" id="aR1-aq-a23"/>
                             <constraint firstItem="qlO-7c-AWc" firstAttribute="leading" secondItem="VDo-Wc-s5G" secondAttribute="trailing" id="f1h-H7-Hlu"/>
                             <constraint firstItem="VDo-Wc-s5G" firstAttribute="leading" secondItem="Ngj-f3-R3j" secondAttribute="leading" id="gCz-bg-XgO"/>
@@ -102,8 +109,17 @@
                     <constraint firstItem="roQ-J8-IGJ" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="14" id="flq-zA-OPM"/>
                     <constraint firstItem="Ngj-f3-R3j" firstAttribute="top" secondItem="roQ-J8-IGJ" secondAttribute="bottom" constant="7" id="fyi-13-hyM"/>
                     <constraint firstItem="Ngj-f3-R3j" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="hBx-hh-iMx"/>
+                    <constraint firstItem="roQ-J8-IGJ" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="7" id="ibI-id-Ped"/>
                     <constraint firstAttribute="trailing" secondItem="Ngj-f3-R3j" secondAttribute="trailing" id="njw-HV-Qqk"/>
+                    <constraint firstItem="Ngj-f3-R3j" firstAttribute="top" secondItem="roQ-J8-IGJ" secondAttribute="bottom" constant="7" id="ras-KK-B2j"/>
                 </constraints>
+                <variation key="default">
+                    <mask key="constraints">
+                        <exclude reference="1KP-uN-wAI"/>
+                        <exclude reference="fDt-t6-gGl"/>
+                        <exclude reference="fyi-13-hyM"/>
+                    </mask>
+                </variation>
             </tableViewCellContentView>
             <connections>
                 <outlet property="textField" destination="roQ-J8-IGJ" id="Rds-LP-iDd"/>

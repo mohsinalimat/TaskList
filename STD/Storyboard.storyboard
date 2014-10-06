@@ -19,7 +19,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="cvM-wJ-wbn">
-                                <rect key="frame" x="0.0" y="20" width="600" height="548"/>
+                                <rect key="frame" x="0.0" y="20" width="600" height="580"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <connections>
@@ -38,7 +38,7 @@
                             <constraint firstItem="cvM-wJ-wbn" firstAttribute="leading" secondItem="0OJ-WE-gVb" secondAttribute="leading" id="h4n-x2-oNq"/>
                             <constraint firstItem="cvM-wJ-wbn" firstAttribute="top" secondItem="xlB-kj-GFD" secondAttribute="bottom" id="hDF-tr-D9B"/>
                             <constraint firstAttribute="trailingMargin" secondItem="cvM-wJ-wbn" secondAttribute="trailing" id="hr7-CB-NGP"/>
-                            <constraint firstItem="ioT-IC-9eL" firstAttribute="top" secondItem="cvM-wJ-wbn" secondAttribute="bottom" constant="32" id="iZj-OD-B8z"/>
+                            <constraint firstItem="ioT-IC-9eL" firstAttribute="top" secondItem="cvM-wJ-wbn" secondAttribute="bottom" id="iZj-OD-B8z"/>
                             <constraint firstItem="cvM-wJ-wbn" firstAttribute="top" secondItem="xlB-kj-GFD" secondAttribute="bottom" id="zeB-Cc-Jn0"/>
                         </constraints>
                         <variation key="default">
