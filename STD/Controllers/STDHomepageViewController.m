@@ -11,6 +11,7 @@
 #import "UIViewController+BHTKeyboardNotifications.h"
 #import "NSObject+Extras.h"
 #import "UITableView+LongPressReorder.h"
+#import "PureLayout.h"
 
 #import "STDSubtasksViewController.h"
 #import "STDNotesViewController.h"
@@ -24,6 +25,7 @@
 #define kNumberOfRowsInSection [self countOfUncompletedTasksForCategory:category] + 1
 
 static char kCategoryKey;
+static char kTaskKey;
 
 static char kBlockKey;
 
@@ -36,9 +38,13 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
+@property (strong, nonatomic) UIView *footerView;
+
 @property (strong, nonatomic) NSMutableArray *categories;
 
 @property (strong, nonatomic) NSMutableArray *expandedItems;
+
+@property (strong, nonatomic) NSLayoutConstraint *heightLayoutConstraint;
 
 @end
 
@@ -64,6 +70,8 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     [self load];
     
     [self.tableView reloadData];
+    
+    [self footerView];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -81,6 +89,29 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
 }
 
 #pragma mark - IBAction
+
+- (IBAction)didTouchOnUndoButton:(id)sender
+{
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(hideFooterView) object:nil];
+    
+    [self hideFooterView];
+    
+    STDTask *task = [self associatedObjectForKey:&kTaskKey];
+    if (task) {
+        // core data
+        task.completed = @NO;
+        task.completion_date = nil;
+        
+        [[NSManagedObjectContext contextForCurrentThread] saveOnlySelfAndWait];
+        
+        NSIndexPath *indexPath = [self indexPathOfTask:task];
+        
+        // insert
+        [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        
+        [self reloadHeaderViewForCategory:task.category];
+    }
+}
 
 - (IBAction)didTouchOnSettingsButton:(id)sender
 {
@@ -123,11 +154,72 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     [textField becomeFirstResponder];
 }
 
+- (void)swipeGestureRecognized:(UISwipeGestureRecognizer *)recognizer
+{
+    if (recognizer.state == UIGestureRecognizerStateEnded) {
+        CGPoint location = [recognizer locationInView:self.tableView];
+        NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:location];
+        STDTaskTableViewCell *cell = (STDTaskTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+        if (cell.task) {
+            // strikethrough text
+            NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithAttributedString:cell.textField.attributedText];
+            [attributedString addAttributes:@{NSStrikethroughStyleAttributeName:@(NSUnderlineStyleSingle)} range:NSMakeRange(0, attributedString.length)];
+            cell.textField.attributedText = attributedString;
+            
+            // complete task
+            [self willCompleteTask:cell.task];
+        }
+    }
+}
+
 - (void)pushViewController:(UIViewController *)viewController
 {
     [self.navigationController setToolbarHidden:YES];
     
     [self.navigationController pushViewController:viewController animated:YES];
+}
+
+- (void)willCompleteTask:(STDTask *)task
+{
+    // check for uncompleted subtasks
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"completedValue == NO"];
+    NSSet *uncompleted = [task.subtasks filteredSetUsingPredicate:predicate];
+    if (uncompleted.count) {
+        [UIAlertView showAlertViewWithMessage:@"Mark all subtasks complete? If yes, all subtasks will be marked as finished because you're done! If you choose keep, the task will still be viewable until you mark all subtasks completed." title:nil cancelButtonTitle:@"Keep" otherButtonTitles:@[@"Yes"] handler:^(UIAlertView *alertView, NSInteger buttonIndex) {
+            if (buttonIndex != alertView.cancelButtonIndex) {
+                for (STDSubtask *subtask in task.subtasks) {
+                    subtask.completed = @YES;
+                    subtask.completion_date = [NSDate date];
+                }
+                
+                [[NSManagedObjectContext contextForCurrentThread] saveOnlySelfAndWait];
+            }
+            
+            [self didCompleteTask:task];
+        }];
+    } else {
+        [self didCompleteTask:task];
+    }
+}
+
+- (void)didCompleteTask:(STDTask *)task
+{
+    [self setAssociatedObject:task forKey:&kTaskKey];
+
+    NSIndexPath *indexPath = [self indexPathOfTask:task];
+
+    // core data
+    task.completed = @YES;
+    task.completion_date = [NSDate date];
+    
+    [[NSManagedObjectContext contextForCurrentThread] saveOnlySelfAndWait];
+    
+    // delete row
+    [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+    
+    [self reloadHeaderViewForCategory:task.category];
+
+    [self showFooterView];
 }
 
 #pragma mark - Styling
@@ -144,6 +236,10 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     
     self.tableView.longPressReorderEnabled = YES;
     self.tableView.lprDelegate = (id)self;
+    
+    UISwipeGestureRecognizer *swipeGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeGestureRecognized:)];
+    swipeGesture.direction = UISwipeGestureRecognizerDirectionRight;
+    [self.tableView addGestureRecognizer:swipeGesture];
 }
 
 - (void)styleNavigationController
@@ -151,6 +247,52 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithTitle:@"\u2699" style:UIBarButtonItemStylePlain target:self action:@selector(didTouchOnSettingsButton:)];
     [settingsButton setTitleTextAttributes:@{NSFontAttributeName: [UIFont boldSystemFontOfSize:24.0]} forState:UIControlStateNormal];
     self.toolbarItems = @[settingsButton];
+}
+
+#pragma mark - Footer View
+
+- (void)showFooterView
+{
+    self.heightLayoutConstraint.constant = 44.0f;
+    
+    [UIView animateWithDuration:1.0f delay:0 usingSpringWithDamping:0.5f initialSpringVelocity:0.5f options:(UIViewAnimationOptionAllowUserInteraction) animations:^{
+        [self.view layoutIfNeeded];
+    } completion:^(BOOL finished) {
+        [self performSelector:@selector(hideFooterView) withObject:nil afterDelay:5.0f];
+    }];
+}
+
+- (void)hideFooterView
+{
+    self.heightLayoutConstraint.constant = 0.0f;
+    
+    [UIView animateWithDuration:0.3f animations:^{
+        [self.view layoutIfNeeded];
+    }];
+}
+
+- (UIView *)footerView
+{
+    if (!_footerView) {
+        _footerView = [UIView newAutoLayoutView];
+        _footerView.clipsToBounds = YES;
+        [self.view addSubview:_footerView];
+        
+        [_footerView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
+        self.heightLayoutConstraint = [_footerView autoSetDimension:ALDimensionHeight toSize:0.0f];
+        
+        UIButton *undoButton = [UIButton buttonWithType:UIButtonTypeSystem];
+        undoButton.translatesAutoresizingMaskIntoConstraints = NO;
+        undoButton.backgroundColor = [UIColor colorWithHue:(210.0f / 360.0f) saturation:0.94f brightness:1.0f alpha:1.0f];
+        undoButton.tintColor = [UIColor whiteColor];
+        [undoButton setTitle:@"Undo" forState:UIControlStateNormal];
+        [undoButton addTarget:self action:@selector(didTouchOnUndoButton:) forControlEvents:UIControlEventTouchUpInside];
+        [_footerView addSubview:undoButton];
+        
+        [undoButton autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeBottom];
+        [undoButton autoSetDimension:ALDimensionHeight toSize:44.0f];
+    }
+    return _footerView;
 }
 
 #pragma mark - Load
