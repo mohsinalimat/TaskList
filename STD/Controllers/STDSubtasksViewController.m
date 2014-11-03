@@ -48,7 +48,6 @@ static char kDummyTextViewKey;
 - (void)styleTableView
 {
     self.tableView.rowHeight = UITableViewAutomaticDimension;
-    self.tableView.estimatedRowHeight = 44.0f;
     
     self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectZero];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
@@ -339,12 +338,18 @@ static char kDummyTextViewKey;
     }];
 }
 
-static CGFloat contentOffsetForBottom(CGRect keyboardFrame) {
+- (CGFloat)contentOffsetForKeyboardFrame:(CGRect)keyboardFrame
+{
     UIWindow *window = [[UIApplication sharedApplication] keyWindow];
     UIView *view = window.rootViewController.view;
     CGRect convertedRect = [view convertRect:keyboardFrame fromView:nil];
     CGFloat offset = CGRectGetHeight(view.frame) - CGRectGetMinY(convertedRect);
     return CGRectIsNull(convertedRect) ? 0 : offset;
+}
+
+- (CGFloat)toolbarHeight
+{
+    return self.navigationController.toolbarHidden ? 0.0f : 44.0f;
 }
 
 - (void)keyboardFrameChanged:(CGRect)newFrame
@@ -353,7 +358,7 @@ static CGFloat contentOffsetForBottom(CGRect keyboardFrame) {
         return;
     
     UIEdgeInsets edgeInsets = self.tableView.contentInset;
-    edgeInsets.bottom = MAX(0.0f, contentOffsetForBottom(newFrame));
+    edgeInsets.bottom = MAX([self toolbarHeight], [self contentOffsetForKeyboardFrame:newFrame]);
     self.tableView.contentInset = edgeInsets;
 }
 

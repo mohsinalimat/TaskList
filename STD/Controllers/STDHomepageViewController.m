@@ -86,6 +86,8 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     [self.navigationController setNavigationBarHidden:NO animated:animated];
     
     [super viewWillDisappear:animated];
+    
+    [self.view endEditing:NO];
 }
 
 #pragma mark - IBAction
@@ -154,24 +156,6 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     [textField becomeFirstResponder];
 }
 
-- (void)swipeGestureRecognized:(UISwipeGestureRecognizer *)recognizer
-{
-    if (recognizer.state == UIGestureRecognizerStateEnded) {
-        CGPoint location = [recognizer locationInView:self.tableView];
-        NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:location];
-        STDTaskTableViewCell *cell = (STDTaskTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
-        if (cell.task) {
-            // strikethrough text
-            NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithAttributedString:cell.textField.attributedText];
-            [attributedString addAttributes:@{NSStrikethroughStyleAttributeName:@(NSUnderlineStyleSingle)} range:NSMakeRange(0, attributedString.length)];
-            cell.textField.attributedText = attributedString;
-            
-            // complete task
-            [self willCompleteTask:cell.task];
-        }
-    }
-}
-
 - (void)pushViewController:(UIViewController *)viewController
 {
     [self.navigationController setToolbarHidden:YES];
@@ -227,7 +211,6 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
 - (void)styleTableView
 {
     self.tableView.rowHeight = UITableViewAutomaticDimension;
-    self.tableView.estimatedRowHeight = 44.0f;
     
     self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectZero];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
@@ -236,10 +219,6 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     
     self.tableView.longPressReorderEnabled = YES;
     self.tableView.lprDelegate = (id)self;
-    
-    UISwipeGestureRecognizer *swipeGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeGestureRecognized:)];
-    swipeGesture.direction = UISwipeGestureRecognizerDirectionRight;
-    [self.tableView addGestureRecognizer:swipeGesture];
 }
 
 - (void)styleNavigationController
@@ -278,7 +257,7 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
         _footerView.clipsToBounds = YES;
         [self.view addSubview:_footerView];
         
-        [_footerView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
+        [_footerView autoPinEdgesToSuperviewEdgesWithInsets:(UIEdgeInsets){0, 0, 44.0f, 0} excludingEdge:ALEdgeTop];
         self.heightLayoutConstraint = [_footerView autoSetDimension:ALDimensionHeight toSize:0.0f];
         
         UIButton *undoButton = [UIButton buttonWithType:UIButtonTypeSystem];
@@ -417,8 +396,11 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
 
 - (NSString *)taskCountStringForCategory:(STDCategory *)category
 {
-    NSUInteger count = [self countOfUncompletedTasksForCategory:category];
-    return (count ? [NSString stringWithFormat:@"%lu", (unsigned long)count] : @"+");
+    if (category) {
+        NSUInteger count = [self countOfUncompletedTasksForCategory:category];
+        return (count ? [NSString stringWithFormat:@"%lu", (unsigned long)count] : @"+");
+    }
+    return nil;
 }
 
 - (void)reloadHeaderViewForCategory:(STDCategory *)category
@@ -743,6 +725,11 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     [self pushViewController:viewController];
 }
 
+- (void)didSwipeRight:(STDTaskTableViewCell *)cell
+{
+    [self willCompleteTask:cell.task];
+}
+
 #pragma mark - UITextFieldDelegate
 
 - (BOOL)textFieldShouldClear:(UITextField *)textField;
@@ -885,13 +872,18 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     }];
 }
 
-// TODO need to fix for including toolbar/tabbar
-static CGFloat contentOffsetForBottom(CGRect keyboardFrame) {
+- (CGFloat)contentOffsetForKeyboardFrame:(CGRect)keyboardFrame
+{
     UIWindow *window = [[UIApplication sharedApplication] keyWindow];
     UIView *view = window.rootViewController.view;
     CGRect convertedRect = [view convertRect:keyboardFrame fromView:nil];
     CGFloat offset = CGRectGetHeight(view.frame) - CGRectGetMinY(convertedRect);
     return CGRectIsNull(convertedRect) ? 0 : offset;
+}
+
+- (CGFloat)toolbarHeight
+{
+    return self.navigationController.toolbarHidden ? 0.0f : 44.0f;
 }
 
 - (void)keyboardFrameChanged:(CGRect)newFrame
@@ -900,7 +892,7 @@ static CGFloat contentOffsetForBottom(CGRect keyboardFrame) {
         return;
     
     UIEdgeInsets edgeInsets = self.tableView.contentInset;
-    edgeInsets.bottom = MAX(0, contentOffsetForBottom(newFrame));
+    edgeInsets.bottom = MAX([self toolbarHeight], [self contentOffsetForKeyboardFrame:newFrame]);
     self.tableView.contentInset = edgeInsets;
 }
 
