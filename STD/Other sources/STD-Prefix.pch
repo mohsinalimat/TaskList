@@ -23,6 +23,7 @@
     #import "UIAlertView+Blocks.h"
     #import "UIActionSheet+Blocks.h"
 
+    #define MR_ENABLE_ACTIVE_RECORD_LOGGING 0
     #define MR_SHORTHAND
     #import "CoreData+MagicalRecord.h"
 #endif
