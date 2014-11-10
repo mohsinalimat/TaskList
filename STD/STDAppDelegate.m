@@ -12,6 +12,9 @@
 
 #import "iRate.h"
 
+#import <Fabric/Fabric.h>
+#import <Crashlytics/Crashlytics.h>
+
 @implementation STDAppDelegate
 
 + (void)initialize
@@ -30,6 +33,9 @@
     
     // Magical Record
     [MagicalRecord setupAutoMigratingCoreDataStack];
+    
+    // Fabric
+    [Fabric with:@[CrashlyticsKit]];
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.

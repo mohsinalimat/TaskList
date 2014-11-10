@@ -32,6 +32,8 @@
 		C01D74CB19A1445200905EBD /* STDUserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = C01D74CA19A1445200905EBD /* STDUserDefaults.m */; };
 		C03A5C7319D8D16200437500 /* UITableView+Separator.m in Sources */ = {isa = PBXBuildFile; fileRef = C03A5C7219D8D16200437500 /* UITableView+Separator.m */; };
 		C03A5C7519D8E0DB00437500 /* STDSubtaskTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C03A5C7419D8E0DB00437500 /* STDSubtaskTableViewCell.xib */; };
+		C04D9C071A106A5C00E5D2B2 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C04D9C051A106A5C00E5D2B2 /* Crashlytics.framework */; };
+		C04D9C081A106A5C00E5D2B2 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C04D9C061A106A5C00E5D2B2 /* Fabric.framework */; };
 		C05A476619B52F6500A13B25 /* UITableView+LongPressReorder.m in Sources */ = {isa = PBXBuildFile; fileRef = C05A476519B52F6500A13B25 /* UITableView+LongPressReorder.m */; };
 		C05A476919B5349600A13B25 /* NSManagedObject+Extras.m in Sources */ = {isa = PBXBuildFile; fileRef = C05A476819B5349600A13B25 /* NSManagedObject+Extras.m */; };
 		C06F19CE1960D308000BEDD8 /* STDTaskTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C06F19CC1960D308000BEDD8 /* STDTaskTableViewCell.m */; };
@@ -107,6 +109,8 @@
 		C03A5C7119D8D16200437500 /* UITableView+Separator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableView+Separator.h"; sourceTree = "<group>"; };
 		C03A5C7219D8D16200437500 /* UITableView+Separator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableView+Separator.m"; sourceTree = "<group>"; };
 		C03A5C7419D8E0DB00437500 /* STDSubtaskTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = STDSubtaskTableViewCell.xib; sourceTree = "<group>"; };
+		C04D9C051A106A5C00E5D2B2 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
+		C04D9C061A106A5C00E5D2B2 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
 		C05A476419B52F6500A13B25 /* UITableView+LongPressReorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableView+LongPressReorder.h"; sourceTree = "<group>"; };
 		C05A476519B52F6500A13B25 /* UITableView+LongPressReorder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableView+LongPressReorder.m"; sourceTree = "<group>"; };
 		C05A476719B5349600A13B25 /* NSManagedObject+Extras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+Extras.h"; sourceTree = "<group>"; };
@@ -172,10 +176,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C04D9C081A106A5C00E5D2B2 /* Fabric.framework in Frameworks */,
 				C08FE1E61928163D0012F7D2 /* CoreGraphics.framework in Frameworks */,
 				C08FE1EA1928163D0012F7D2 /* CoreData.framework in Frameworks */,
 				C08FE1E81928163D0012F7D2 /* UIKit.framework in Frameworks */,
 				C08FE1E41928163D0012F7D2 /* Foundation.framework in Frameworks */,
+				C04D9C071A106A5C00E5D2B2 /* Crashlytics.framework in Frameworks */,
 				B27C318287A24E1D8856CD87 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -359,6 +365,8 @@
 		C08FE1E21928163D0012F7D2 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C04D9C051A106A5C00E5D2B2 /* Crashlytics.framework */,
+				C04D9C061A106A5C00E5D2B2 /* Fabric.framework */,
 				C08FE1E31928163D0012F7D2 /* Foundation.framework */,
 				C08FE1E51928163D0012F7D2 /* CoreGraphics.framework */,
 				C08FE1E71928163D0012F7D2 /* UIKit.framework */,
@@ -430,6 +438,7 @@
 				C08FE1DD1928163D0012F7D2 /* Frameworks */,
 				C08FE1DE1928163D0012F7D2 /* Resources */,
 				5E1FF7FB2C8D44598DE88470 /* Copy Pods Resources */,
+				C0727A031A1067AD0045EF70 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -559,6 +568,19 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		C0727A031A1067AD0045EF70 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "./Fabric.framework/run 86bf271a95275db9bed14c5a063edbeac7622635 ee3fa45fd6e1296f88297acd1281248b587d91ed8c292b82c73e1d3beeaa2c62";
 		};
 		C0C7B2E81933C8FD005189C9 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -735,6 +757,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = "$(SRCROOT)/STD/Supporting files/STD-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
@@ -747,6 +773,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = "$(SRCROOT)/STD/Supporting files/STD-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
