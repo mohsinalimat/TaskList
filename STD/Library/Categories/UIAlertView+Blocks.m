@@ -15,7 +15,7 @@ static char kHandlerAssociatedKey;
 
 @end
 
-@implementation UIAlertView (Extras)
+@implementation UIAlertView (Blocks)
 
 + (UIAlertView *)showAlertViewWithMessage:(NSString *)message;
 {
@@ -46,7 +46,7 @@ static char kHandlerAssociatedKey;
 
 - (void)showWithHandler:(UIAlertViewHandler)handler;
 {
-    [self setAssociatedObject:handler forKey:&kHandlerAssociatedKey];
+    [self setAssociatedObject:[handler copy] forKey:&kHandlerAssociatedKey];
     
     self.delegate = self;
     [self show];

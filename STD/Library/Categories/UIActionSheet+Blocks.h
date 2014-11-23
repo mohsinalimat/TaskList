@@ -10,7 +10,7 @@
 
 typedef void(^UIActionSheetHandler)(UIActionSheet *actionSheet, NSInteger buttonIndex);
 
-@interface UIActionSheet (Extras)
+@interface UIActionSheet (Blocks)
 
 + (UIActionSheet *)showActionSheetWithTitle:(NSString *)title cancelButtonTitle:(NSString *)cancelButtonTitle destructiveButtonTitle:(NSString *)destructiveButtonTitle otherButtonTitles:(NSArray *)otherButtonTitles handler:(UIActionSheetHandler)handler;
 
