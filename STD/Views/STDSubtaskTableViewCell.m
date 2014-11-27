@@ -7,15 +7,30 @@
 //
 
 #import "STDSubtaskTableViewCell.h"
+#import "PureLayout.h"
 
 @implementation STDSubtaskTableViewCell
 
-- (void)awakeFromNib
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
-    for (UIButton *button in self.buttons) {
-        button.tintColor = [UIColor blackColor];
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    if (self) {
+        self.selectionStyle = UITableViewCellSelectionStyleNone;
+        
+        self.clipsToBounds = YES;
+        
+        // text view
+        self.textView = [SZTextView newAutoLayoutView];
+        self.textView.scrollsToTop = NO;
+        self.textView.contentInset = (UIEdgeInsets){2, 0, 0, 0};
+        [self.contentView addSubview:self.textView];
+        
+        [self.textView autoPinEdgesToSuperviewEdgesWithInsets:(UIEdgeInsets){0, 14, 0, 14}];
     }
+    return self;
 }
+
+#pragma mark - IBActions
 
 - (IBAction)didTouchOnNotesButton:(id)sender
 {

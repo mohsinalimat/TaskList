@@ -14,7 +14,7 @@
 
 - (void)taskTableViewCell:(STDTaskTableViewCell *)cell didTouchOnTasksButton:(id)sender;
 - (void)taskTableViewCell:(STDTaskTableViewCell *)cell didTouchOnNotesButton:(id)sender;
-- (void)didSwipeRight:(STDTaskTableViewCell *)cell;
+- (void)taskTableViewCell:(STDTaskTableViewCell *)cell strikethroughDidEndPanning:(NSUInteger)length;
 
 @end
 
@@ -24,8 +24,6 @@
 
 @property (weak, nonatomic) STDTask *task;
 
-@property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *buttons;
-
-@property (weak, nonatomic) IBOutlet UITextField *textField;
+@property (strong, nonatomic) IBOutlet UITextField *textField;
 
 @end

@@ -7,20 +7,32 @@
 //
 
 #import "STDTaskTableViewCell.h"
+#import "UITableViewCell+Strikethrough.h"
+#import "PureLayout.h"
+
+@interface STDTaskTableViewCell () <StrikethroughTableViewCellDelegate>
+
+@end
 
 @implementation STDTaskTableViewCell
 
-- (void)awakeFromNib
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
-    for (UIButton *button in self.buttons) {
-        button.tintColor = [UIColor blackColor];
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    if (self) {
+        self.textField = [UITextField newAutoLayoutView];
+        self.textField.borderStyle = UITextBorderStyleNone;
+        [self.contentView addSubview:self.textField];
+        
+        [self.textField autoPinEdgesToSuperviewEdgesWithInsets:(UIEdgeInsets){7, 14, 7, 14}];
+        
+        self.strikethroughDelegate = self;
+        self.strikethroughEnabled = YES;
     }
-    
-    // add a pan recognizer
-    UIGestureRecognizer *recognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panGestureRecognized:)];
-    recognizer.delegate = self;
-    [self addGestureRecognizer:recognizer];
+    return self;
 }
+
+#pragma mark - IBActions
 
 - (IBAction)didTouchOnTasksButton:(id)sender
 {
@@ -36,51 +48,16 @@
     }
 }
 
-- (void)didSwipeRight
+- (void)strikethroughDidEndPanning:(NSUInteger)length
 {
-    if ([self.delegate respondsToSelector:@selector(didSwipeRight:)]) {
-        [self.delegate didSwipeRight:self];
+    if ([self.delegate respondsToSelector:@selector(taskTableViewCell:strikethroughDidEndPanning:)]) {
+        [self.delegate taskTableViewCell:self strikethroughDidEndPanning:length];
     }
 }
 
-#pragma mark - UIPanGestureRecognizer
+#pragma mark - StrikethroughTableViewCellDelegate
 
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
-{
-    return YES;
-}
-
-- (BOOL)gestureRecognizerShouldBegin:(UIPanGestureRecognizer *)gestureRecognizer
-{
-    if ([gestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]]) {
-        CGPoint translation = [gestureRecognizer translationInView:[self superview]];
-        return fabsf(translation.x) > fabsf(translation.y);
-    }
-    return NO;
-}
-
-- (void)panGestureRecognized:(UIPanGestureRecognizer *)recognizer
-{
-    CGPoint point = [recognizer locationInView:self];
-    CGFloat x = point.x / 8.0f;
-    if (recognizer.state == UIGestureRecognizerStateChanged) {
-        [self animateStrikethrough:x];
-    } else if (recognizer.state == UIGestureRecognizerStateEnded) {
-        CGPoint velocity = [recognizer velocityInView:self];
-        x += velocity.x / 8.0f;
-        [self animateStrikethrough:x];
-
-        if (x > (self.textField.attributedText.length / 2.0f)) {
-            [self animateStrikethrough:self.textField.attributedText.length];
-            
-            [self didSwipeRight];
-        } else {
-            [self animateStrikethrough:0];
-        }
-    }
-}
-
-- (void)animateStrikethrough:(NSUInteger)length
+- (void)tableViewCell:(UITableViewCell *)tableViewCell strikethroughDidChange:(NSUInteger)length
 {
     if (length > self.textField.attributedText.length)
         length = self.textField.attributedText.length;
@@ -91,6 +68,17 @@
         [attributedString addAttributes:@{NSStrikethroughStyleAttributeName:@(NSUnderlineStyleNone)} range:NSMakeRange(length, self.textField.attributedText.length - length)];
         self.textField.attributedText = attributedString;
     }];
+}
+
+- (void)tableViewCell:(UITableViewCell *)tableViewCell strikethroughDidEndPanning:(NSUInteger)length
+{
+    if (length > (self.textField.attributedText.length / 2.0f)) {
+        [self tableViewCell:self strikethroughDidChange:self.textField.attributedText.length];
+        
+        [self strikethroughDidEndPanning:self.textField.attributedText.length];
+    } else {
+        [self tableViewCell:self strikethroughDidChange:0];
+    }
 }
 
 @end

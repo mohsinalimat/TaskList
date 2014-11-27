@@ -10,6 +10,7 @@
 #import "NSObject+Extras.h"
 
 static char kPanGestureRecognizerAssociatedKey;
+static char kDelegateAssociatedKey;
 
 @interface UITableViewCell () <UIGestureRecognizerDelegate>
 
@@ -36,6 +37,16 @@ static char kPanGestureRecognizerAssociatedKey;
 - (BOOL)isStrikethroughEnabled
 {
     return [self.gestureRecognizers containsObject:self.panGestureRecognizer];
+}
+
+- (void)setStrikethroughDelegate:(id<StrikethroughTableViewCellDelegate>)strikethroughDelegate
+{
+    [self setAssociatedObject:strikethroughDelegate forKey:&kDelegateAssociatedKey];
+}
+
+- (id<StrikethroughTableViewCellDelegate>)strikethroughDelegate
+{
+    return [self associatedObjectForKey:&kDelegateAssociatedKey];
 }
 
 #pragma mark - UIPanGestureRecognizer

@@ -22,10 +22,8 @@
 
 @property (weak, nonatomic) id<STDSubtaskTableViewCellDelegate> delegate;
 
-@property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *buttons;
+@property (weak, nonatomic) STDSubtask *subtask;
 
-@property (weak, nonatomic) IBOutlet SZTextView *textView;
-
-@property (weak, nonatomic) IBOutlet UIView *expandedView;
+@property (strong, nonatomic) SZTextView *textView;
 
 @end

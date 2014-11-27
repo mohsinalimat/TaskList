@@ -8,6 +8,7 @@
 
 #import "STDHomepageViewController.h"
 #import "STDTaskTableViewCell.h"
+#import "STDTaskTableViewHeaderFooterView.h"
 #import "UIViewController+BHTKeyboardNotifications.h"
 #import "NSObject+Extras.h"
 #import "UITableView+LongPressReorder.h"
@@ -17,7 +18,6 @@
 #import "STDNotesViewController.h"
 #import "STDSettingsViewController.h"
 
-#define kButton 1000
 #define kTextFieldCategory 2000
 #define kTextFieldTask 3000
 
@@ -90,7 +90,7 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     [self.view endEditing:NO];
 }
 
-#pragma mark - IBAction
+#pragma mark - IBActions
 
 - (IBAction)didTouchOnUndoButton:(id)sender
 {
@@ -132,9 +132,8 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
             [cell.textField becomeFirstResponder];
         }];
     } else {
-        UIView *view = [self.tableView headerViewForSection:section];
-        UITextField *textField = (UITextField *)[view viewWithTag:kTextFieldCategory];
-        [textField becomeFirstResponder];
+        STDTaskTableViewHeaderFooterView *view = (STDTaskTableViewHeaderFooterView *)[self.tableView headerViewForSection:section];
+        [view.textField becomeFirstResponder];
     }
 }
 
@@ -150,10 +149,9 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
 {
     STDCategory *category = [recognizer.view associatedObjectForKey:&kCategoryKey];
     NSInteger section = [self sectionForCategory:category];
-    UIView *view = [self.tableView headerViewForSection:section];
-    UITextField *textField = (UITextField *)[view viewWithTag:kTextFieldCategory];
-    textField.userInteractionEnabled = YES;
-    [textField becomeFirstResponder];
+    STDTaskTableViewHeaderFooterView *view = (STDTaskTableViewHeaderFooterView *)[self.tableView headerViewForSection:section];
+    view.textField.userInteractionEnabled = YES;
+    [view.textField becomeFirstResponder];
 }
 
 - (void)pushViewController:(UIViewController *)viewController
@@ -406,10 +404,14 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
 - (void)reloadHeaderViewForCategory:(STDCategory *)category
 {
     NSInteger section = [self sectionForCategory:category];
-    UIView *view = [self.tableView headerViewForSection:section];
-    UIButton *button = (UIButton *)[view viewWithTag:kButton];
+    STDTaskTableViewHeaderFooterView *view = (STDTaskTableViewHeaderFooterView *)[self.tableView headerViewForSection:section];
+    [self reloadHeaderView:view forCategory:category];
+}
+
+- (void)reloadHeaderView:(STDTaskTableViewHeaderFooterView *)view forCategory:(STDCategory *)category
+{
     NSString *title = [self taskCountStringForCategory:category];
-    [button setTitle:title forState:UIControlStateNormal];
+    [view.button setTitle:title forState:UIControlStateNormal];
 }
 
 #pragma mark - UITableViewDataSource
@@ -430,7 +432,7 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
 {
     STDTaskTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass([STDTaskTableViewCell class])];
     if (!cell) {
-        cell = (STDTaskTableViewCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([STDTaskTableViewCell class]) owner:self options:nil] firstObject];
+        cell = [[STDTaskTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:NSStringFromClass([STDTaskTableViewCell class])];
         
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
@@ -488,60 +490,40 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    static NSString *CellIdentifier = @"HeaderFooterView";
-    UITableViewHeaderFooterView *headerFooterView = [tableView dequeueReusableHeaderFooterViewWithIdentifier:CellIdentifier];
-    if (!headerFooterView) {
-        headerFooterView = [[UITableViewHeaderFooterView alloc] initWithReuseIdentifier:CellIdentifier];
-
-        headerFooterView.frame = (CGRect){0, 0, CGRectGetWidth(tableView.bounds), 44};
-        headerFooterView.contentView.backgroundColor = [UIColor whiteColor];
+    STDTaskTableViewHeaderFooterView *view = [tableView dequeueReusableHeaderFooterViewWithIdentifier:NSStringFromClass([STDTaskTableViewHeaderFooterView class])];
+    if (!view) {
+        view = [[STDTaskTableViewHeaderFooterView alloc] initWithReuseIdentifier:NSStringFromClass([STDTaskTableViewHeaderFooterView class])];
+        
+        view.frame = (CGRect){0, 0, CGRectGetWidth(tableView.bounds), 44};
+        view.contentView.backgroundColor = [UIColor whiteColor];
+        
+        view.textField.delegate = self;
+        view.textField.tag = kTextFieldCategory;
+        view.textField.placeholder = @"New Category";
+        
+        [view.button addTarget:self action:@selector(didTouchOnButton:) forControlEvents:UIControlEventTouchUpInside];
         
         UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(singleTapGestureRecognized:)];
         singleTap.numberOfTapsRequired = 1;
-        [headerFooterView addGestureRecognizer:singleTap];
+        [view addGestureRecognizer:singleTap];
         
         UITapGestureRecognizer *doubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(doubleTapGestureRecognized:)];
         doubleTap.numberOfTapsRequired = 2;
-        [headerFooterView addGestureRecognizer:doubleTap];
+        [view addGestureRecognizer:doubleTap];
         
         [singleTap requireGestureRecognizerToFail:doubleTap];
     }
     
     STDCategory *category = [self categoryForSection:section];
     
-    [headerFooterView setAssociatedObject:category forKey:&kCategoryKey];
+    [view setAssociatedObject:category forKey:&kCategoryKey];
     
-    UITextField *textField = (UITextField *)[headerFooterView viewWithTag:kTextFieldCategory];
-    if (!textField) {
-        textField = [[UITextField alloc] initWithFrame:(CGRect){14, 0, CGRectGetWidth(tableView.bounds) - 44 - 7, 44}];
-        textField.textColor = [UIColor colorWithHue:(210.0f / 360.0f) saturation:0.94f brightness:1.0f alpha:1.0f];
-        textField.placeholder = @"New Category";
-        textField.font = [UIFont boldSystemFontOfSize:18.0f];
-        textField.delegate = self;
-        textField.tag = kTextFieldCategory;
-        textField.clearButtonMode = UITextFieldViewModeWhileEditing;
-        textField.autocapitalizationType = UITextAutocapitalizationTypeAllCharacters;
-        [headerFooterView addSubview:textField];
-    }
+    view.textField.text = [category.name uppercaseString];
+    view.textField.userInteractionEnabled = !category;
     
-    textField.text = [category.name uppercaseString];
-    textField.userInteractionEnabled = !category;
+    [self reloadHeaderView:view forCategory:category];
     
-    UIButton *button = (UIButton *)[headerFooterView viewWithTag:kButton];
-    if (!button) {
-        button = [UIButton buttonWithType:UIButtonTypeSystem];
-        button.frame = (CGRect){CGRectGetWidth(tableView.bounds) - 44, 0, 44, 44};
-        button.titleLabel.font = [UIFont systemFontOfSize:18.0f];
-        button.tintColor = [UIColor darkGrayColor];
-        [button addTarget:self action:@selector(didTouchOnButton:) forControlEvents:UIControlEventTouchUpInside];
-        button.tag = kButton;
-        [headerFooterView addSubview:button];
-    }
-    
-    NSString *title = [self taskCountStringForCategory:category];
-    [button setTitle:title forState:UIControlStateNormal];
-    
-    return headerFooterView;
+    return view;
 }
 
 #pragma mark - Reorder

@@ -119,16 +119,10 @@ static char kDummyTextViewKey;
 {
     STDSubtaskTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass([STDSubtaskTableViewCell class])];
     if (!cell) {
-        cell = (STDSubtaskTableViewCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([STDSubtaskTableViewCell class]) owner:self options:nil] firstObject];
-        
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        
-        cell.clipsToBounds = YES;
+        cell = [[STDSubtaskTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:NSStringFromClass([STDSubtaskTableViewCell class])];
         
         cell.delegate = self;
         
-        cell.textView.scrollsToTop = NO;
-        cell.textView.contentInset = (UIEdgeInsets){2, 0, 0, 0};
         cell.textView.delegate = self;
         cell.textView.font = kTextViewFont;
         cell.textView.placeholder = @"New Subtask";
