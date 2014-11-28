@@ -22,6 +22,8 @@
 
 /* Begin PBXBuildFile section */
 		B27C318287A24E1D8856CD87 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CE5729C3CBEE4252A6670778 /* libPods.a */; };
+		C00A62191A27BB610041E461 /* UITextView+Strikethrough.m in Sources */ = {isa = PBXBuildFile; fileRef = C00A62181A27BB610041E461 /* UITextView+Strikethrough.m */; };
+		C00A621C1A27D3890041E461 /* UITextField+Strikethrough.m in Sources */ = {isa = PBXBuildFile; fileRef = C00A621B1A27D3890041E461 /* UITextField+Strikethrough.m */; };
 		C01CB78519281EC000499B28 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C01CB77419281EC000499B28 /* InfoPlist.strings */; };
 		C01CB78619281EC000499B28 /* STD.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C01CB77819281EC000499B28 /* STD.xcdatamodeld */; };
 		C01CB78719281EC000499B28 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C01CB77B19281EC000499B28 /* main.m */; };
@@ -33,7 +35,6 @@
 		C03A5C7319D8D16200437500 /* UITableView+Separator.m in Sources */ = {isa = PBXBuildFile; fileRef = C03A5C7219D8D16200437500 /* UITableView+Separator.m */; };
 		C04D9C071A106A5C00E5D2B2 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C04D9C051A106A5C00E5D2B2 /* Crashlytics.framework */; };
 		C04D9C081A106A5C00E5D2B2 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C04D9C061A106A5C00E5D2B2 /* Fabric.framework */; };
-		C04D9C0B1A10765300E5D2B2 /* UITableViewCell+Strikethrough.m in Sources */ = {isa = PBXBuildFile; fileRef = C04D9C0A1A10765300E5D2B2 /* UITableViewCell+Strikethrough.m */; };
 		C04D9C0E1A1079BA00E5D2B2 /* STDTaskTableViewHeaderFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = C04D9C0D1A1079BA00E5D2B2 /* STDTaskTableViewHeaderFooterView.m */; };
 		C04D9C111A107E8F00E5D2B2 /* UIScrollView+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = C04D9C101A107E8F00E5D2B2 /* UIScrollView+Blocks.m */; };
 		C05A476619B52F6500A13B25 /* UITableView+LongPressReorder.m in Sources */ = {isa = PBXBuildFile; fileRef = C05A476519B52F6500A13B25 /* UITableView+LongPressReorder.m */; };
@@ -95,6 +96,10 @@
 
 /* Begin PBXFileReference section */
 		43C346CBA7F5DE25649A106E /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		C00A62171A27BB610041E461 /* UITextView+Strikethrough.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITextView+Strikethrough.h"; sourceTree = "<group>"; };
+		C00A62181A27BB610041E461 /* UITextView+Strikethrough.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITextView+Strikethrough.m"; sourceTree = "<group>"; };
+		C00A621A1A27D3890041E461 /* UITextField+Strikethrough.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITextField+Strikethrough.h"; sourceTree = "<group>"; };
+		C00A621B1A27D3890041E461 /* UITextField+Strikethrough.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITextField+Strikethrough.m"; sourceTree = "<group>"; };
 		C01CB77519281EC000499B28 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = InfoPlist.strings; sourceTree = "<group>"; };
 		C01CB77919281EC000499B28 /* STD.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = STD.xcdatamodel; sourceTree = "<group>"; };
 		C01CB77B19281EC000499B28 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -111,8 +116,6 @@
 		C03A5C7219D8D16200437500 /* UITableView+Separator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableView+Separator.m"; sourceTree = "<group>"; };
 		C04D9C051A106A5C00E5D2B2 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		C04D9C061A106A5C00E5D2B2 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
-		C04D9C091A10765300E5D2B2 /* UITableViewCell+Strikethrough.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableViewCell+Strikethrough.h"; sourceTree = "<group>"; };
-		C04D9C0A1A10765300E5D2B2 /* UITableViewCell+Strikethrough.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableViewCell+Strikethrough.m"; sourceTree = "<group>"; };
 		C04D9C0C1A1079BA00E5D2B2 /* STDTaskTableViewHeaderFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STDTaskTableViewHeaderFooterView.h; sourceTree = "<group>"; };
 		C04D9C0D1A1079BA00E5D2B2 /* STDTaskTableViewHeaderFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STDTaskTableViewHeaderFooterView.m; sourceTree = "<group>"; };
 		C04D9C0F1A107E8F00E5D2B2 /* UIScrollView+Blocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+Blocks.h"; sourceTree = "<group>"; };
@@ -345,8 +348,10 @@
 				C04D9C101A107E8F00E5D2B2 /* UIScrollView+Blocks.m */,
 				C03A5C7119D8D16200437500 /* UITableView+Separator.h */,
 				C03A5C7219D8D16200437500 /* UITableView+Separator.m */,
-				C04D9C091A10765300E5D2B2 /* UITableViewCell+Strikethrough.h */,
-				C04D9C0A1A10765300E5D2B2 /* UITableViewCell+Strikethrough.m */,
+				C00A621A1A27D3890041E461 /* UITextField+Strikethrough.h */,
+				C00A621B1A27D3890041E461 /* UITextField+Strikethrough.m */,
+				C00A62171A27BB610041E461 /* UITextView+Strikethrough.h */,
+				C00A62181A27BB610041E461 /* UITextView+Strikethrough.m */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -610,6 +615,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C082BE12193BD86C00A60D8E /* STDNote.m in Sources */,
+				C00A62191A27BB610041E461 /* UITextView+Strikethrough.m in Sources */,
 				C0C462541932BFD10031E256 /* STDSubtasksViewController.m in Sources */,
 				C082BE05193BD86300A60D8E /* _STDCategory.m in Sources */,
 				C04D9C0E1A1079BA00E5D2B2 /* STDTaskTableViewHeaderFooterView.m in Sources */,
@@ -625,7 +631,6 @@
 				C0A8DF5619E1FEA1005FCC81 /* UIAlertView+Blocks.m in Sources */,
 				C082BE06193BD86300A60D8E /* _STDNote.m in Sources */,
 				C07F7C8D1957CB2900CF0C92 /* NSObject+Extras.m in Sources */,
-				C04D9C0B1A10765300E5D2B2 /* UITableViewCell+Strikethrough.m in Sources */,
 				C05A476619B52F6500A13B25 /* UITableView+LongPressReorder.m in Sources */,
 				C082BE11193BD86C00A60D8E /* STDCategory.m in Sources */,
 				C01D74CB19A1445200905EBD /* STDUserDefaults.m in Sources */,
@@ -635,6 +640,7 @@
 				C0C462511932BDF20031E256 /* STDHomepageViewController.m in Sources */,
 				C01CB78619281EC000499B28 /* STD.xcdatamodeld in Sources */,
 				C04D9C111A107E8F00E5D2B2 /* UIScrollView+Blocks.m in Sources */,
+				C00A621C1A27D3890041E461 /* UITextField+Strikethrough.m in Sources */,
 				C082BE1C193C17D900A60D8E /* UIImage+Extras.m in Sources */,
 				C082BE07193BD86300A60D8E /* _STDSubtask.m in Sources */,
 			);
