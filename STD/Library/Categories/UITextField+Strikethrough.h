@@ -12,7 +12,6 @@
 
 @optional
 
-- (BOOL)textFieldStrikethroughGestureShouldBegin:(UITextField *)textField;
 - (void)textFieldStrikethroughGestureDidEnd:(UITextField *)textField;
 
 @end

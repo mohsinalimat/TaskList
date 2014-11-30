@@ -12,7 +12,6 @@
 
 @optional
 
-- (BOOL)textViewStrikethroughGestureShouldBegin:(UITextView *)textView;
 - (void)textViewStrikethroughGestureDidEnd:(UITextView *)textView;
 
 @end

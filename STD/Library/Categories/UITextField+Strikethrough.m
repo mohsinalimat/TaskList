@@ -53,10 +53,6 @@ static char kPanGestureRecognizerAssociatedKey;
 
 - (BOOL)gestureRecognizerShouldBegin:(UIPanGestureRecognizer *)gestureRecognizer
 {
-    if ([self.delegate respondsToSelector:@selector(textFieldStrikethroughGestureShouldBegin:)]) {
-        return [self.delegate performSelector:@selector(textFieldStrikethroughGestureShouldBegin:) withObject:self];
-    }
-    
     if ([gestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]]) {
         CGPoint translation = [gestureRecognizer translationInView:[self superview]];
         return fabsf(translation.x) > fabsf(translation.y);
