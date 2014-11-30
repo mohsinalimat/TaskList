@@ -3,7 +3,7 @@
 //  STD
 //
 //  Created by Lasha Efremidze on 9/23/14.
-//  Copyright (c) 2014 Appoop Inc. All rights reserved.
+//  Copyright (c) 2014 More Voltage Inc. All rights reserved.
 //
 
 #import "UITableView+Separator.h"
