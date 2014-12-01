@@ -18,7 +18,7 @@
 
             if (relationshipDescription.isToMany) {
                 NSMutableSet *managedObjectS = [self mutableSetValueForKey:name];
-                [properties addObject:[NSString stringWithFormat:@"%@: %d", name, managedObjectS.count]]; // displays count
+                [properties addObject:[NSString stringWithFormat:@"%@: %lu", name, (unsigned long)managedObjectS.count]]; // displays count
             } else {
                 NSManagedObject *managedObject = [self valueForKey:name];
                 NSURL *uri = [managedObject.objectID URIRepresentation];
