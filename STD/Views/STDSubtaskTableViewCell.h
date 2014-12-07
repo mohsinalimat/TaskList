@@ -9,18 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "SZTextView.h"
 
-@class STDSubtaskTableViewCell;
-
-@protocol STDSubtaskTableViewCellDelegate <NSObject>
-
-- (void)subtaskTableViewCell:(STDSubtaskTableViewCell *)cell didTouchOnNotesButton:(id)sender;
-- (void)subtaskTableViewCell:(STDSubtaskTableViewCell *)cell didTouchOnMoveButton:(id)sender;
-
-@end
-
 @interface STDSubtaskTableViewCell : UITableViewCell
-
-@property (weak, nonatomic) id<STDSubtaskTableViewCellDelegate> delegate;
 
 @property (weak, nonatomic) STDSubtask *subtask;
 
