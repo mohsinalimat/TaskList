@@ -14,6 +14,7 @@ const struct STDTaskAttributes STDTaskAttributes = {
 const struct STDTaskRelationships STDTaskRelationships = {
 	.category = @"category",
 	.note = @"note",
+	.parent_task = @"parent_task",
 	.subtasks = @"subtasks",
 };
 
@@ -106,6 +107,8 @@ const struct STDTaskRelationships STDTaskRelationships = {
 @dynamic category;
 
 @dynamic note;
+
+@dynamic parent_task;
 
 @dynamic subtasks;
 

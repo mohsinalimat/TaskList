@@ -21,7 +21,7 @@
     }
 }
 
-- (void)addSubtasksObject:(STDSubtask *)value_
+- (void)addSubtasksObject:(STDTask *)value_
 {
     value_.indexValue = [[self primitiveSubtasks] count];
     

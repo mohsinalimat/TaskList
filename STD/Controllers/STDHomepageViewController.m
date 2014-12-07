@@ -171,7 +171,7 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     if (uncompleted.count) {
         [UIAlertView showAlertViewWithMessage:@"Mark all subtasks complete? If yes, all subtasks will be marked as finished because you're done! If you choose keep, the task will still be viewable until you mark all subtasks completed." title:nil cancelButtonTitle:@"Keep" otherButtonTitles:@[@"Yes"] handler:^(UIAlertView *alertView, NSInteger buttonIndex) {
             if (buttonIndex != alertView.cancelButtonIndex) {
-                for (STDSubtask *subtask in task.subtasks) {
+                for (STDTask *subtask in task.subtasks) {
                     subtask.completed = @YES;
                     subtask.completion_date = [NSDate date];
                 }
