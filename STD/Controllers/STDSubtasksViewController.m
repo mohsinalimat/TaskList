@@ -20,13 +20,11 @@
 static char kTextViewKey;
 static char kDummyTextViewKey;
 
-@interface STDSubtasksViewController () <UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, STDSubtaskTableViewCellDelegate>
+@interface STDSubtasksViewController () <UITableViewDataSource, UITableViewDelegate, UITextViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 @property (strong, nonatomic) NSArray *subtasks;
-
-@property (strong, nonatomic) NSMutableArray *expandedItems;
 
 @end
 
@@ -125,8 +123,6 @@ static char kDummyTextViewKey;
         
         cell.clipsToBounds = YES;
         
-        cell.delegate = self;
-        
         cell.textView.scrollsToTop = NO;
         cell.textView.contentInset = (UIEdgeInsets){2, 0, 0, 0};
         cell.textView.delegate = self;
@@ -145,17 +141,6 @@ static char kDummyTextViewKey;
 
 #pragma mark - UITableViewDelegate
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
-    
-    STDSubtask *subtask = [self subtaskForIndexPath:indexPath];
-    if (!subtask)
-        return;
-    
-    [self toggleSubtask:subtask];
-}
-
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITextView *textView = [self associatedObjectForKey:&kDummyTextViewKey];
@@ -165,13 +150,7 @@ static char kDummyTextViewKey;
         [self setAssociatedObject:textView forKey:&kDummyTextViewKey];
     }
     textView.text = [self textForIndexPath:indexPath];
-    CGFloat height = [self heightForTextView:textView];
-    
-    STDSubtask *subtask = [self subtaskForIndexPath:indexPath];
-    if ([self isSubtaskExpanded:subtask])
-        height += 44.0f;
-    
-    return height;
+    return [self heightForTextView:textView];
 }
 
 #pragma mark - Reorder
@@ -201,47 +180,6 @@ static char kDummyTextViewKey;
 {
     STDTask *subtask = [self subtaskForIndexPath:proposedDestinationIndexPath];
     return (subtask ? proposedDestinationIndexPath : sourceIndexPath);
-}
-
-#pragma mark - Expand/Collapse
-
-- (void)toggleSubtask:(STDSubtask *)subtask
-{
-    [self.tableView beginUpdates];
-    
-    if (!self.expandedItems)
-        self.expandedItems = [NSMutableArray array];
-    BOOL expanded = [self isSubtaskExpanded:subtask];
-    if (expanded) {
-        [self.expandedItems removeObject:subtask];
-    } else {
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"class == %@", [subtask class]];
-        NSArray *tasks = [self.expandedItems filteredArrayUsingPredicate:predicate];
-        [self.expandedItems removeObjectsInArray:tasks];
-        
-        [self.expandedItems addObject:subtask];
-    }
-    
-    [self.tableView endUpdates];
-}
-
-- (BOOL)isSubtaskExpanded:(STDSubtask *)subtask
-{
-    return [self.expandedItems containsObject:subtask];
-}
-
-#pragma mark - STDSubtaskTableViewCellDelegate
-
-- (void)subtaskTableViewCell:(STDSubtaskTableViewCell *)cell didTouchOnNotesButton:(id)sender;
-{
-    STDNotesViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"STDNotesViewControllerId"];
-    viewController.task = self.task;
-    [self.navigationController pushViewController:viewController animated:YES];
-}
-
-- (void)subtaskTableViewCell:(STDSubtaskTableViewCell *)cell didTouchOnMoveButton:(id)sender;
-{
-    
 }
 
 #pragma mark - UITextViewDelegate
