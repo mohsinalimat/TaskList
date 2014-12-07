@@ -20,9 +20,9 @@
 
 // PureLayout
 #define COCOAPODS_POD_AVAILABLE_PureLayout
-#define COCOAPODS_VERSION_MAJOR_PureLayout 1
-#define COCOAPODS_VERSION_MINOR_PureLayout 1
-#define COCOAPODS_VERSION_PATCH_PureLayout 0
+#define COCOAPODS_VERSION_MAJOR_PureLayout 2
+#define COCOAPODS_VERSION_MINOR_PureLayout 0
+#define COCOAPODS_VERSION_PATCH_PureLayout 3
 
 // SZTextView
 #define COCOAPODS_POD_AVAILABLE_SZTextView
@@ -39,7 +39,7 @@
 // iRate
 #define COCOAPODS_POD_AVAILABLE_iRate
 #define COCOAPODS_VERSION_MAJOR_iRate 1
-#define COCOAPODS_VERSION_MINOR_iRate 10
+#define COCOAPODS_VERSION_MINOR_iRate 11
 #define COCOAPODS_VERSION_PATCH_iRate 3
 
 // pop
