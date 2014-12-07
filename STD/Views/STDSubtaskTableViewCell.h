@@ -11,7 +11,7 @@
 
 @interface STDSubtaskTableViewCell : UITableViewCell
 
-@property (weak, nonatomic) STDSubtask *subtask;
+@property (weak, nonatomic) STDTask *subtask;
 
 @property (strong, nonatomic) SZTextView *textView;
 

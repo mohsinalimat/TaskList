@@ -14,12 +14,14 @@ extern const struct STDTaskAttributes {
 extern const struct STDTaskRelationships {
 	__unsafe_unretained NSString *category;
 	__unsafe_unretained NSString *note;
+	__unsafe_unretained NSString *parent_task;
 	__unsafe_unretained NSString *subtasks;
 } STDTaskRelationships;
 
 @class STDCategory;
 @class STDNote;
-@class STDSubtask;
+@class STDTask;
+@class STDTask;
 
 @interface STDTaskID : NSManagedObjectID {}
 @end
@@ -66,6 +68,10 @@ extern const struct STDTaskRelationships {
 
 //- (BOOL)validateNote:(id*)value_ error:(NSError**)error_;
 
+@property (nonatomic, strong) STDTask *parent_task;
+
+//- (BOOL)validateParent_task:(id*)value_ error:(NSError**)error_;
+
 @property (nonatomic, strong) NSSet *subtasks;
 
 - (NSMutableSet*)subtasksSet;
@@ -75,8 +81,8 @@ extern const struct STDTaskRelationships {
 @interface _STDTask (SubtasksCoreDataGeneratedAccessors)
 - (void)addSubtasks:(NSSet*)value_;
 - (void)removeSubtasks:(NSSet*)value_;
-- (void)addSubtasksObject:(STDSubtask*)value_;
-- (void)removeSubtasksObject:(STDSubtask*)value_;
+- (void)addSubtasksObject:(STDTask*)value_;
+- (void)removeSubtasksObject:(STDTask*)value_;
 
 @end
 
@@ -108,6 +114,9 @@ extern const struct STDTaskRelationships {
 
 - (STDNote*)primitiveNote;
 - (void)setPrimitiveNote:(STDNote*)value;
+
+- (STDTask*)primitiveParent_task;
+- (void)setPrimitiveParent_task:(STDTask*)value;
 
 - (NSMutableSet*)primitiveSubtasks;
 - (void)setPrimitiveSubtasks:(NSMutableSet*)value;

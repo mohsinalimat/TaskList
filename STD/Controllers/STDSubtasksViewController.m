@@ -69,14 +69,14 @@ static char kDummyTextViewKey;
 
 - (void)updateIndexesForSubtasks:(NSArray *)subtasks
 {
-    for (STDSubtask *subtask in subtasks) {
+    for (STDTask *subtask in subtasks) {
         subtask.indexValue = [subtasks indexOfObject:subtask];
     }
 }
 
-- (STDSubtask *)subtaskForIndexPath:(NSIndexPath *)indexPath
+- (STDTask *)subtaskForIndexPath:(NSIndexPath *)indexPath
 {
-    STDSubtask *subtask;
+    STDTask *subtask;
     if (self.subtasks.count > indexPath.row)
         subtask = self.subtasks[indexPath.row];
     return subtask;
@@ -91,7 +91,7 @@ static char kDummyTextViewKey;
             return textView.text;
     }
     
-    STDSubtask *subtask = [self subtaskForIndexPath:indexPath];
+    STDTask *subtask = [self subtaskForIndexPath:indexPath];
     return subtask.name;
 }
 
@@ -126,7 +126,7 @@ static char kDummyTextViewKey;
     
     cell.contentView.tag = indexPath.row;
     
-    STDSubtask *subtask = [self subtaskForIndexPath:indexPath];
+    STDTask *subtask = [self subtaskForIndexPath:indexPath];
     cell.textView.text = subtask.name;
     cell.textView.userInteractionEnabled = !subtask;
     
@@ -151,13 +151,13 @@ static char kDummyTextViewKey;
 
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    STDSubtask *subtask = [self subtaskForIndexPath:indexPath];
+    STDTask *subtask = [self subtaskForIndexPath:indexPath];
     return (subtask != nil);
 }
 
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath
 {
-    STDSubtask *subtask = [self subtaskForIndexPath:sourceIndexPath];
+    STDTask *subtask = [self subtaskForIndexPath:sourceIndexPath];
     
     [self.task removeSubtasksObject:subtask];
     
@@ -172,7 +172,7 @@ static char kDummyTextViewKey;
 
 - (NSIndexPath *)tableView:(UITableView *)tableView targetIndexPathForMoveFromRowAtIndexPath:(NSIndexPath *)sourceIndexPath toProposedIndexPath:(NSIndexPath *)proposedDestinationIndexPath
 {
-    STDSubtask *subtask = [self subtaskForIndexPath:proposedDestinationIndexPath];
+    STDTask *subtask = [self subtaskForIndexPath:proposedDestinationIndexPath];
     return (subtask ? proposedDestinationIndexPath : sourceIndexPath);
 }
 
@@ -187,7 +187,7 @@ static char kDummyTextViewKey;
 {
     NSInteger row = textView.superview.tag;
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:0];
-    STDSubtask *subtask = [self subtaskForIndexPath:indexPath];
+    STDTask *subtask = [self subtaskForIndexPath:indexPath];
     if (subtask)
         return textView.text.length;
     
@@ -203,9 +203,9 @@ static char kDummyTextViewKey;
     
     NSInteger row = textView.superview.tag;
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:0];
-    STDSubtask *subtask = [self subtaskForIndexPath:indexPath];
+    STDTask *subtask = [self subtaskForIndexPath:indexPath];
     if (!subtask) {
-        subtask = [STDSubtask createEntity];
+        subtask = [STDTask createEntity];
         [self.task addSubtasksObject:subtask];
     }
     
