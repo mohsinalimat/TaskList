@@ -38,10 +38,8 @@
     }
     
     if (indexPath.row == 0) {
-        cell.textLabel.text = @"Completed Tasks";
-    } else if (indexPath.row == 1) {
         cell.textLabel.text = @"Rate Us";
-    } else if (indexPath.row == 2) {
+    } else if (indexPath.row == 1) {
         cell.textLabel.text = @"Contact Us";
     }
     
@@ -55,10 +53,8 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     if (indexPath.row == 0) {
-        
-    } else if (indexPath.row == 1) {
         [[iRate sharedInstance] promptForRating];
-    } else if (indexPath.row == 2) {
+    } else if (indexPath.row == 1) {
         if ([MFMailComposeViewController canSendMail]) {
             MFMailComposeViewController *mailComposeViewController = [MFMailComposeViewController new];
             mailComposeViewController.mailComposeDelegate = self;
