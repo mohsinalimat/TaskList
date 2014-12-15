@@ -12,4 +12,6 @@ typedef void(^UIScrollViewDidEndScrollingAnimationBlock)(UIScrollView *scrollVie
 
 @interface UIScrollView (Blocks)
 
+- (void)scrollViewDidEndScrollingAnimationBlock:(UIScrollViewDidEndScrollingAnimationBlock)block;
+
 @end

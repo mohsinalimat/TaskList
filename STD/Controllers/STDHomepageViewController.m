@@ -13,13 +13,14 @@
 #import "NSObject+Extras.h"
 #import "UITableView+LongPressReorder.h"
 #import "PureLayout.h"
+#import "UIScrollView+Blocks.h"
 
 #import "STDSubtasksViewController.h"
 #import "STDNotesViewController.h"
 #import "STDSettingsViewController.h"
 
-#define kTextFieldCategory 2000
-#define kTextFieldTask 3000
+#define kTextFieldCategory 1000
+#define kTextFieldTask 2000
 
 #define kNumberOfSections self.categories.count + 1
 #define kNumberOfRowsInSection [self countOfUncompletedTasksForCategory:category] + 1
@@ -27,14 +28,12 @@
 static char kCategoryKey;
 static char kTaskKey;
 
-static char kBlockKey;
-
 typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     UITableViewSectionActionExpand,
     UITableViewSectionActionCollapse
 };
 
-@interface STDHomepageViewController () <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, STDTaskTableViewCellDelegate>
+@interface STDHomepageViewController () <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, STDTaskTableViewCellDelegate, STDTaskTableViewHeaderFooterViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
@@ -119,39 +118,6 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
 {
     STDSettingsViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"STDSettingsViewControllerId"];
     [self pushViewController:viewController];
-}
-
-- (IBAction)didTouchOnButton:(id)sender
-{
-    UIButton *button = sender;
-    STDCategory *category = [button.superview associatedObjectForKey:&kCategoryKey];
-    NSInteger section = [self sectionForCategory:category];
-    if (category) {
-        [self animateCategory:category withAction:UITableViewSectionActionExpand completion:^{
-            STDTaskTableViewCell *cell = (STDTaskTableViewCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:[self countOfUncompletedTasksForCategory:category] inSection:section]];
-            [cell.textField becomeFirstResponder];
-        }];
-    } else {
-        STDTaskTableViewHeaderFooterView *view = (STDTaskTableViewHeaderFooterView *)[self.tableView headerViewForSection:section];
-        [view.textField becomeFirstResponder];
-    }
-}
-
-- (void)singleTapGestureRecognized:(UITapGestureRecognizer *)recognizer
-{
-    [self.view endEditing:YES];
-    
-    STDCategory *category = [recognizer.view associatedObjectForKey:&kCategoryKey];
-    [self toggleCategory:category];
-}
-
-- (void)doubleTapGestureRecognized:(UITapGestureRecognizer *)recognizer
-{
-    STDCategory *category = [recognizer.view associatedObjectForKey:&kCategoryKey];
-    NSInteger section = [self sectionForCategory:category];
-    STDTaskTableViewHeaderFooterView *view = (STDTaskTableViewHeaderFooterView *)[self.tableView headerViewForSection:section];
-    view.textField.userInteractionEnabled = YES;
-    [view.textField becomeFirstResponder];
 }
 
 - (void)pushViewController:(UIViewController *)viewController
@@ -497,26 +463,16 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
         view.frame = (CGRect){0, 0, CGRectGetWidth(tableView.bounds), 44};
         view.contentView.backgroundColor = [UIColor whiteColor];
         
+        view.delegate = self;
+        
         view.textField.delegate = self;
         view.textField.tag = kTextFieldCategory;
         view.textField.placeholder = @"New Category";
-        
-        [view.button addTarget:self action:@selector(didTouchOnButton:) forControlEvents:UIControlEventTouchUpInside];
-        
-        UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(singleTapGestureRecognized:)];
-        singleTap.numberOfTapsRequired = 1;
-        [view addGestureRecognizer:singleTap];
-        
-        UITapGestureRecognizer *doubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(doubleTapGestureRecognized:)];
-        doubleTap.numberOfTapsRequired = 2;
-        [view addGestureRecognizer:doubleTap];
-        
-        [singleTap requireGestureRecognizerToFail:doubleTap];
     }
     
     STDCategory *category = [self categoryForSection:section];
     
-    [view setAssociatedObject:category forKey:&kCategoryKey];
+    view.category = category;
     
     view.textField.text = [category.name uppercaseString];
     view.textField.userInteractionEnabled = !category;
@@ -623,7 +579,9 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
         if (expanded && expand) {
             if (![[self.tableView indexPathsForVisibleRows] containsObject:indexes.lastObject]) {
                 [self.tableView scrollToRowAtIndexPath:indexes.lastObject atScrollPosition:UITableViewScrollPositionBottom animated:YES];
-                [self setAssociatedObject:completion forKey:&kBlockKey];
+                [self.tableView scrollViewDidEndScrollingAnimationBlock:^(UIScrollView *scrollView) {
+                    if (completion) completion();
+                }];
                 return;
             }
         }
@@ -682,15 +640,6 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     return [self.expandedItems containsObject:task];
 }
 
-#pragma mark - UIScrollViewDelegate
-
-- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
-{
-    Block block = [self associatedObjectForKey:&kBlockKey];
-    [self setAssociatedObject:nil forKey:&kBlockKey];
-    if (block) block();
-}
-
 #pragma mark - STDTaskTableViewCellDelegate
 
 - (void)taskTableViewCell:(STDTaskTableViewCell *)cell didTouchOnTasksButton:(id)sender
@@ -710,6 +659,34 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
 - (void)didSwipeRight:(STDTaskTableViewCell *)cell
 {
     [self willCompleteTask:cell.task];
+}
+
+#pragma mark - STDTaskTableViewCellDelegate
+
+- (void)taskTableViewHeaderFooterView:(STDTaskTableViewHeaderFooterView *)view didTouchOnButton:(id)sender
+{
+    STDCategory *category = view.category;
+    NSInteger section = [self sectionForCategory:category];
+    if (category) {
+        [self animateCategory:category withAction:UITableViewSectionActionExpand completion:^{
+            STDTaskTableViewCell *cell = (STDTaskTableViewCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:[self countOfUncompletedTasksForCategory:category] inSection:section]];
+            [cell.textField becomeFirstResponder];
+        }];
+    } else {
+        [view.textField becomeFirstResponder];
+    }
+}
+
+- (void)taskTableViewHeaderFooterView:(STDTaskTableViewHeaderFooterView *)view singleTapGestureRecognized:(UITapGestureRecognizer *)recognizer
+{
+    [self.view endEditing:YES];
+    [self toggleCategory:view.category];
+}
+
+- (void)taskTableViewHeaderFooterView:(STDTaskTableViewHeaderFooterView *)view doubleTapGestureRecognized:(UITapGestureRecognizer *)recognizer
+{
+    view.textField.userInteractionEnabled = YES;
+    [view.textField becomeFirstResponder];
 }
 
 #pragma mark - UITextFieldDelegate

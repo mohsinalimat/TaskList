@@ -8,10 +8,24 @@
 
 #import <UIKit/UIKit.h>
 
+@class STDTaskTableViewHeaderFooterView;
+
+@protocol STDTaskTableViewHeaderFooterViewDelegate <NSObject>
+
+- (void)taskTableViewHeaderFooterView:(STDTaskTableViewHeaderFooterView *)view didTouchOnButton:(id)sender;
+- (void)taskTableViewHeaderFooterView:(STDTaskTableViewHeaderFooterView *)view singleTapGestureRecognized:(UITapGestureRecognizer *)recognizer;
+- (void)taskTableViewHeaderFooterView:(STDTaskTableViewHeaderFooterView *)view doubleTapGestureRecognized:(UITapGestureRecognizer *)recognizer;
+
+@end
+
 @interface STDTaskTableViewHeaderFooterView : UITableViewHeaderFooterView
 
-@property (nonatomic, strong) UITextField *textField;
+@property (weak, nonatomic) id<STDTaskTableViewHeaderFooterViewDelegate> delegate;
 
-@property (nonatomic, strong) UIButton *button;
+@property (weak, nonatomic) STDCategory *category;
+
+@property (strong, nonatomic) UITextField *textField;
+
+@property (strong, nonatomic) UIButton *button;
 
 @end

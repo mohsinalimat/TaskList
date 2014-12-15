@@ -10,6 +10,28 @@
 
 @implementation STDTaskTableViewHeaderFooterView
 
+- (id)initWithReuseIdentifier:(NSString *)reuseIdentifier
+{
+    self = [super initWithReuseIdentifier:reuseIdentifier];
+    if (self) {
+        [self initGestures];
+    }
+    return self;
+}
+
+- (void)initGestures
+{
+    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(singleTapGestureRecognized:)];
+    singleTap.numberOfTapsRequired = 1;
+    [self addGestureRecognizer:singleTap];
+    
+    UITapGestureRecognizer *doubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(doubleTapGestureRecognized:)];
+    doubleTap.numberOfTapsRequired = 2;
+    [self addGestureRecognizer:doubleTap];
+    
+    [singleTap requireGestureRecognizerToFail:doubleTap];
+}
+
 - (UITextField *)textField
 {
     if (!_textField) {
@@ -30,9 +52,33 @@
         _button.frame = (CGRect){CGRectGetWidth(self.bounds) - 44, 0, 44, 44};
         _button.titleLabel.font = [UIFont systemFontOfSize:18.0f];
         _button.tintColor = [UIColor darkGrayColor];
+        [_button addTarget:self action:@selector(didTouchOnButton:) forControlEvents:UIControlEventTouchUpInside];
         [self.contentView addSubview:_button];
     }
     return _button;
+}
+
+#pragma mark - IBActions
+
+- (IBAction)didTouchOnButton:(id)sender;
+{
+    if ([self.delegate respondsToSelector:@selector(taskTableViewHeaderFooterView:didTouchOnButton:)]) {
+        [self.delegate taskTableViewHeaderFooterView:self didTouchOnButton:sender];
+    }
+}
+
+- (void)singleTapGestureRecognized:(UITapGestureRecognizer *)recognizer;
+{
+    if ([self.delegate respondsToSelector:@selector(taskTableViewHeaderFooterView:singleTapGestureRecognized:)]) {
+        [self.delegate taskTableViewHeaderFooterView:self singleTapGestureRecognized:recognizer];
+    }
+}
+
+- (void)doubleTapGestureRecognized:(UITapGestureRecognizer *)recognizer;
+{
+    if ([self.delegate respondsToSelector:@selector(taskTableViewHeaderFooterView:doubleTapGestureRecognized:)]) {
+        [self.delegate taskTableViewHeaderFooterView:self doubleTapGestureRecognized:recognizer];
+    }
 }
 
 @end
