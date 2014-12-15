@@ -11,18 +11,17 @@
 
 @implementation STDTaskTableViewCell
 
-- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+- (UITextField *)textField
 {
-    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
-    if (self) {
-        // text field
-        self.textField = [UITextField newAutoLayoutView];
-        self.textField.borderStyle = UITextBorderStyleNone;
-        [self.contentView addSubview:self.textField];
+    if (!_textField) {
+        _textField = [UITextField newAutoLayoutView];
+        _textField.borderStyle = UITextBorderStyleNone;
+        [self.contentView addSubview:_textField];
         
-        [self.textField autoPinEdgesToSuperviewEdgesWithInsets:(UIEdgeInsets){7, 14, 7, 14}];
+        [_textField autoPinEdgesToSuperviewEdgesWithInsets:(UIEdgeInsets){0, 14, 0, 14} excludingEdge:ALEdgeBottom];
+        [_textField autoMatchDimension:ALDimensionHeight toDimension:ALDimensionHeight ofView:self.contentView];
     }
-    return self;
+    return _textField;
 }
 
 #pragma mark - IBActions

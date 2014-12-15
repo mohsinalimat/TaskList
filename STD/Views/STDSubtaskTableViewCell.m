@@ -11,18 +11,17 @@
 
 @implementation STDSubtaskTableViewCell
 
-- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+- (SZTextView *)textView
 {
-    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
-    if (self) {        
-        // text view
-        self.textView = [SZTextView newAutoLayoutView];
-        self.textView.scrollsToTop = NO;
-        [self.contentView addSubview:self.textView];
+    if (!_textView) {
+        _textView = [SZTextView newAutoLayoutView];
+        _textView.scrollsToTop = NO;
+        [self.contentView addSubview:_textView];
         
-        [self.textView autoPinEdgesToSuperviewEdgesWithInsets:(UIEdgeInsets){0, 14, 0, 14}];
+        [_textView autoPinEdgesToSuperviewEdgesWithInsets:(UIEdgeInsets){0, 14, 0, 14} excludingEdge:ALEdgeBottom];
+        [_textView autoMatchDimension:ALDimensionHeight toDimension:ALDimensionHeight ofView:self.contentView];
     }
-    return self;
+    return _textView;
 }
 
 @end
