@@ -7,7 +7,6 @@
 //
 
 #import "STDTaskTableViewHeaderFooterView.h"
-#import "PureLayout.h"
 
 @implementation STDTaskTableViewHeaderFooterView
 
@@ -38,7 +37,9 @@
 - (UITextField *)textField
 {
     if (!_textField) {
-        _textField = [STDTextField newAutoLayoutView];
+        CGRect frame = CGRectInset(self.bounds, 14, 0);
+        frame.size.width += 7;
+        _textField = [[STDTextField alloc] initWithFrame:frame];
         _textField.textColor = [UIColor colorWithHue:(210.0f / 360.0f) saturation:0.94f brightness:1.0f alpha:1.0f];
         _textField.font = [UIFont boldSystemFontOfSize:18.0f];
         _textField.clearButtonMode = UITextFieldViewModeWhileEditing;
@@ -46,8 +47,6 @@
         _textField.rightView = [self rightView];
         _textField.rightViewMode = UITextFieldViewModeUnlessEditing;
         [self.contentView addSubview:_textField];
-        
-        [self.textField autoPinEdgesToSuperviewEdgesWithInsets:(UIEdgeInsets){0, 14, 0, 7}];
     }
     return _textField;
 }
