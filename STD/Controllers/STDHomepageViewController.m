@@ -276,6 +276,14 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     return [self sortedArrayWithSet:[self uncompletedTasksForCategory:category]];
 }
 
+- (NSUInteger)countOfSubtasksForTasksForCategory:(STDCategory *)category
+{
+    NSUInteger count;
+    for (STDTask *task in [self uncompletedTasksForCategory:category])
+        count += task.subtasks.count;
+    return count;
+}
+
 - (NSArray *)sortedArrayWithSet:(NSSet *)set
 {
     NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:NSStringFromSelector(@selector(index)) ascending:YES];
@@ -362,8 +370,10 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
 - (NSString *)taskCountStringForCategory:(STDCategory *)category
 {
     if (category) {
-        NSUInteger count = [self countOfUncompletedTasksForCategory:category];
-        return (count ? [NSString stringWithFormat:@"%lu", (unsigned long)count] : @"+");
+        NSUInteger taskCount = [self countOfUncompletedTasksForCategory:category];
+        NSUInteger subtaskCount = [self countOfSubtasksForTasksForCategory:category];
+        NSString *string = [NSString stringWithFormat:@"%lu.%lu", (unsigned long)taskCount, (unsigned long)subtaskCount];
+        return taskCount && ![self isCategoryExpanded:category] ? string : @"+";
     }
     return nil;
 }
@@ -381,7 +391,8 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     view.textField.editable = !category;
     
     NSString *title = [self taskCountStringForCategory:category];
-    [(UIButton *)view.textField.rightView setTitle:title forState:UIControlStateNormal];
+    UIButton *button = (UIButton *)view.textField.rightView;
+    [button setTitle:title forState:UIControlStateNormal];
 }
 
 #pragma mark - UITableViewDataSource
@@ -604,6 +615,8 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     }
     
     [self.tableView endUpdates];
+    
+    [self reloadHeaderViewForCategory:category];
     
     [CATransaction commit];
 }
