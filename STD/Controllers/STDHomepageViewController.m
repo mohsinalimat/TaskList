@@ -278,7 +278,7 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
 
 - (NSUInteger)countOfSubtasksForTasksForCategory:(STDCategory *)category
 {
-    NSUInteger count;
+    NSUInteger count = 0;
     for (STDTask *task in [self uncompletedTasksForCategory:category])
         count += task.subtasks.count;
     return count;
