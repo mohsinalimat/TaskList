@@ -15,7 +15,7 @@ static char kHandlerAssociatedKey;
 
 @end
 
-@implementation UIActionSheet (Extras)
+@implementation UIActionSheet (Blocks)
 
 + (UIActionSheet *)showActionSheetWithTitle:(NSString *)title cancelButtonTitle:(NSString *)cancelButtonTitle destructiveButtonTitle:(NSString *)destructiveButtonTitle otherButtonTitles:(NSArray *)otherButtonTitles handler:(UIActionSheetHandler)handler;
 {
@@ -44,7 +44,7 @@ static char kHandlerAssociatedKey;
 
 - (void)showWithHandler:(UIActionSheetHandler)handler;
 {
-    [self setAssociatedObject:handler forKey:&kHandlerAssociatedKey];
+    [self setAssociatedObject:[handler copy] forKey:&kHandlerAssociatedKey];
     
     self.delegate = self;
     [self showInView:[[UIApplication sharedApplication] keyWindow]];

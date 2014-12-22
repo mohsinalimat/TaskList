@@ -40,6 +40,7 @@
 		C06F19CE1960D308000BEDD8 /* STDTaskTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C06F19CC1960D308000BEDD8 /* STDTaskTableViewCell.m */; };
 		C06F19CF1960D308000BEDD8 /* STDTaskTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C06F19CD1960D308000BEDD8 /* STDTaskTableViewCell.xib */; };
 		C07F670E1A47AE6100597676 /* TransparentTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = C07F670D1A47AE6100597676 /* TransparentTextField.m */; };
+		C07F67111A47D1CA00597676 /* UIScrollView+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = C07F67101A47D1CA00597676 /* UIScrollView+Blocks.m */; };
 		C07F7C8D1957CB2900CF0C92 /* NSObject+Extras.m in Sources */ = {isa = PBXBuildFile; fileRef = C07F7C8C1957CB2900CF0C92 /* NSObject+Extras.m */; };
 		C082BE05193BD86300A60D8E /* _STDCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = C082BDFE193BD86300A60D8E /* _STDCategory.m */; };
 		C082BE06193BD86300A60D8E /* _STDNote.m in Sources */ = {isa = PBXBuildFile; fileRef = C082BE00193BD86300A60D8E /* _STDNote.m */; };
@@ -121,6 +122,8 @@
 		C06F19CD1960D308000BEDD8 /* STDTaskTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = STDTaskTableViewCell.xib; sourceTree = "<group>"; };
 		C07F670C1A47AE6100597676 /* TransparentTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransparentTextField.h; sourceTree = "<group>"; };
 		C07F670D1A47AE6100597676 /* TransparentTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransparentTextField.m; sourceTree = "<group>"; };
+		C07F670F1A47D1CA00597676 /* UIScrollView+Blocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+Blocks.h"; sourceTree = "<group>"; };
+		C07F67101A47D1CA00597676 /* UIScrollView+Blocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+Blocks.m"; sourceTree = "<group>"; };
 		C07F7C8B1957CB2900CF0C92 /* NSObject+Extras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+Extras.h"; sourceTree = "<group>"; };
 		C07F7C8C1957CB2900CF0C92 /* NSObject+Extras.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Extras.m"; sourceTree = "<group>"; };
 		C082BDFD193BD86300A60D8E /* _STDCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _STDCategory.h; sourceTree = "<group>"; };
@@ -340,6 +343,8 @@
 				C0A8DF5419E1FEA1005FCC81 /* UIAlertView+Blocks.m */,
 				C082BE1A193C17D900A60D8E /* UIImage+Extras.h */,
 				C082BE1B193C17D900A60D8E /* UIImage+Extras.m */,
+				C07F670F1A47D1CA00597676 /* UIScrollView+Blocks.h */,
+				C07F67101A47D1CA00597676 /* UIScrollView+Blocks.m */,
 				C03A5C7119D8D16200437500 /* UITableView+Separator.h */,
 				C03A5C7219D8D16200437500 /* UITableView+Separator.m */,
 				C093763E1A3E9C680077CB15 /* UIView+Extras.h */,
@@ -664,6 +669,7 @@
 				C0C462511932BDF20031E256 /* STDHomepageViewController.m in Sources */,
 				C093763D1A3E93AF0077CB15 /* STDTaskTableViewHeaderFooterView.m in Sources */,
 				C01CB78619281EC000499B28 /* STD.xcdatamodeld in Sources */,
+				C07F67111A47D1CA00597676 /* UIScrollView+Blocks.m in Sources */,
 				C082BE1C193C17D900A60D8E /* UIImage+Extras.m in Sources */,
 				C09376401A3E9C680077CB15 /* UIView+Extras.m in Sources */,
 			);

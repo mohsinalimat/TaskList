@@ -10,7 +10,7 @@
 
 typedef void(^UIAlertViewHandler)(UIAlertView *alertView, NSInteger buttonIndex);
 
-@interface UIAlertView (Extras)
+@interface UIAlertView (Blocks)
 
 + (UIAlertView *)showAlertViewWithMessage:(NSString *)message;
 

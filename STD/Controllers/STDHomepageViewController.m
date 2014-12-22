@@ -14,6 +14,7 @@
 #import "UITableView+LongPressReorder.h"
 #import "PureLayout.h"
 #import "UIView+Extras.h"
+#import "UIScrollView+Blocks.h"
 
 #import "STDSubtasksViewController.h"
 #import "STDNotesViewController.h"
@@ -26,8 +27,6 @@
 #define kNumberOfRowsInSection [self countOfUncompletedTasksForCategory:category] + 1
 
 static char kTaskKey;
-
-static char kBlockKey;
 
 typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     UITableViewSectionActionExpand,
@@ -590,7 +589,9 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
         if (expanded && expand) {
             if (![[self.tableView indexPathsForVisibleRows] containsObject:indexes.lastObject]) {
                 [self.tableView scrollToRowAtIndexPath:indexes.lastObject atScrollPosition:UITableViewScrollPositionBottom animated:YES];
-                [self setAssociatedObject:completion forKey:&kBlockKey];
+                [self.tableView scrollViewDidEndScrollingAnimationBlock:^(UIScrollView *scrollView) {
+                    if (completion) completion();
+                }];
                 return;
             }
         }
@@ -649,15 +650,6 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
 - (BOOL)isTaskExpanded:(STDTask *)task
 {
     return [self.expandedItems containsObject:task];
-}
-
-#pragma mark - UIScrollViewDelegate
-
-- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
-{
-    Block block = [self associatedObjectForKey:&kBlockKey];
-    [self setAssociatedObject:nil forKey:&kBlockKey];
-    if (block) block();
 }
 
 #pragma mark - STDTaskTableViewCellDelegate
