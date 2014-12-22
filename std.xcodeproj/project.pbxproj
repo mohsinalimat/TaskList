@@ -39,8 +39,8 @@
 		C05A476919B5349600A13B25 /* NSManagedObject+Extras.m in Sources */ = {isa = PBXBuildFile; fileRef = C05A476819B5349600A13B25 /* NSManagedObject+Extras.m */; };
 		C06F19CE1960D308000BEDD8 /* STDTaskTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C06F19CC1960D308000BEDD8 /* STDTaskTableViewCell.m */; };
 		C06F19CF1960D308000BEDD8 /* STDTaskTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C06F19CD1960D308000BEDD8 /* STDTaskTableViewCell.xib */; };
-		C07F670E1A47AE6100597676 /* TransparentTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = C07F670D1A47AE6100597676 /* TransparentTextField.m */; };
 		C07F67111A47D1CA00597676 /* UIScrollView+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = C07F67101A47D1CA00597676 /* UIScrollView+Blocks.m */; };
+		C07F67141A47D52100597676 /* STDTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = C07F67131A47D52100597676 /* STDTextField.m */; };
 		C07F7C8D1957CB2900CF0C92 /* NSObject+Extras.m in Sources */ = {isa = PBXBuildFile; fileRef = C07F7C8C1957CB2900CF0C92 /* NSObject+Extras.m */; };
 		C082BE05193BD86300A60D8E /* _STDCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = C082BDFE193BD86300A60D8E /* _STDCategory.m */; };
 		C082BE06193BD86300A60D8E /* _STDNote.m in Sources */ = {isa = PBXBuildFile; fileRef = C082BE00193BD86300A60D8E /* _STDNote.m */; };
@@ -120,10 +120,10 @@
 		C06F19CB1960D308000BEDD8 /* STDTaskTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STDTaskTableViewCell.h; sourceTree = "<group>"; };
 		C06F19CC1960D308000BEDD8 /* STDTaskTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STDTaskTableViewCell.m; sourceTree = "<group>"; };
 		C06F19CD1960D308000BEDD8 /* STDTaskTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = STDTaskTableViewCell.xib; sourceTree = "<group>"; };
-		C07F670C1A47AE6100597676 /* TransparentTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransparentTextField.h; sourceTree = "<group>"; };
-		C07F670D1A47AE6100597676 /* TransparentTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransparentTextField.m; sourceTree = "<group>"; };
 		C07F670F1A47D1CA00597676 /* UIScrollView+Blocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+Blocks.h"; sourceTree = "<group>"; };
 		C07F67101A47D1CA00597676 /* UIScrollView+Blocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+Blocks.m"; sourceTree = "<group>"; };
+		C07F67121A47D52100597676 /* STDTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STDTextField.h; sourceTree = "<group>"; };
+		C07F67131A47D52100597676 /* STDTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STDTextField.m; sourceTree = "<group>"; };
 		C07F7C8B1957CB2900CF0C92 /* NSObject+Extras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+Extras.h"; sourceTree = "<group>"; };
 		C07F7C8C1957CB2900CF0C92 /* NSObject+Extras.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Extras.m"; sourceTree = "<group>"; };
 		C082BDFD193BD86300A60D8E /* _STDCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _STDCategory.h; sourceTree = "<group>"; };
@@ -243,10 +243,10 @@
 			isa = PBXGroup;
 			children = (
 				C082BE19193C17D900A60D8E /* Categories */,
+				C07F67121A47D52100597676 /* STDTextField.h */,
+				C07F67131A47D52100597676 /* STDTextField.m */,
 				C01D74C919A1445200905EBD /* STDUserDefaults.h */,
 				C01D74CA19A1445200905EBD /* STDUserDefaults.m */,
-				C07F670C1A47AE6100597676 /* TransparentTextField.h */,
-				C07F670D1A47AE6100597676 /* TransparentTextField.m */,
 			);
 			path = Library;
 			sourceTree = "<group>";
@@ -645,7 +645,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C07F670E1A47AE6100597676 /* TransparentTextField.m in Sources */,
 				C082BE12193BD86C00A60D8E /* STDNote.m in Sources */,
 				C0C462541932BFD10031E256 /* STDSubtasksViewController.m in Sources */,
 				C082BE05193BD86300A60D8E /* _STDCategory.m in Sources */,
@@ -658,6 +657,7 @@
 				C05A476919B5349600A13B25 /* NSManagedObject+Extras.m in Sources */,
 				C06F19CE1960D308000BEDD8 /* STDTaskTableViewCell.m in Sources */,
 				C0A8DF5619E1FEA1005FCC81 /* UIAlertView+Blocks.m in Sources */,
+				C07F67141A47D52100597676 /* STDTextField.m in Sources */,
 				C082BE06193BD86300A60D8E /* _STDNote.m in Sources */,
 				C07F7C8D1957CB2900CF0C92 /* NSObject+Extras.m in Sources */,
 				C05A476619B52F6500A13B25 /* UITableView+LongPressReorder.m in Sources */,

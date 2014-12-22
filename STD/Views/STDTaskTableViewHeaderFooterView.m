@@ -38,7 +38,7 @@
 - (UITextField *)textField
 {
     if (!_textField) {
-        _textField = [TransparentTextField newAutoLayoutView];
+        _textField = [STDTextField newAutoLayoutView];
         _textField.textColor = [UIColor colorWithHue:(210.0f / 360.0f) saturation:0.94f brightness:1.0f alpha:1.0f];
         _textField.font = [UIFont boldSystemFontOfSize:18.0f];
         _textField.clearButtonMode = UITextFieldViewModeWhileEditing;

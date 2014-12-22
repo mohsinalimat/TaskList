@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-#import "TransparentTextField.h"
+#import "STDTextField.h"
 
 @class STDTaskTableViewHeaderFooterView;
 
@@ -26,6 +26,6 @@
 
 @property (weak, nonatomic) STDCategory *category;
 
-@property (strong, nonatomic) TransparentTextField *textField;
+@property (strong, nonatomic) STDTextField *textField;
 
 @end

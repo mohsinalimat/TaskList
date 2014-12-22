@@ -1,5 +1,5 @@
 //
-//  TransparentTextField.h
+//  STDTextField.h
 //  STD
 //
 //  Created by Lasha Efremidze on 12/21/14.
@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface TransparentTextField : UITextField
+@interface STDTextField : UITextField
 
 @property (nonatomic, getter = isEditable) BOOL editable;
 
