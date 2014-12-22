@@ -21,7 +21,7 @@
     }
     
     if (![self primitiveValueForKey:NSStringFromSelector(@selector(index))]) {
-        [self setPrimitiveValue:@([STDCategory countOfEntities]) forKey:NSStringFromSelector(@selector(index))];
+        [self setPrimitiveValue:@([STDCategory countOfEntities] - 1) forKey:NSStringFromSelector(@selector(index))];
     }
 }
 

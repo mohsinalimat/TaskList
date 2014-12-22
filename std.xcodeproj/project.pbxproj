@@ -39,6 +39,7 @@
 		C05A476919B5349600A13B25 /* NSManagedObject+Extras.m in Sources */ = {isa = PBXBuildFile; fileRef = C05A476819B5349600A13B25 /* NSManagedObject+Extras.m */; };
 		C06F19CE1960D308000BEDD8 /* STDTaskTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C06F19CC1960D308000BEDD8 /* STDTaskTableViewCell.m */; };
 		C06F19CF1960D308000BEDD8 /* STDTaskTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C06F19CD1960D308000BEDD8 /* STDTaskTableViewCell.xib */; };
+		C07F670E1A47AE6100597676 /* TransparentTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = C07F670D1A47AE6100597676 /* TransparentTextField.m */; };
 		C07F7C8D1957CB2900CF0C92 /* NSObject+Extras.m in Sources */ = {isa = PBXBuildFile; fileRef = C07F7C8C1957CB2900CF0C92 /* NSObject+Extras.m */; };
 		C082BE05193BD86300A60D8E /* _STDCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = C082BDFE193BD86300A60D8E /* _STDCategory.m */; };
 		C082BE06193BD86300A60D8E /* _STDNote.m in Sources */ = {isa = PBXBuildFile; fileRef = C082BE00193BD86300A60D8E /* _STDNote.m */; };
@@ -60,6 +61,8 @@
 		C08FE2051928163D0012F7D2 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C08FE1E91928163D0012F7D2 /* CoreData.framework */; };
 		C08FE20D1928163D0012F7D2 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C08FE20B1928163D0012F7D2 /* InfoPlist.strings */; };
 		C08FE20F1928163D0012F7D2 /* STDTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C08FE20E1928163D0012F7D2 /* STDTests.m */; };
+		C093763D1A3E93AF0077CB15 /* STDTaskTableViewHeaderFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = C093763C1A3E93AF0077CB15 /* STDTaskTableViewHeaderFooterView.m */; };
+		C09376401A3E9C680077CB15 /* UIView+Extras.m in Sources */ = {isa = PBXBuildFile; fileRef = C093763F1A3E9C680077CB15 /* UIView+Extras.m */; };
 		C0A8DF5519E1FEA1005FCC81 /* UIActionSheet+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = C0A8DF5219E1FEA1005FCC81 /* UIActionSheet+Blocks.m */; };
 		C0A8DF5619E1FEA1005FCC81 /* UIAlertView+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = C0A8DF5419E1FEA1005FCC81 /* UIAlertView+Blocks.m */; };
 		C0C462511932BDF20031E256 /* STDHomepageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C0C462501932BDF20031E256 /* STDHomepageViewController.m */; };
@@ -116,6 +119,8 @@
 		C06F19CB1960D308000BEDD8 /* STDTaskTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STDTaskTableViewCell.h; sourceTree = "<group>"; };
 		C06F19CC1960D308000BEDD8 /* STDTaskTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STDTaskTableViewCell.m; sourceTree = "<group>"; };
 		C06F19CD1960D308000BEDD8 /* STDTaskTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = STDTaskTableViewCell.xib; sourceTree = "<group>"; };
+		C07F670C1A47AE6100597676 /* TransparentTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransparentTextField.h; sourceTree = "<group>"; };
+		C07F670D1A47AE6100597676 /* TransparentTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransparentTextField.m; sourceTree = "<group>"; };
 		C07F7C8B1957CB2900CF0C92 /* NSObject+Extras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+Extras.h"; sourceTree = "<group>"; };
 		C07F7C8C1957CB2900CF0C92 /* NSObject+Extras.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Extras.m"; sourceTree = "<group>"; };
 		C082BDFD193BD86300A60D8E /* _STDCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _STDCategory.h; sourceTree = "<group>"; };
@@ -142,6 +147,10 @@
 		C08FE20A1928163D0012F7D2 /* STDTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "STDTests-Info.plist"; sourceTree = "<group>"; };
 		C08FE20C1928163D0012F7D2 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		C08FE20E1928163D0012F7D2 /* STDTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = STDTests.m; sourceTree = "<group>"; };
+		C093763B1A3E93AF0077CB15 /* STDTaskTableViewHeaderFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STDTaskTableViewHeaderFooterView.h; sourceTree = "<group>"; };
+		C093763C1A3E93AF0077CB15 /* STDTaskTableViewHeaderFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STDTaskTableViewHeaderFooterView.m; sourceTree = "<group>"; };
+		C093763E1A3E9C680077CB15 /* UIView+Extras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Extras.h"; sourceTree = "<group>"; };
+		C093763F1A3E9C680077CB15 /* UIView+Extras.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Extras.m"; sourceTree = "<group>"; };
 		C0A8DF5119E1FEA1005FCC81 /* UIActionSheet+Blocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIActionSheet+Blocks.h"; sourceTree = "<group>"; };
 		C0A8DF5219E1FEA1005FCC81 /* UIActionSheet+Blocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIActionSheet+Blocks.m"; sourceTree = "<group>"; };
 		C0A8DF5319E1FEA1005FCC81 /* UIAlertView+Blocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIAlertView+Blocks.h"; sourceTree = "<group>"; };
@@ -233,6 +242,8 @@
 				C082BE19193C17D900A60D8E /* Categories */,
 				C01D74C919A1445200905EBD /* STDUserDefaults.h */,
 				C01D74CA19A1445200905EBD /* STDUserDefaults.m */,
+				C07F670C1A47AE6100597676 /* TransparentTextField.h */,
+				C07F670D1A47AE6100597676 /* TransparentTextField.m */,
 			);
 			path = Library;
 			sourceTree = "<group>";
@@ -293,6 +304,8 @@
 				C06F19CB1960D308000BEDD8 /* STDTaskTableViewCell.h */,
 				C06F19CC1960D308000BEDD8 /* STDTaskTableViewCell.m */,
 				C06F19CD1960D308000BEDD8 /* STDTaskTableViewCell.xib */,
+				C093763B1A3E93AF0077CB15 /* STDTaskTableViewHeaderFooterView.h */,
+				C093763C1A3E93AF0077CB15 /* STDTaskTableViewHeaderFooterView.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -329,6 +342,8 @@
 				C082BE1B193C17D900A60D8E /* UIImage+Extras.m */,
 				C03A5C7119D8D16200437500 /* UITableView+Separator.h */,
 				C03A5C7219D8D16200437500 /* UITableView+Separator.m */,
+				C093763E1A3E9C680077CB15 /* UIView+Extras.h */,
+				C093763F1A3E9C680077CB15 /* UIView+Extras.m */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -625,6 +640,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C07F670E1A47AE6100597676 /* TransparentTextField.m in Sources */,
 				C082BE12193BD86C00A60D8E /* STDNote.m in Sources */,
 				C0C462541932BFD10031E256 /* STDSubtasksViewController.m in Sources */,
 				C082BE05193BD86300A60D8E /* _STDCategory.m in Sources */,
@@ -646,8 +662,10 @@
 				C0C462571932BFEC0031E256 /* STDNotesViewController.m in Sources */,
 				C01CB78719281EC000499B28 /* main.m in Sources */,
 				C0C462511932BDF20031E256 /* STDHomepageViewController.m in Sources */,
+				C093763D1A3E93AF0077CB15 /* STDTaskTableViewHeaderFooterView.m in Sources */,
 				C01CB78619281EC000499B28 /* STD.xcdatamodeld in Sources */,
 				C082BE1C193C17D900A60D8E /* UIImage+Extras.m in Sources */,
+				C09376401A3E9C680077CB15 /* UIView+Extras.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
