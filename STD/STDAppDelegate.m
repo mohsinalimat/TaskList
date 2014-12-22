@@ -47,10 +47,12 @@
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
     self.window.rootViewController = navigationController;
     
-    [[UINavigationBar appearance] setBackgroundImage:[UIImage imageFromColor:[UIColor colorWithWhite:1.0f alpha:0.8f]] forBarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
+    UIImage *backgroundImage = [UIImage imageFromColor:[UIColor colorWithWhite:1.0f alpha:0.95f]];
+    
+    [[UINavigationBar appearance] setBackgroundImage:backgroundImage forBarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
     [[UINavigationBar appearance] setShadowImage:[UIImage new]];
     
-    [[UIToolbar appearance] setBackgroundImage:[UIImage imageFromColor:[UIColor colorWithWhite:1.0f alpha:0.8f]] forToolbarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
+    [[UIToolbar appearance] setBackgroundImage:backgroundImage forToolbarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
     [[UIToolbar appearance] setShadowImage:[UIImage new] forToolbarPosition:UIBarPositionAny];
     
     [self.window makeKeyAndVisible];
