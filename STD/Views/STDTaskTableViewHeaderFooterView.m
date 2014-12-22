@@ -33,11 +33,6 @@
     [singleTap requireGestureRecognizerToFail:doubleTap];
 }
 
-- (UIButton *)button
-{
-    return (UIButton *)self.textField.rightView;
-}
-
 #pragma mark - Override Properties
 
 - (UITextField *)textField

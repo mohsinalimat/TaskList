@@ -372,6 +372,14 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
 {
     NSInteger section = [self sectionForCategory:category];
     STDTaskTableViewHeaderFooterView *view = (STDTaskTableViewHeaderFooterView *)[self.tableView headerViewForSection:section];
+    [self configureHeaderView:view forCategory:category];
+}
+
+- (void)configureHeaderView:(STDTaskTableViewHeaderFooterView *)view forCategory:(STDCategory *)category
+{
+    view.textField.text = [category.name uppercaseString];
+    view.textField.editable = !category;
+    
     NSString *title = [self taskCountStringForCategory:category];
     [(UIButton *)view.textField.rightView setTitle:title forState:UIControlStateNormal];
 }
@@ -469,11 +477,7 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     
     view.category = category;
     
-    view.textField.text = [category.name uppercaseString];
-    view.textField.editable = !category;
-    
-    NSString *title = [self taskCountStringForCategory:category];
-    [(UIButton *)view.textField.rightView setTitle:title forState:UIControlStateNormal];
+    [self configureHeaderView:view forCategory:category];
     
     return view;
 }
