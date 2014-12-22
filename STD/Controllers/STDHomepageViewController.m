@@ -473,7 +473,7 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     STDTaskTableViewHeaderFooterView *view = [tableView dequeueReusableHeaderFooterViewWithIdentifier:NSStringFromClass([STDTaskTableViewHeaderFooterView class])];
     if (!view) {
         view = [[STDTaskTableViewHeaderFooterView alloc] initWithReuseIdentifier:NSStringFromClass([STDTaskTableViewHeaderFooterView class])];
-        view.frame = (CGRect){0, 0, CGRectGetWidth(tableView.bounds), 44};
+        view.frame = [tableView rectForHeaderInSection:section]; // Required
         view.contentView.backgroundColor = [UIColor whiteColor];
         
         view.delegate = self;
