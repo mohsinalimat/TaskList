@@ -23,7 +23,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 3;
+    return 2;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -34,7 +34,8 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         
         cell.textLabel.textColor = [UIColor colorWithHue:(210.0f / 360.0f) saturation:0.94f brightness:1.0f alpha:1.0f];
-        cell.textLabel.font = [UIFont boldSystemFontOfSize:18.0f];
+        cell.textLabel.font = [UIFont boldSystemFontOfSize:36.0f];
+        cell.textLabel.textAlignment = NSTextAlignmentCenter;
     }
     
     if (indexPath.row == 0) {
@@ -62,6 +63,12 @@
             [self presentViewController:mailComposeViewController animated:YES completion:nil];
         }
     }
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSInteger numberOfRows = [self tableView:tableView numberOfRowsInSection:indexPath.section];
+    return (CGRectGetHeight(tableView.frame) - 60) / numberOfRows;
 }
 
 #pragma mark - MFMailComposeViewControllerDelegate
