@@ -13,6 +13,7 @@
 #import "UITableView+LongPressReorder.h"
 #import "UITableViewCell+Strikethrough.h"
 #import "PureLayout.h"
+#import "STDCoreDataUtilities.h"
 
 #import "STDNotesViewController.h"
 
@@ -157,31 +158,7 @@ static char kSubtaskKey;
 
 - (NSArray *)subtasks
 {
-    return [self sortedUncompletedSubtasksForTask:self.task];
-}
-
-- (NSSet *)uncompletedSubtasksForTask:(STDTask *)task
-{
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"completedValue == NO"];
-    return [task.subtasks filteredSetUsingPredicate:predicate];
-}
-
-- (NSArray *)sortedUncompletedSubtasksForTask:(STDTask *)task
-{
-    return [self sortedArrayWithSet:[self uncompletedSubtasksForTask:task]];
-}
-
-- (NSArray *)sortedArrayWithSet:(NSSet *)set
-{
-    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:NSStringFromSelector(@selector(index)) ascending:YES];
-    return [set sortedArrayUsingDescriptors:@[sortDescriptor]];
-}
-
-- (void)updateIndexesForSubtasks:(NSArray *)subtasks
-{
-    for (STDTask *subtask in subtasks) {
-        subtask.indexValue = [subtasks indexOfObject:subtask];
-    }
+    return [[STDCoreDataUtilities sharedInstance] sortedUncompletedSubtasksForTask:self.task];
 }
 
 - (STDTask *)subtaskForIndexPath:(NSIndexPath *)indexPath
@@ -291,7 +268,7 @@ static char kSubtaskKey;
     [subtasks insertObject:subtask atIndex:destinationIndexPath.row];
     self.task.subtasks = [NSSet setWithArray:subtasks];
     
-    [self updateIndexesForSubtasks:subtasks];
+    [[STDCoreDataUtilities sharedInstance] updateIndexesForManagedObjects:subtasks];
     
     [[NSManagedObjectContext contextForCurrentThread] saveOnlySelfAndWait];
 }

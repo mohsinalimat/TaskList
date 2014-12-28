@@ -16,6 +16,7 @@
 #import "UIView+Extras.h"
 #import "UIScrollView+Blocks.h"
 #import "UITableViewCell+Strikethrough.h"
+#import "STDCoreDataUtilities.h"
 
 #import "STDSubtasksViewController.h"
 #import "STDNotesViewController.h"
@@ -25,7 +26,7 @@
 #define kTextFieldTask 2000
 
 #define kNumberOfSections self.categories.count + 1
-#define kNumberOfRowsInSection [self countOfUncompletedTasksForCategory:category] + 1
+#define kNumberOfRowsInSection [[STDCoreDataUtilities sharedInstance] countOfUncompletedTasksForCategory:category] + 1
 
 static char kTaskKey;
 
@@ -243,67 +244,8 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
 
 - (void)load
 {
-    NSArray *categories = [self fetchCategories];
-    if (!categories.count) {
-        STDCategory *category1 = [STDCategory createEntity];
-        category1.name = @"Home";
-        category1.indexValue = 0;
-        
-        STDCategory *category2 = [STDCategory createEntity];
-        category2.name = @"Work";
-        category2.indexValue = 1;
-        
-        [[NSManagedObjectContext contextForCurrentThread] saveOnlySelfAndWait];
-        
-        categories = [self fetchCategories];
-    }
+    NSArray *categories = [[STDCoreDataUtilities sharedInstance] categories];
     self.categories = [NSMutableArray arrayWithArray:categories];
-}
-
-- (NSArray *)fetchCategories
-{
-    return [STDCategory findAllSortedBy:NSStringFromSelector(@selector(index)) ascending:YES];
-}
-
-- (NSSet *)uncompletedTasksForCategory:(STDCategory *)category
-{
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"completedValue == NO"];
-    return [category.tasks filteredSetUsingPredicate:predicate];
-}
-
-- (NSUInteger)countOfUncompletedTasksForCategory:(STDCategory *)category
-{
-    return [[self uncompletedTasksForCategory:category] count];
-}
-
-- (NSArray *)sortedUncompletedTasksForCategory:(STDCategory *)category
-{
-    return [self sortedArrayWithSet:[self uncompletedTasksForCategory:category]];
-}
-
-- (NSUInteger)countOfSubtasksForTasksForCategory:(STDCategory *)category
-{
-    NSUInteger count = 0;
-    for (STDTask *task in [self uncompletedTasksForCategory:category])
-        count += [self countOfUncompletedSubtasksForTask:task];
-    return count;
-}
-
-- (NSSet *)uncompletedSubtasksForTask:(STDTask *)task
-{
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"completedValue == NO"];
-    return [task.subtasks filteredSetUsingPredicate:predicate];
-}
-
-- (NSUInteger)countOfUncompletedSubtasksForTask:(STDTask *)task
-{
-    return [[self uncompletedSubtasksForTask:task] count];
-}
-
-- (NSArray *)sortedArrayWithSet:(NSSet *)set
-{
-    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:NSStringFromSelector(@selector(index)) ascending:YES];
-    return [set sortedArrayUsingDescriptors:@[sortDescriptor]];
 }
 
 - (STDCategory *)categoryForSection:(NSInteger)section
@@ -323,7 +265,7 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
 {
     STDCategory *category = [self categoryForSection:indexPath.section];
     if (category) {
-        NSArray *tasks = [self sortedUncompletedTasksForCategory:category];
+        NSArray *tasks = [[STDCoreDataUtilities sharedInstance] sortedUncompletedTasksForCategory:category];
         if (tasks.count > indexPath.row)
             return tasks[indexPath.row];
     }
@@ -333,15 +275,15 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
 - (STDTask *)nextTaskForIndexPath:(NSIndexPath *)indexPath
 {
     STDCategory *category = [self categoryForSection:indexPath.section];
-    if ((indexPath.row + 1) < [self countOfUncompletedTasksForCategory:category]) {
-        NSArray *tasks = [self sortedUncompletedTasksForCategory:category];
+    if ((indexPath.row + 1) < [[STDCoreDataUtilities sharedInstance] countOfUncompletedTasksForCategory:category]) {
+        NSArray *tasks = [[STDCoreDataUtilities sharedInstance] sortedUncompletedTasksForCategory:category];
         return tasks[indexPath.row + 1];
     } else if ((indexPath.section + 1) < self.categories.count) {
         NSInteger section = indexPath.section + 1;
         NSArray *categories = [self.categories subarrayWithRange:NSMakeRange(section, self.categories.count - section)];
         for (STDCategory *category in categories) {
-            if ([self countOfUncompletedTasksForCategory:category]) {
-                NSArray *tasks = [self sortedUncompletedTasksForCategory:category];
+            if ([[STDCoreDataUtilities sharedInstance] countOfUncompletedTasksForCategory:category]) {
+                NSArray *tasks = [[STDCoreDataUtilities sharedInstance] sortedUncompletedTasksForCategory:category];
                 return [tasks firstObject];
             }
         }
@@ -353,15 +295,15 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
 {
     STDCategory *category = [self categoryForSection:indexPath.section];
     if (indexPath.row > 0) {
-        NSArray *tasks = [self sortedUncompletedTasksForCategory:category];
+        NSArray *tasks = [[STDCoreDataUtilities sharedInstance] sortedUncompletedTasksForCategory:category];
         NSInteger row = MIN(indexPath.row - 1, tasks.count - 1);
         return tasks[row];
     } else if (indexPath.section > 0) {
         NSInteger section = MIN(indexPath.section, self.categories.count);
         NSArray *categories = [[[self.categories reverseObjectEnumerator] allObjects] subarrayWithRange:NSMakeRange(self.categories.count - section, section)];
         for (STDCategory *category in categories) {
-            if ([self countOfUncompletedTasksForCategory:category]) {
-                NSArray *tasks = [self sortedUncompletedTasksForCategory:category];
+            if ([[STDCoreDataUtilities sharedInstance] countOfUncompletedTasksForCategory:category]) {
+                NSArray *tasks = [[STDCoreDataUtilities sharedInstance] sortedUncompletedTasksForCategory:category];
                 return [tasks lastObject];
             }
         }
@@ -372,22 +314,15 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
 - (NSIndexPath *)indexPathOfTask:(STDTask *)task
 {
     STDCategory *category = task.category;
-    NSArray *tasks = [self sortedUncompletedTasksForCategory:category];
+    NSArray *tasks = [[STDCoreDataUtilities sharedInstance] sortedUncompletedTasksForCategory:category];
     return [NSIndexPath indexPathForRow:[tasks indexOfObject:task] inSection:[self.categories indexOfObject:category]];
-}
-
-- (void)updateIndexesForTasks:(NSArray *)tasks
-{
-    for (STDTask *task in tasks) {
-        task.indexValue = [tasks indexOfObject:task];
-    }
 }
 
 - (NSString *)taskCountStringForCategory:(STDCategory *)category
 {
     if (category) {
-        NSUInteger taskCount = [self countOfUncompletedTasksForCategory:category];
-        NSUInteger subtaskCount = [self countOfSubtasksForTasksForCategory:category];
+        NSUInteger taskCount = [[STDCoreDataUtilities sharedInstance] countOfUncompletedTasksForCategory:category];
+        NSUInteger subtaskCount = [[STDCoreDataUtilities sharedInstance] countOfSubtasksForTasksForCategory:category];
         NSString *string = [NSString stringWithFormat:@"%lu.%lu", (unsigned long)taskCount, (unsigned long)subtaskCount];
         return taskCount && ![self isCategoryExpanded:category] ? string : @"+";
     }
@@ -530,15 +465,15 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     [sourceCategory removeTasksObject:sourceTask];
     
     if (!isSameCategory) {
-        NSArray *sourceTasks = [self sortedUncompletedTasksForCategory:sourceCategory];
-        [self updateIndexesForTasks:sourceTasks];
+        NSArray *sourceTasks = [[STDCoreDataUtilities sharedInstance] sortedUncompletedTasksForCategory:sourceCategory];
+        [[STDCoreDataUtilities sharedInstance] updateIndexesForManagedObjects:sourceTasks];
     }
     
-    NSMutableArray *destinationTasks = [NSMutableArray arrayWithArray:[self sortedUncompletedTasksForCategory:destinationCategory]];
+    NSMutableArray *destinationTasks = [NSMutableArray arrayWithArray:[[STDCoreDataUtilities sharedInstance] sortedUncompletedTasksForCategory:destinationCategory]];
     [destinationTasks insertObject:sourceTask atIndex:destinationIndexPath.row];
     destinationCategory.tasks = [NSSet setWithArray:destinationTasks];
     
-    [self updateIndexesForTasks:destinationTasks];
+    [[STDCoreDataUtilities sharedInstance] updateIndexesForManagedObjects:destinationTasks];
     
     if (!isSameCategory) {
         [self reloadHeaderViewForCategory:sourceCategory];
@@ -694,7 +629,7 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     NSInteger section = [self sectionForCategory:category];
     if (category) {
         [self animateCategory:category withAction:UITableViewSectionActionExpand completion:^{
-            STDTaskTableViewCell *cell = (STDTaskTableViewCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:[self countOfUncompletedTasksForCategory:category] inSection:section]];
+            STDTaskTableViewCell *cell = (STDTaskTableViewCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:[[STDCoreDataUtilities sharedInstance] countOfUncompletedTasksForCategory:category] inSection:section]];
             [cell.textField becomeFirstResponder];
         }];
     } else {
