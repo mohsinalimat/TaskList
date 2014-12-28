@@ -11,6 +11,8 @@
 #import "UIViewController+BHTKeyboardNotifications.h"
 #import "NSObject+Extras.h"
 #import "UITableView+LongPressReorder.h"
+#import "UITableViewCell+Strikethrough.h"
+#import "PureLayout.h"
 
 #import "STDNotesViewController.h"
 
@@ -20,11 +22,17 @@
 static char kTextViewKey;
 static char kDummyTextViewKey;
 
-@interface STDSubtasksViewController () <UITableViewDataSource, UITableViewDelegate, UITextViewDelegate>
+static char kSubtaskKey;
+
+@interface STDSubtasksViewController () <UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, STDTableViewCellStrikethroughDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
+@property (strong, nonatomic) UIView *footerView;
+
 @property (strong, nonatomic) NSArray *subtasks;
+
+@property (strong, nonatomic) NSLayoutConstraint *heightLayoutConstraint;
 
 @end
 
@@ -39,6 +47,49 @@ static char kDummyTextViewKey;
     [self styleTableView];
     
     [self.tableView reloadData];
+    
+    [self footerView];
+}
+
+#pragma mark - IBActions
+
+- (IBAction)didTouchOnUndoButton:(id)sender
+{
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(hideFooterView) object:nil];
+    
+    [self hideFooterView];
+    
+    STDTask *subtask = [self associatedObjectForKey:&kSubtaskKey];
+    if (subtask) {
+        // core data
+        subtask.completed = @NO;
+        subtask.completion_date = nil;
+        
+        [[NSManagedObjectContext contextForCurrentThread] saveOnlySelfAndWait];
+        
+        NSIndexPath *indexPath = [self indexPathOfSubtask:subtask];
+        
+        // insert
+        [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+    }
+}
+
+- (void)didCompleteSubtask:(STDTask *)subtask
+{
+    [self setAssociatedObject:subtask forKey:&kSubtaskKey];
+    
+    NSIndexPath *indexPath = [self indexPathOfSubtask:subtask];
+    
+    // core data
+    subtask.completed = @YES;
+    subtask.completion_date = [NSDate date];
+    
+    [[NSManagedObjectContext contextForCurrentThread] saveOnlySelfAndWait];
+    
+    // delete row
+    [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+    
+    [self showFooterView];
 }
 
 #pragma mark - Styling
@@ -56,15 +107,74 @@ static char kDummyTextViewKey;
     self.tableView.lprDelegate = (id)self;
 }
 
+#pragma mark - Footer View
+
+- (void)showFooterView
+{
+    self.heightLayoutConstraint.constant = 44.0f;
+    
+    [UIView animateWithDuration:1.0f delay:0 usingSpringWithDamping:0.5f initialSpringVelocity:0.5f options:(UIViewAnimationOptionAllowUserInteraction) animations:^{
+        [self.view layoutIfNeeded];
+    } completion:^(BOOL finished) {
+        [self performSelector:@selector(hideFooterView) withObject:nil afterDelay:5.0f];
+    }];
+}
+
+- (void)hideFooterView
+{
+    self.heightLayoutConstraint.constant = 0.0f;
+    
+    [UIView animateWithDuration:0.3f animations:^{
+        [self.view layoutIfNeeded];
+    }];
+}
+
+- (UIView *)footerView
+{
+    if (!_footerView) {
+        _footerView = [UIView newAutoLayoutView];
+        _footerView.clipsToBounds = YES;
+        [self.view addSubview:_footerView];
+        
+        [_footerView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
+        self.heightLayoutConstraint = [_footerView autoSetDimension:ALDimensionHeight toSize:0.0f];
+        
+        UIButton *undoButton = [UIButton buttonWithType:UIButtonTypeSystem];
+        undoButton.translatesAutoresizingMaskIntoConstraints = NO;
+        undoButton.backgroundColor = [UIColor colorWithHue:(210.0f / 360.0f) saturation:0.94f brightness:1.0f alpha:1.0f];
+        undoButton.tintColor = [UIColor whiteColor];
+        [undoButton setTitle:@"Undo" forState:UIControlStateNormal];
+        [undoButton addTarget:self action:@selector(didTouchOnUndoButton:) forControlEvents:UIControlEventTouchUpInside];
+        [_footerView addSubview:undoButton];
+        
+        [undoButton autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeBottom];
+        [undoButton autoSetDimension:ALDimensionHeight toSize:44.0f];
+    }
+    return _footerView;
+}
+
 #pragma mark - Load
 
 - (NSArray *)subtasks
 {
-    if (_subtasks.count != self.task.subtasks.count) {
-        NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:NSStringFromSelector(@selector(index)) ascending:YES];
-        _subtasks = [self.task.subtasks sortedArrayUsingDescriptors:@[sortDescriptor]];
-    }
-    return _subtasks;
+    return [self sortedUncompletedSubtasksForTask:self.task];
+}
+
+- (NSSet *)uncompletedSubtasksForTask:(STDTask *)task
+{
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"completedValue == NO"];
+    return [task.subtasks filteredSetUsingPredicate:predicate];
+}
+
+- (NSArray *)sortedUncompletedSubtasksForTask:(STDTask *)task
+{
+    return [self sortedArrayWithSet:[self uncompletedSubtasksForTask:task]];
+}
+
+- (NSArray *)sortedArrayWithSet:(NSSet *)set
+{
+    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:NSStringFromSelector(@selector(index)) ascending:YES];
+    return [set sortedArrayUsingDescriptors:@[sortDescriptor]];
 }
 
 - (void)updateIndexesForSubtasks:(NSArray *)subtasks
@@ -80,6 +190,11 @@ static char kDummyTextViewKey;
     if (self.subtasks.count > indexPath.row)
         subtask = self.subtasks[indexPath.row];
     return subtask;
+}
+
+- (NSIndexPath *)indexPathOfSubtask:(STDTask *)subtask
+{
+    return [NSIndexPath indexPathForRow:[self.subtasks indexOfObject:subtask] inSection:0];
 }
 
 - (NSString *)textForIndexPath:(NSIndexPath *)indexPath
@@ -123,18 +238,23 @@ static char kDummyTextViewKey;
         
         cell.clipsToBounds = YES;
         
-        cell.textView.scrollsToTop = NO;
-        cell.textView.contentInset = (UIEdgeInsets){2, 0, 0, 0};
-        cell.textView.delegate = self;
+        cell.strikethroughDelegate = self;
+        
         cell.textView.font = kTextViewFont;
         cell.textView.placeholder = @"New Subtask";
+        cell.textView.delegate = self;
     }
     
     cell.contentView.tag = indexPath.row;
     
     STDTask *subtask = [self subtaskForIndexPath:indexPath];
-    cell.textView.text = subtask.name;
+    
     cell.textView.userInteractionEnabled = !subtask;
+    
+    cell.textView.attributedText = nil;
+    if (subtask.name) {
+        cell.textView.attributedText = [[NSAttributedString alloc] initWithString:subtask.name attributes:@{NSFontAttributeName:cell.textView.font}];
+    }
     
     return cell;
 }
@@ -255,6 +375,27 @@ static char kDummyTextViewKey;
     NSInteger row = textView.superview.tag;
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:0];
     [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:animated];
+}
+
+#pragma mark - STDTableViewCellStrikethroughDelegate
+
+- (void)setAttributedText:(NSAttributedString *)attributedText forTableViewCell:(STDSubtaskTableViewCell *)tableViewCell
+{
+    tableViewCell.textView.attributedText = attributedText;
+}
+
+- (NSAttributedString *)attributedTextForTableViewCell:(STDSubtaskTableViewCell *)tableViewCell
+{
+    return tableViewCell.textView.attributedText;
+}
+
+- (void)strikethroughGestureDidEnd:(UITableViewCell *)tableViewCell;
+{
+    NSIndexPath *indexPath = [self.tableView indexPathForCell:tableViewCell];
+    if (indexPath) {
+        STDTask *subtask = [self subtaskForIndexPath:indexPath];
+        [self didCompleteSubtask:subtask];
+    }
 }
 
 #pragma mark - Keyboard

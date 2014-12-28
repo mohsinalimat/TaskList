@@ -15,6 +15,7 @@
 #import "PureLayout.h"
 #import "UIView+Extras.h"
 #import "UIScrollView+Blocks.h"
+#import "UITableViewCell+Strikethrough.h"
 
 #import "STDSubtasksViewController.h"
 #import "STDNotesViewController.h"
@@ -33,7 +34,7 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     UITableViewSectionActionCollapse
 };
 
-@interface STDHomepageViewController () <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, STDTaskTableViewCellDelegate, STDTaskTableViewHeaderFooterViewDelegate>
+@interface STDHomepageViewController () <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, STDTaskTableViewCellDelegate, STDTaskTableViewHeaderFooterViewDelegate, STDTableViewCellStrikethroughDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
@@ -242,7 +243,7 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
 
 - (void)load
 {
-    NSArray *categories = [STDCategory findAllSortedBy:NSStringFromSelector(@selector(index)) ascending:YES];
+    NSArray *categories = [self fetchCategories];
     if (!categories.count) {
         STDCategory *category1 = [STDCategory createEntity];
         category1.name = @"Home";
@@ -254,9 +255,14 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
         
         [[NSManagedObjectContext contextForCurrentThread] saveOnlySelfAndWait];
         
-        categories = [STDCategory findAllSortedBy:NSStringFromSelector(@selector(index)) ascending:YES];
+        categories = [self fetchCategories];
     }
     self.categories = [NSMutableArray arrayWithArray:categories];
+}
+
+- (NSArray *)fetchCategories
+{
+    return [STDCategory findAllSortedBy:NSStringFromSelector(@selector(index)) ascending:YES];
 }
 
 - (NSSet *)uncompletedTasksForCategory:(STDCategory *)category
@@ -279,8 +285,19 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
 {
     NSUInteger count = 0;
     for (STDTask *task in [self uncompletedTasksForCategory:category])
-        count += task.subtasks.count;
+        count += [self countOfUncompletedSubtasksForTask:task];
     return count;
+}
+
+- (NSSet *)uncompletedSubtasksForTask:(STDTask *)task
+{
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"completedValue == NO"];
+    return [task.subtasks filteredSetUsingPredicate:predicate];
+}
+
+- (NSUInteger)countOfUncompletedSubtasksForTask:(STDTask *)task
+{
+    return [[self uncompletedSubtasksForTask:task] count];
 }
 
 - (NSArray *)sortedArrayWithSet:(NSSet *)set
@@ -419,6 +436,7 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
         cell.clipsToBounds = YES;
         
         cell.delegate = self;
+        cell.strikethroughDelegate = self;
         
         cell.textField.font = [UIFont systemFontOfSize:14.0f];
         cell.textField.placeholder = @"New Task";
@@ -668,11 +686,6 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     [self pushViewController:viewController];
 }
 
-- (void)didSwipeRight:(STDTaskTableViewCell *)cell
-{
-    [self willCompleteTask:cell.task];
-}
-
 #pragma mark - STDTaskTableViewCellDelegate
 
 - (void)taskTableViewHeaderFooterView:(STDTaskTableViewHeaderFooterView *)view didTouchOnButton:(id)sender
@@ -825,6 +838,27 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
         }
     }
     return YES;
+}
+
+#pragma mark - STDTableViewCellStrikethroughDelegate
+
+- (void)setAttributedText:(NSAttributedString *)attributedText forTableViewCell:(STDTaskTableViewCell *)tableViewCell
+{
+    tableViewCell.textField.attributedText = attributedText;
+}
+
+- (NSAttributedString *)attributedTextForTableViewCell:(STDTaskTableViewCell *)tableViewCell
+{
+    return tableViewCell.textField.attributedText;
+}
+
+- (void)strikethroughGestureDidEnd:(UITableViewCell *)tableViewCell;
+{
+    NSIndexPath *indexPath = [self.tableView indexPathForCell:tableViewCell];
+    if (indexPath) {
+        STDTask *task = [self taskForIndexPath:indexPath];
+        [self willCompleteTask:task];
+    }
 }
 
 #pragma mark - Keyboard

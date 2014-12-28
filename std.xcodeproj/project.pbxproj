@@ -33,10 +33,12 @@
 		C01D74CB19A1445200905EBD /* STDUserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = C01D74CA19A1445200905EBD /* STDUserDefaults.m */; };
 		C03A5C7319D8D16200437500 /* UITableView+Separator.m in Sources */ = {isa = PBXBuildFile; fileRef = C03A5C7219D8D16200437500 /* UITableView+Separator.m */; };
 		C03A5C7519D8E0DB00437500 /* STDSubtaskTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C03A5C7419D8E0DB00437500 /* STDSubtaskTableViewCell.xib */; };
+		C043E9411A50B88400A8A0C2 /* STDCoreDataUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = C043E9401A50B88400A8A0C2 /* STDCoreDataUtilities.m */; };
 		C04D9C071A106A5C00E5D2B2 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C04D9C051A106A5C00E5D2B2 /* Crashlytics.framework */; };
 		C04D9C081A106A5C00E5D2B2 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C04D9C061A106A5C00E5D2B2 /* Fabric.framework */; };
 		C05A476619B52F6500A13B25 /* UITableView+LongPressReorder.m in Sources */ = {isa = PBXBuildFile; fileRef = C05A476519B52F6500A13B25 /* UITableView+LongPressReorder.m */; };
 		C05A476919B5349600A13B25 /* NSManagedObject+Extras.m in Sources */ = {isa = PBXBuildFile; fileRef = C05A476819B5349600A13B25 /* NSManagedObject+Extras.m */; };
+		C064DBFD1A4B916A00809F7F /* UITableViewCell+Strikethrough.m in Sources */ = {isa = PBXBuildFile; fileRef = C064DBFB1A4B916A00809F7F /* UITableViewCell+Strikethrough.m */; };
 		C06F19CE1960D308000BEDD8 /* STDTaskTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C06F19CC1960D308000BEDD8 /* STDTaskTableViewCell.m */; };
 		C06F19CF1960D308000BEDD8 /* STDTaskTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C06F19CD1960D308000BEDD8 /* STDTaskTableViewCell.xib */; };
 		C07F67111A47D1CA00597676 /* UIScrollView+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = C07F67101A47D1CA00597676 /* UIScrollView+Blocks.m */; };
@@ -111,12 +113,16 @@
 		C03A5C7119D8D16200437500 /* UITableView+Separator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableView+Separator.h"; sourceTree = "<group>"; };
 		C03A5C7219D8D16200437500 /* UITableView+Separator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableView+Separator.m"; sourceTree = "<group>"; };
 		C03A5C7419D8E0DB00437500 /* STDSubtaskTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = STDSubtaskTableViewCell.xib; sourceTree = "<group>"; };
+		C043E93F1A50B88400A8A0C2 /* STDCoreDataUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STDCoreDataUtilities.h; sourceTree = "<group>"; };
+		C043E9401A50B88400A8A0C2 /* STDCoreDataUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STDCoreDataUtilities.m; sourceTree = "<group>"; };
 		C04D9C051A106A5C00E5D2B2 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		C04D9C061A106A5C00E5D2B2 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
 		C05A476419B52F6500A13B25 /* UITableView+LongPressReorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableView+LongPressReorder.h"; sourceTree = "<group>"; };
 		C05A476519B52F6500A13B25 /* UITableView+LongPressReorder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableView+LongPressReorder.m"; sourceTree = "<group>"; };
 		C05A476719B5349600A13B25 /* NSManagedObject+Extras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+Extras.h"; sourceTree = "<group>"; };
 		C05A476819B5349600A13B25 /* NSManagedObject+Extras.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObject+Extras.m"; sourceTree = "<group>"; };
+		C064DBFA1A4B916A00809F7F /* UITableViewCell+Strikethrough.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableViewCell+Strikethrough.h"; sourceTree = "<group>"; };
+		C064DBFB1A4B916A00809F7F /* UITableViewCell+Strikethrough.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableViewCell+Strikethrough.m"; sourceTree = "<group>"; };
 		C06F19CB1960D308000BEDD8 /* STDTaskTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STDTaskTableViewCell.h; sourceTree = "<group>"; };
 		C06F19CC1960D308000BEDD8 /* STDTaskTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STDTaskTableViewCell.m; sourceTree = "<group>"; };
 		C06F19CD1960D308000BEDD8 /* STDTaskTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = STDTaskTableViewCell.xib; sourceTree = "<group>"; };
@@ -243,6 +249,8 @@
 			isa = PBXGroup;
 			children = (
 				C082BE19193C17D900A60D8E /* Categories */,
+				C043E93F1A50B88400A8A0C2 /* STDCoreDataUtilities.h */,
+				C043E9401A50B88400A8A0C2 /* STDCoreDataUtilities.m */,
 				C07F67121A47D52100597676 /* STDTextField.h */,
 				C07F67131A47D52100597676 /* STDTextField.m */,
 				C01D74C919A1445200905EBD /* STDUserDefaults.h */,
@@ -347,6 +355,8 @@
 				C07F67101A47D1CA00597676 /* UIScrollView+Blocks.m */,
 				C03A5C7119D8D16200437500 /* UITableView+Separator.h */,
 				C03A5C7219D8D16200437500 /* UITableView+Separator.m */,
+				C064DBFA1A4B916A00809F7F /* UITableViewCell+Strikethrough.h */,
+				C064DBFB1A4B916A00809F7F /* UITableViewCell+Strikethrough.m */,
 				C093763E1A3E9C680077CB15 /* UIView+Extras.h */,
 				C093763F1A3E9C680077CB15 /* UIView+Extras.m */,
 			);
@@ -646,6 +656,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C082BE12193BD86C00A60D8E /* STDNote.m in Sources */,
+				C064DBFD1A4B916A00809F7F /* UITableViewCell+Strikethrough.m in Sources */,
 				C0C462541932BFD10031E256 /* STDSubtasksViewController.m in Sources */,
 				C082BE05193BD86300A60D8E /* _STDCategory.m in Sources */,
 				C0F933331986178A00FC7329 /* STDSubtaskTableViewCell.m in Sources */,
@@ -656,6 +667,7 @@
 				C0C4625A1932BFFD0031E256 /* STDSettingsViewController.m in Sources */,
 				C05A476919B5349600A13B25 /* NSManagedObject+Extras.m in Sources */,
 				C06F19CE1960D308000BEDD8 /* STDTaskTableViewCell.m in Sources */,
+				C043E9411A50B88400A8A0C2 /* STDCoreDataUtilities.m in Sources */,
 				C0A8DF5619E1FEA1005FCC81 /* UIAlertView+Blocks.m in Sources */,
 				C07F67141A47D52100597676 /* STDTextField.m in Sources */,
 				C082BE06193BD86300A60D8E /* _STDNote.m in Sources */,

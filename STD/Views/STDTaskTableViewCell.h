@@ -14,7 +14,6 @@
 
 - (void)taskTableViewCell:(STDTaskTableViewCell *)cell didTouchOnTasksButton:(id)sender;
 - (void)taskTableViewCell:(STDTaskTableViewCell *)cell didTouchOnNotesButton:(id)sender;
-- (void)didSwipeRight:(STDTaskTableViewCell *)cell;
 
 @end
 
