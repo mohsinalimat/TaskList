@@ -811,16 +811,15 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     [self setKeyboardWillHideAnimationBlock:^(CGRect keyboardFrame) {
         typeof(self) self = weakSelf;
         
+        keyboardFrame.origin.y = CGRectGetHeight(self.view.frame);
         [self keyboardFrameChanged:keyboardFrame];
     }];
 }
 
 - (CGFloat)contentOffsetForKeyboardFrame:(CGRect)keyboardFrame
 {
-    UIWindow *window = [[UIApplication sharedApplication] keyWindow];
-    UIView *view = window.rootViewController.view;
-    CGRect convertedRect = [view convertRect:keyboardFrame fromView:nil];
-    CGFloat offset = CGRectGetHeight(view.frame) - CGRectGetMinY(convertedRect);
+    CGRect convertedRect = [self.view convertRect:keyboardFrame fromView:nil];
+    CGFloat offset = CGRectGetHeight(self.view.frame) - CGRectGetMinY(convertedRect);
     return CGRectIsNull(convertedRect) ? 0 : offset;
 }
 

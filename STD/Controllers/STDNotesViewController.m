@@ -94,22 +94,16 @@
     [self setKeyboardWillHideAnimationBlock:^(CGRect keyboardFrame) {
         typeof(self) self = weakSelf;
         
+        keyboardFrame.origin.y = CGRectGetHeight(self.view.frame);
         [self keyboardFrameChanged:keyboardFrame];
     }];
 }
 
 - (CGFloat)contentOffsetForKeyboardFrame:(CGRect)keyboardFrame
 {
-    UIWindow *window = [[UIApplication sharedApplication] keyWindow];
-    UIView *view = window.rootViewController.view;
-    CGRect convertedRect = [view convertRect:keyboardFrame fromView:nil];
-    CGFloat offset = CGRectGetHeight(view.frame) - CGRectGetMinY(convertedRect);
+    CGRect convertedRect = [self.view convertRect:keyboardFrame fromView:nil];
+    CGFloat offset = CGRectGetHeight(self.view.frame) - CGRectGetMinY(convertedRect);
     return CGRectIsNull(convertedRect) ? 0 : offset;
-}
-
-- (CGFloat)toolbarHeight
-{
-    return self.navigationController.toolbarHidden ? 0.0f : 44.0f;
 }
 
 - (void)keyboardFrameChanged:(CGRect)newFrame
@@ -118,7 +112,7 @@
         return;
     
     UIEdgeInsets edgeInsets = self.textView.contentInset;
-    edgeInsets.bottom = MAX([self toolbarHeight], [self contentOffsetForKeyboardFrame:newFrame]);
+    edgeInsets.bottom = MAX(0, [self contentOffsetForKeyboardFrame:newFrame]);
     self.textView.contentInset = edgeInsets;
 }
 
