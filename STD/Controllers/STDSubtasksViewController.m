@@ -31,7 +31,7 @@ static char kSubtaskKey;
 
 @property (strong, nonatomic) UIView *footerView;
 
-@property (strong, nonatomic) NSArray *subtasks;
+@property (strong, nonatomic) NSMutableArray *subtasks;
 
 @property (strong, nonatomic) NSLayoutConstraint *heightLayoutConstraint;
 
@@ -46,6 +46,8 @@ static char kSubtaskKey;
     [self registerForKeyboardNotifications];
     
     [self styleTableView];
+    
+    [self load];
     
     [self.tableView reloadData];
     
@@ -156,9 +158,10 @@ static char kSubtaskKey;
 
 #pragma mark - Load
 
-- (NSArray *)subtasks
+- (void)load
 {
-    return [[STDCoreDataUtilities sharedInstance] sortedUncompletedSubtasksForTask:self.task];
+    NSArray *subtasks = [[STDCoreDataUtilities sharedInstance] sortedUncompletedSubtasksForTask:self.task];
+    self.subtasks = [NSMutableArray arrayWithArray:subtasks];
 }
 
 - (STDTask *)subtaskForIndexPath:(NSIndexPath *)indexPath
@@ -260,15 +263,13 @@ static char kSubtaskKey;
 
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath
 {
-    STDTask *subtask = [self subtaskForIndexPath:sourceIndexPath];
+    [self.subtasks exchangeObjectAtIndex:sourceIndexPath.row withObjectAtIndex:destinationIndexPath.row];
     
-    [self.task removeSubtasksObject:subtask];
+    [self.task.subtasksSet addObjectsFromArray:self.subtasks];
     
-    NSMutableArray *subtasks = [NSMutableArray arrayWithArray:self.subtasks];
-    [subtasks insertObject:subtask atIndex:destinationIndexPath.row];
-    self.task.subtasks = [NSSet setWithArray:subtasks];
-    
-    [[STDCoreDataUtilities sharedInstance] updateIndexesForManagedObjects:subtasks];
+    [[STDCoreDataUtilities sharedInstance] updateIndexesForManagedObjects:self.subtasks];
+
+    [self load];
     
     [[NSManagedObjectContext contextForCurrentThread] saveOnlySelfAndWait];
 }
@@ -310,6 +311,7 @@ static char kSubtaskKey;
     if (!subtask) {
         subtask = [STDTask createEntity];
         [self.task addSubtasksObject:subtask];
+        [self.subtasks addObject:subtask];
     }
     
     subtask.name = textView.text;

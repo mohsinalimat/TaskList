@@ -471,7 +471,7 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     
     NSMutableArray *destinationTasks = [NSMutableArray arrayWithArray:[[STDCoreDataUtilities sharedInstance] sortedUncompletedTasksForCategory:destinationCategory]];
     [destinationTasks insertObject:sourceTask atIndex:destinationIndexPath.row];
-    destinationCategory.tasks = [NSSet setWithArray:destinationTasks];
+    [destinationCategory.tasksSet addObjectsFromArray:destinationTasks];
     
     [[STDCoreDataUtilities sharedInstance] updateIndexesForManagedObjects:destinationTasks];
     
