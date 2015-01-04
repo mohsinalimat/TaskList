@@ -360,6 +360,8 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     NSString *title = [self taskCountStringForCategory:category];
     UIButton *button = (UIButton *)view.textField.rightView;
     [button setTitle:title forState:UIControlStateNormal];
+    
+    [button sizeToFit];
 }
 
 #pragma mark - UITableViewDataSource
