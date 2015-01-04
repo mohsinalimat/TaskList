@@ -29,6 +29,7 @@
 #define kNumberOfRowsInSection [[STDCoreDataUtilities sharedInstance] countOfUncompletedTasksForCategory:category] + 1
 
 static char kTaskKey;
+static char kSubtasksKey;
 
 typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     UITableViewSectionActionExpand,
@@ -99,12 +100,26 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     
     [self hideFooterView];
     
+    NSMutableArray *tasks = [NSMutableArray array];
+    
+    // add task
     STDTask *task = [self associatedObjectForKey:&kTaskKey];
-    if (task) {
-        // core data
+    if (task)
+        [tasks addObject:task];
+    
+    // add subtasks
+    NSSet *subtasks = [self associatedObjectForKey:&kSubtasksKey];
+    if (subtasks.count)
+        [tasks addObjectsFromArray:[subtasks allObjects]];
+    
+    // loop through tasks
+    for (STDTask *task in tasks) {
         task.completed = @NO;
         task.completion_date = nil;
-        
+    }
+    
+    // save and update data model
+    if (tasks.count) {
         [[NSManagedObjectContext contextForCurrentThread] saveOnlySelfAndWait];
         
         NSIndexPath *indexPath = [self indexPathOfTask:task];
@@ -132,12 +147,13 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
 - (void)willCompleteTask:(STDTask *)task
 {
     // check for uncompleted subtasks
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"completedValue == NO"];
-    NSSet *uncompleted = [task.subtasks filteredSetUsingPredicate:predicate];
+    NSSet *uncompleted = [[STDCoreDataUtilities sharedInstance] uncompletedSubtasksForTask:task];
     if (uncompleted.count) {
         [UIAlertView showAlertViewWithMessage:@"Mark all subtasks complete? If yes, all subtasks will be marked as finished because you're done! If you choose keep, the task will still be viewable until you mark all subtasks completed." title:nil cancelButtonTitle:@"Keep" otherButtonTitles:@[@"Yes"] handler:^(UIAlertView *alertView, NSInteger buttonIndex) {
             if (buttonIndex != alertView.cancelButtonIndex) {
-                for (STDTask *subtask in task.subtasks) {
+                [self setAssociatedObject:uncompleted forKey:&kSubtasksKey];
+                
+                for (STDTask *subtask in uncompleted) {
                     subtask.completed = @YES;
                     subtask.completion_date = [NSDate date];
                 }

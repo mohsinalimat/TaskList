@@ -68,6 +68,8 @@ static char kSubtaskKey;
         subtask.completed = @NO;
         subtask.completion_date = nil;
         
+        [self load];
+        
         [[NSManagedObjectContext contextForCurrentThread] saveOnlySelfAndWait];
         
         NSIndexPath *indexPath = [self indexPathOfSubtask:subtask];
@@ -86,6 +88,8 @@ static char kSubtaskKey;
     // core data
     subtask.completed = @YES;
     subtask.completion_date = [NSDate date];
+    
+    [self load];
     
     [[NSManagedObjectContext contextForCurrentThread] saveOnlySelfAndWait];
     
