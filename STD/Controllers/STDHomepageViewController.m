@@ -14,7 +14,6 @@
 #import "UITableView+LongPressReorder.h"
 #import "PureLayout.h"
 #import "UIView+Extras.h"
-#import "UIScrollView+Blocks.h"
 #import "UITableViewCell+Strikethrough.h"
 #import "STDCoreDataUtilities.h"
 
@@ -576,18 +575,7 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     
     [CATransaction begin];
     [CATransaction setCompletionBlock:^{
-        BOOL expanded = [self isCategoryExpanded:category];
-        if (expanded && expand) {
-            if (![[self.tableView indexPathsForVisibleRows] containsObject:indexes.lastObject]) {
-                [self.tableView scrollViewDidEndScrollingAnimationBlock:^(UIScrollView *scrollView) {
-                    if (completion) completion();
-                }];
-                return;
-            }
-        }
-        
-        if (completion)
-            completion();
+        if (completion) completion();
     }];
     
     [self.tableView beginUpdates];
@@ -607,15 +595,15 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     
     [self.tableView endUpdates];
     
-    [self reloadHeaderViewForCategory:category];
+    if (!expanded && expand) {
+        if (![[self.tableView indexPathsForVisibleRows] containsObject:indexes.lastObject]) {
+            [self.tableView scrollToRowAtIndexPath:indexes.lastObject atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+        }
+    }
     
     [CATransaction commit];
     
-    if (!expanded && expand) {
-        if (![[self.tableView indexPathsForVisibleRows] containsObject:indexes.lastObject]) {
-            [self.tableView scrollToRowAtIndexPath:indexes.lastObject atScrollPosition:UITableViewScrollPositionBottom animated:NO];
-        }
-    }
+    [self reloadHeaderViewForCategory:category];
 }
 
 - (void)toggleTask:(STDTask *)task
@@ -811,9 +799,9 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
                 
                 [self.tableView endUpdates];
                 
-                [self reloadHeaderViewForCategory:category];
-                
                 [CATransaction commit];
+                
+                [self reloadHeaderViewForCategory:category];
             }
         }
     }
