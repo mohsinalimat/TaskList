@@ -246,7 +246,7 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
 {
     self.heightLayoutConstraint.constant = 44.0f;
     
-    [UIView animateWithDuration:1.0f delay:0 usingSpringWithDamping:0.5f initialSpringVelocity:0.5f options:(UIViewAnimationOptionAllowUserInteraction) animations:^{
+    [UIView animateWithDuration:0.3f animations:^{
         [self.view layoutIfNeeded];
     } completion:^(BOOL finished) {
         [self performSelector:@selector(hideFooterView) withObject:nil afterDelay:5.0f];
