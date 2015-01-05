@@ -201,6 +201,16 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     
     self.tableView.longPressReorderEnabled = YES;
     self.tableView.lprDelegate = (id)self;
+    
+    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(singleTapGestureRecognized:)];
+    singleTap.numberOfTapsRequired = 1;
+    [self.tableView addGestureRecognizer:singleTap];
+    
+    UITapGestureRecognizer *doubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(doubleTapGestureRecognized:)];
+    doubleTap.numberOfTapsRequired = 2;
+    [self.tableView addGestureRecognizer:doubleTap];
+    
+    [singleTap requireGestureRecognizerToFail:doubleTap];
 }
 
 - (void)styleNavigationController
@@ -208,6 +218,27 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithTitle:@"\u2699" style:UIBarButtonItemStylePlain target:self action:@selector(didTouchOnSettingsButton:)];
     [settingsButton setTitleTextAttributes:@{NSFontAttributeName: [UIFont boldSystemFontOfSize:24.0]} forState:UIControlStateNormal];
     self.toolbarItems = @[settingsButton];
+}
+
+- (void)singleTapGestureRecognized:(UITapGestureRecognizer *)recognizer;
+{
+    CGPoint hitPoint = [recognizer locationInView:self.tableView];
+    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:hitPoint];
+    STDTaskTableViewCell *cell = (STDTaskTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+    if (cell) {
+        if (cell.task) [self toggleTask:cell.task];
+    }
+}
+
+- (void)doubleTapGestureRecognized:(UITapGestureRecognizer *)recognizer;
+{
+    CGPoint hitPoint = [recognizer locationInView:self.tableView];
+    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:hitPoint];
+    STDTaskTableViewCell *cell = (STDTaskTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+    if (cell) {
+        cell.textField.userInteractionEnabled = YES;
+        [cell.textField becomeFirstResponder];
+    }
 }
 
 #pragma mark - Footer View
@@ -412,17 +443,6 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
 }
 
 #pragma mark - UITableViewDelegate
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
-    
-    STDTask *task = [self taskForIndexPath:indexPath];
-    if (!task)
-        return;
-    
-    [self toggleTask:task];
-}
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
