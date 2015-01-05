@@ -579,7 +579,6 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
         BOOL expanded = [self isCategoryExpanded:category];
         if (expanded && expand) {
             if (![[self.tableView indexPathsForVisibleRows] containsObject:indexes.lastObject]) {
-                [self.tableView scrollToRowAtIndexPath:indexes.lastObject atScrollPosition:UITableViewScrollPositionBottom animated:YES];
                 [self.tableView scrollViewDidEndScrollingAnimationBlock:^(UIScrollView *scrollView) {
                     if (completion) completion();
                 }];
@@ -611,6 +610,12 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     [self reloadHeaderViewForCategory:category];
     
     [CATransaction commit];
+    
+    if (!expanded && expand) {
+        if (![[self.tableView indexPathsForVisibleRows] containsObject:indexes.lastObject]) {
+            [self.tableView scrollToRowAtIndexPath:indexes.lastObject atScrollPosition:UITableViewScrollPositionBottom animated:NO];
+        }
+    }
 }
 
 - (void)toggleTask:(STDTask *)task
