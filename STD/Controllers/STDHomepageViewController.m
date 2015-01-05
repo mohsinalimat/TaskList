@@ -188,6 +188,27 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     [self showFooterView];
 }
 
+- (void)singleTapGestureRecognized:(UITapGestureRecognizer *)recognizer;
+{
+    CGPoint hitPoint = [recognizer locationInView:self.tableView];
+    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:hitPoint];
+    STDTaskTableViewCell *cell = (STDTaskTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+    if (cell) {
+        if (cell.task) [self toggleTask:cell.task];
+    }
+}
+
+- (void)doubleTapGestureRecognized:(UITapGestureRecognizer *)recognizer;
+{
+    CGPoint hitPoint = [recognizer locationInView:self.tableView];
+    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:hitPoint];
+    STDTaskTableViewCell *cell = (STDTaskTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+    if (cell) {
+        cell.textField.userInteractionEnabled = YES;
+        [cell.textField becomeFirstResponder];
+    }
+}
+
 #pragma mark - Styling
 
 - (void)styleTableView
@@ -218,27 +239,6 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithTitle:@"\u2699" style:UIBarButtonItemStylePlain target:self action:@selector(didTouchOnSettingsButton:)];
     [settingsButton setTitleTextAttributes:@{NSFontAttributeName: [UIFont boldSystemFontOfSize:24.0]} forState:UIControlStateNormal];
     self.toolbarItems = @[settingsButton];
-}
-
-- (void)singleTapGestureRecognized:(UITapGestureRecognizer *)recognizer;
-{
-    CGPoint hitPoint = [recognizer locationInView:self.tableView];
-    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:hitPoint];
-    STDTaskTableViewCell *cell = (STDTaskTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
-    if (cell) {
-        if (cell.task) [self toggleTask:cell.task];
-    }
-}
-
-- (void)doubleTapGestureRecognized:(UITapGestureRecognizer *)recognizer;
-{
-    CGPoint hitPoint = [recognizer locationInView:self.tableView];
-    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:hitPoint];
-    STDTaskTableViewCell *cell = (STDTaskTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
-    if (cell) {
-        cell.textField.userInteractionEnabled = YES;
-        [cell.textField becomeFirstResponder];
-    }
 }
 
 #pragma mark - Footer View

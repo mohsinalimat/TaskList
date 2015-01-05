@@ -99,6 +99,17 @@ static char kSubtaskKey;
     [self showFooterView];
 }
 
+- (void)doubleTapGestureRecognized:(UITapGestureRecognizer *)recognizer;
+{
+    CGPoint hitPoint = [recognizer locationInView:self.tableView];
+    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:hitPoint];
+    STDSubtaskTableViewCell *cell = (STDSubtaskTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+    if (cell) {
+        cell.textView.userInteractionEnabled = YES;
+        [cell.textView becomeFirstResponder];
+    }
+}
+
 #pragma mark - Styling
 
 - (void)styleTableView
@@ -112,6 +123,10 @@ static char kSubtaskKey;
     
     self.tableView.longPressReorderEnabled = YES;
     self.tableView.lprDelegate = (id)self;
+    
+    UITapGestureRecognizer *doubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(doubleTapGestureRecognized:)];
+    doubleTap.numberOfTapsRequired = 2;
+    [self.tableView addGestureRecognizer:doubleTap];
 }
 
 #pragma mark - Footer View
