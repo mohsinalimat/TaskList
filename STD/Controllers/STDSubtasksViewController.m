@@ -322,14 +322,27 @@ static char kSubtaskKey;
     
     [[NSManagedObjectContext contextForCurrentThread] saveOnlySelfAndWait];
     
+    BOOL isNew = (indexPath.row == ([self.tableView numberOfRowsInSection:indexPath.section] - 1));
+
+    [CATransaction begin];
+    [CATransaction setCompletionBlock:^{
+        if (isNew) {
+            STDSubtaskTableViewCell *cell = (STDSubtaskTableViewCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:indexPath.row + 1 inSection:indexPath.section]];
+            [cell.textView becomeFirstResponder];
+        }
+    }];
+    
     [self.tableView beginUpdates];
     
     [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
 
-    if (indexPath.row == ([self.tableView numberOfRowsInSection:indexPath.section] - 1))
+    if (isNew) {
         [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:indexPath.row + 1 inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationFade];
+    }
     
     [self.tableView endUpdates];
+    
+    [CATransaction commit];
 }
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text;

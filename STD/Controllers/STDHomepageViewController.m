@@ -766,16 +766,29 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
                 
                 [[NSManagedObjectContext contextForCurrentThread] saveOnlySelfAndWait];
                 
+                BOOL isNew = (indexPath.row == ([self.tableView numberOfRowsInSection:indexPath.section] - 2));
+                
+                [CATransaction begin];
+                [CATransaction setCompletionBlock:^{
+                    if (isNew) {
+                        STDTaskTableViewCell *cell = (STDTaskTableViewCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:indexPath.row + 1 inSection:indexPath.section]];
+                        [cell.textField becomeFirstResponder];
+                    }
+                }];
+                
                 [self.tableView beginUpdates];
                 
                 [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
 
-                if (indexPath.row == ([self.tableView numberOfRowsInSection:indexPath.section] - 2))
+                if (isNew) {
                     [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:indexPath.row + 1 inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationFade];
+                }
                 
                 [self.tableView endUpdates];
                 
                 [self reloadHeaderViewForCategory:category];
+                
+                [CATransaction commit];
             }
         }
     }
