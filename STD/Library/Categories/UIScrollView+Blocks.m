@@ -20,8 +20,6 @@ static char kDidEndScrollingAnimationBlockAssociatedKey;
 - (void)scrollViewDidEndScrollingAnimationBlock:(UIScrollViewDidEndScrollingAnimationBlock)block
 {
     [self setAssociatedObject:[block copy] forKey:&kDidEndScrollingAnimationBlockAssociatedKey];
-    
-    self.delegate = self;
 }
 
 #pragma mark - UIScrollViewDelegate
