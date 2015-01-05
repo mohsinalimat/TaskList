@@ -52,9 +52,6 @@ static char kPanGestureRecognizerAssociatedKey;
 
 - (void)strikethroughDidChange:(NSUInteger)length
 {
-    if (length > self.attributedText.length)
-        length = self.attributedText.length;
-    
     [UIView animateWithDuration:0.2f animations:^{
         NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithAttributedString:self.attributedText];
         [attributedString addAttributes:@{NSStrikethroughStyleAttributeName:@(NSUnderlineStyleSingle)} range:NSMakeRange(0, length)];
@@ -101,16 +98,19 @@ static char kPanGestureRecognizerAssociatedKey;
     CGPoint point = [recognizer locationInView:self];
     CGFloat x = point.x / 8.0f;
     if (recognizer.state == UIGestureRecognizerStateChanged) {
-        [self strikethroughDidChange:x];
+        [self strikethroughDidChange:MIN(x, self.attributedText.length)];
     } else if (recognizer.state == UIGestureRecognizerStateEnded) {
         CGPoint velocity = [recognizer velocityInView:self];
         x += velocity.x / 8.0f;
-        [self strikethroughDidChange:x];
 
         if (x > (self.attributedText.length / 2.0f)) {
+            [self strikethroughDidChange:self.attributedText.length];
+            
             if ([self.strikethroughDelegate respondsToSelector:@selector(strikethroughGestureDidEnd:)]) {
                 [self.strikethroughDelegate performSelector:@selector(strikethroughGestureDidEnd:) withObject:self];
             }
+        } else {
+            [self strikethroughDidChange:0];
         }
     }
 }

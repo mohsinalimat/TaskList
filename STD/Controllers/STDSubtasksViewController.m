@@ -225,7 +225,7 @@ static char kSubtaskKey;
         cell.strikethroughDelegate = self;
         
         cell.textView.font = kTextViewFont;
-        cell.textView.placeholder = @"New Subtask";
+        cell.textView.placeholder = @"New Task";
         cell.textView.delegate = self;
     }
     
