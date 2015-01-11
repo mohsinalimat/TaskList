@@ -43,6 +43,8 @@ static char kSubtaskKey;
 {
     [super viewDidLoad];
     
+    self.navigationItem.title = self.task.name;
+    
     [self registerForKeyboardNotifications];
     
     [self styleTableView];

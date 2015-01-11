@@ -29,6 +29,8 @@
 {
     [super viewDidLoad];
     
+    self.navigationItem.title = self.task.name;
+    
     self.textView.text = self.task.note.body;
     
     [self registerForKeyboardNotifications];
