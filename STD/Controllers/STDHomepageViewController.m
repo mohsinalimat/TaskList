@@ -195,6 +195,9 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     if (cell) {
         if (cell.task) [self toggleTask:cell.task];
     }
+    
+    // end editing
+    [self.view endEditing:NO];
 }
 
 - (void)doubleTapGestureRecognized:(UITapGestureRecognizer *)recognizer;
