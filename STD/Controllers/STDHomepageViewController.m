@@ -368,9 +368,26 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
 {
     if (category) {
         NSUInteger taskCount = [[STDCoreDataUtilities sharedInstance] countOfUncompletedTasksForCategory:category];
-        NSUInteger subtaskCount = [[STDCoreDataUtilities sharedInstance] countOfSubtasksForTasksForCategory:category];
-        NSString *string = [NSString stringWithFormat:@"%lu.%lu", (unsigned long)taskCount, (unsigned long)subtaskCount];
-        return taskCount && ![self isCategoryExpanded:category] ? string : @"+";
+        if (taskCount && ![self isCategoryExpanded:category]) {
+            NSString *string = [NSString stringWithFormat:@"%lu", (unsigned long)taskCount];
+            NSUInteger subtaskCount = [[STDCoreDataUtilities sharedInstance] countOfSubtasksForTasksForCategory:category];
+            if (subtaskCount) {
+                string = [string stringByAppendingString:[NSString stringWithFormat:@".%lu", (unsigned long)subtaskCount]];
+            }
+            return string;
+        }
+        return @"+";
+    }
+    return nil;
+}
+
+- (NSString *)subtaskCountStringForTask:(STDTask *)task
+{
+    if (task) {
+        NSUInteger taskCount = [[STDCoreDataUtilities sharedInstance] countOfUncompletedSubtasksForTask:task];
+        if (taskCount) {
+            return [NSString stringWithFormat:@"%lu", (unsigned long)taskCount];
+        }
     }
     return nil;
 }
@@ -438,6 +455,12 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
         cell.textField.attributedText = [[NSAttributedString alloc] initWithString:task.name attributes:@{NSFontAttributeName:cell.textField.font}];
     }
 
+    NSString *title = [self subtaskCountStringForTask:task];
+    UIButton *button = (UIButton *)cell.textField.rightView;
+    [button setTitle:title forState:UIControlStateNormal];
+    
+    [button sizeToFit];
+    
     return cell;
 }
 
@@ -604,6 +627,12 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     [CATransaction commit];
     
     [self reloadHeaderViewForCategory:category];
+    
+    if (expanded && collapse) {
+        for (STDTask *task in [[STDCoreDataUtilities sharedInstance] uncompletedTasksForCategory:category]) {
+            [self.expandedItems removeObject:task];
+        }
+    }
 }
 
 - (void)toggleTask:(STDTask *)task

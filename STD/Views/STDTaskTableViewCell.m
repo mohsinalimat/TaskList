@@ -15,6 +15,19 @@
     for (UIButton *button in self.buttons) {
         button.tintColor = [UIColor blackColor];
     }
+    
+    self.textField.rightView = [self rightView];
+    self.textField.rightViewMode = UITextFieldViewModeUnlessEditing;
+}
+
+- (UIButton *)rightView
+{
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
+    button.frame = (CGRect){0, 0, 40, 40};
+    button.titleLabel.font = [UIFont systemFontOfSize:16.0f];
+    button.tintColor = [UIColor darkGrayColor];
+    [button addTarget:self action:@selector(didTouchOnButton:) forControlEvents:UIControlEventTouchUpInside];
+    return button;
 }
 
 - (IBAction)didTouchOnTasksButton:(id)sender
