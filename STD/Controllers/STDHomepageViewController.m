@@ -681,7 +681,7 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     [self pushViewController:viewController];
 }
 
-#pragma mark - STDTaskTableViewCellDelegate
+#pragma mark - STDTaskTableViewHeaderFooterViewDelegate
 
 - (void)taskTableViewHeaderFooterView:(STDTaskTableViewHeaderFooterView *)view didTouchOnButton:(id)sender
 {
@@ -784,14 +784,29 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
         
         NSUInteger section = [self sectionForCategory:category];
         
+        BOOL isNew = (section == ([self.tableView numberOfSections] - 1));
+        
+        [CATransaction begin];
+        [CATransaction setCompletionBlock:^{
+            if (isNew) {
+                [self animateCategory:category withAction:UITableViewSectionActionExpand completion:^{
+                    STDTaskTableViewCell *cell = (STDTaskTableViewCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:[[STDCoreDataUtilities sharedInstance] countOfUncompletedTasksForCategory:category] inSection:section]];
+                    [cell.textField becomeFirstResponder];
+                }];
+            }
+        }];
+        
         [self.tableView beginUpdates];
 
         [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:section] withRowAnimation:UITableViewRowAnimationNone];
         
-        if (section == ([self.tableView numberOfSections] - 1))
+        if (isNew) {
             [self.tableView insertSections:[NSIndexSet indexSetWithIndex:section + 1] withRowAnimation:UITableViewRowAnimationFade];
+        }
         
         [self.tableView endUpdates];
+        
+        [CATransaction commit];
     } else if (textField.tag == kTextFieldTask) {
         CGPoint hitPoint = [textField convertPoint:CGPointZero toView:self.tableView];
         NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:hitPoint];
@@ -813,6 +828,8 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
                 [CATransaction begin];
                 [CATransaction setCompletionBlock:^{
                     if (isNew) {
+                        [self toggleTask:task];
+                        
                         STDTaskTableViewCell *cell = (STDTaskTableViewCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:indexPath.row + 1 inSection:indexPath.section]];
                         [cell.textField becomeFirstResponder];
                     }
