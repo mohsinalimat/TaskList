@@ -56,6 +56,19 @@ static char kSubtaskKey;
     [self footerView];
 }
 
+- (void)viewWillDisappear:(BOOL)animated
+{
+    if ([self.navigationController.viewControllers indexOfObject:self] == NSNotFound) {
+        UIViewController *viewController = self.navigationController.topViewController;
+        if ([viewController respondsToSelector:@selector(tableView)]) {
+            UITableView *tableView = [viewController performSelector:@selector(tableView)];
+            [tableView reloadSections:[NSIndexSet indexSetWithIndex:[[[STDCoreDataUtilities sharedInstance] categories] indexOfObject:self.task.category]] withRowAnimation:UITableViewRowAnimationNone];
+        }
+    }
+    
+    [super viewWillDisappear:animated];
+}
+
 #pragma mark - IBActions
 
 - (IBAction)didTouchOnUndoButton:(id)sender
