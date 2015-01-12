@@ -611,6 +611,14 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
         
         [self.tableView deleteRowsAtIndexPaths:indexes withRowAnimation:UITableViewRowAnimationFade];
     } else if (!expanded && expand) {
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"class == %@", [category class]];
+        NSArray *categories = [self.expandedItems filteredArrayUsingPredicate:predicate];
+        [self.expandedItems removeObjectsInArray:categories];
+        
+        for (STDCategory *category in categories) {
+            [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:[self sectionForCategory:category]] withRowAnimation:UITableViewRowAnimationFade];
+        }
+        
         [self.expandedItems addObject:category];
         
         [self.tableView insertRowsAtIndexPaths:indexes withRowAnimation:UITableViewRowAnimationFade];
