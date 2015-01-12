@@ -910,6 +910,11 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     return tableViewCell.textField.attributedText;
 }
 
+- (BOOL)tableViewCellShouldStrikethrough:(STDTaskTableViewCell *)tableViewCell;
+{
+    return ![tableViewCell.textField isFirstResponder];
+}
+
 - (void)strikethroughGestureDidEnd:(UITableViewCell *)tableViewCell;
 {
     NSIndexPath *indexPath = [self.tableView indexPathForCell:tableViewCell];

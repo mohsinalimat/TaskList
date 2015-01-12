@@ -17,6 +17,7 @@
 
 @optional
 
+- (BOOL)tableViewCellShouldStrikethrough:(UITableViewCell *)tableViewCell;
 - (void)strikethroughGestureDidEnd:(UITableViewCell *)tableViewCell;
 
 @end

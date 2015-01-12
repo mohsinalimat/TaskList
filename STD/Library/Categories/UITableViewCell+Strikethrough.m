@@ -95,6 +95,12 @@ static char kPanGestureRecognizerAssociatedKey;
 
 - (void)panGestureRecognized:(UIPanGestureRecognizer *)recognizer
 {
+    if ([self.strikethroughDelegate respondsToSelector:@selector(tableViewCellShouldStrikethrough:)]) {
+        if (![self.strikethroughDelegate tableViewCellShouldStrikethrough:self]) {
+            return;
+        }
+    }
+    
     CGPoint point = [recognizer locationInView:self];
     CGFloat x = point.x / 8.0f;
     if (recognizer.state == UIGestureRecognizerStateChanged) {

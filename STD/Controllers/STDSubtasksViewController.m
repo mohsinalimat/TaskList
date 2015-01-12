@@ -415,6 +415,11 @@ static char kSubtaskKey;
     return tableViewCell.textView.attributedText;
 }
 
+- (BOOL)tableViewCellShouldStrikethrough:(STDSubtaskTableViewCell *)tableViewCell;
+{
+    return ![tableViewCell.textView isFirstResponder];
+}
+
 - (void)strikethroughGestureDidEnd:(UITableViewCell *)tableViewCell;
 {
     NSIndexPath *indexPath = [self.tableView indexPathForCell:tableViewCell];
