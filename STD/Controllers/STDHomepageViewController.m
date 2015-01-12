@@ -410,8 +410,6 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     NSString *title = [self taskCountStringForCategory:category];
     UIButton *button = (UIButton *)view.textField.rightView;
     [button setTitle:title forState:UIControlStateNormal];
-    
-    [button sizeToFit];
 }
 
 #pragma mark - UITableViewDataSource
@@ -461,8 +459,6 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     NSString *title = [self subtaskCountStringForTask:task];
     UIButton *button = (UIButton *)cell.textField.rightView;
     [button setTitle:title forState:UIControlStateNormal];
-    
-    [button sizeToFit];
     
     return cell;
 }
@@ -696,15 +692,21 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
 
 - (void)taskTableViewHeaderFooterView:(STDTaskTableViewHeaderFooterView *)view didTouchOnButton:(id)sender
 {
-    STDCategory *category = view.category;
-    NSInteger section = [self sectionForCategory:category];
-    if (category) {
-        [self animateCategory:category withAction:UITableViewSectionActionExpand completion:^{
-            STDTaskTableViewCell *cell = (STDTaskTableViewCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:[[STDCoreDataUtilities sharedInstance] countOfUncompletedTasksForCategory:category] inSection:section]];
-            [cell.textField becomeFirstResponder];
-        }];
+    if ([view.textField isFirstResponder]) {
+        if ([self textFieldShouldClear:view.textField]) {
+            view.textField.text = nil;
+        }
     } else {
-        [view.textField becomeFirstResponder];
+        STDCategory *category = view.category;
+        NSInteger section = [self sectionForCategory:category];
+        if (category) {
+            [self animateCategory:category withAction:UITableViewSectionActionExpand completion:^{
+                STDTaskTableViewCell *cell = (STDTaskTableViewCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:[[STDCoreDataUtilities sharedInstance] countOfUncompletedTasksForCategory:category] inSection:section]];
+                [cell.textField becomeFirstResponder];
+            }];
+        } else {
+            [view.textField becomeFirstResponder];
+        }
     }
 }
 
@@ -756,6 +758,15 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     return YES;
 }
 
+- (void)textFieldDidBeginEditing:(UITextField *)textField;
+{
+    if (textField.tag == kTextFieldCategory) {
+        STDTaskTableViewHeaderFooterView *view = (STDTaskTableViewHeaderFooterView *)[textField superviewWithKindOfClass:[UITableViewHeaderFooterView class]];
+        UIButton *button = (UIButton *)view.textField.rightView;
+        [button setTitle:@"ⅹ" forState:UIControlStateNormal];
+    }
+}
+
 - (BOOL)textFieldShouldEndEditing:(UITextField *)textField
 {
     if (textField.tag == kTextFieldCategory) {
@@ -784,6 +795,11 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     if (textField.tag == kTextFieldCategory) {
         STDTaskTableViewHeaderFooterView *view = (STDTaskTableViewHeaderFooterView *)[textField superviewWithKindOfClass:[UITableViewHeaderFooterView class]];
         STDCategory *category = view.category;
+        
+        NSString *title = [self taskCountStringForCategory:category];
+        UIButton *button = (UIButton *)view.textField.rightView;
+        [button setTitle:title forState:UIControlStateNormal];
+        
         if (!category) {
             category = [STDCategory createEntity];
             [self.categories addObject:category];
