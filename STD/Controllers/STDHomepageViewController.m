@@ -787,6 +787,9 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
         if (!category) {
             category = [STDCategory createEntity];
             [self.categories addObject:category];
+        } else if ([category.name isEqualToString:textField.text]) {
+            view.textField.editable = NO;
+            return;
         }
         
         category.name = textField.text;
@@ -828,6 +831,9 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
                 if (!task) {
                     task = [STDTask createEntity];
                     [category addTasksObject:task];
+                } else if ([task.name isEqualToString:textField.text]) {
+                    textField.userInteractionEnabled = NO;
+                    return;
                 }
                 
                 task.name = textField.text;
