@@ -408,7 +408,7 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
 - (void)configureHeaderView:(STDTaskTableViewHeaderFooterView *)view forCategory:(STDCategory *)category
 {
     view.textField.text = [category.name uppercaseString];
-    view.textField.editable = !category;
+    view.textField.userInteractionEnabled = !category;
     
     NSString *title = [self taskCountStringForCategory:category];
     UIButton *button = (UIButton *)view.textField.rightView;
@@ -496,6 +496,8 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
         view.textField.delegate = self;
         view.textField.tag = kTextFieldCategory;
         view.textField.placeholder = @"New Category";
+        
+        [view button];
     }
     
     STDCategory *category = [self categoryForSection:section];
@@ -725,7 +727,7 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
 
 - (void)taskTableViewHeaderFooterView:(STDTaskTableViewHeaderFooterView *)view doubleTapGestureRecognized:(UITapGestureRecognizer *)recognizer
 {
-    view.textField.editable = YES;
+    view.textField.userInteractionEnabled = YES;
     [view.textField becomeFirstResponder];
 }
 
@@ -811,7 +813,7 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
             category = [STDCategory createEntity];
             [self.categories addObject:category];
         } else if ([category.name isEqualToString:textField.text]) {
-            view.textField.editable = NO;
+            view.textField.userInteractionEnabled = NO;
             return;
         }
         

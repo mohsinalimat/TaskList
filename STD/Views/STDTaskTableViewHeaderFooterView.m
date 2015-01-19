@@ -39,25 +39,28 @@
     if (!_textField) {
         CGRect frame = CGRectInset(self.bounds, 14, 0);
         frame.size.width += 7;
-        _textField = [[STDTextField alloc] initWithFrame:frame];
+        _textField = [[UITextField alloc] initWithFrame:frame];
         _textField.textColor = [UIColor colorWithHue:(210.0f / 360.0f) saturation:0.94f brightness:1.0f alpha:1.0f];
         _textField.font = STDFontBold18;
         _textField.autocapitalizationType = UITextAutocapitalizationTypeAllCharacters;
-        _textField.rightView = [self rightView];
-        _textField.rightViewMode = UITextFieldViewModeAlways;
+        _textField.autocorrectionType = UITextAutocorrectionTypeNo;
         [self.contentView addSubview:_textField];
     }
     return _textField;
 }
 
-- (UIButton *)rightView
+- (UIButton *)button
 {
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
-    button.frame = (CGRect){0, 0, 40, 40};
-    button.titleLabel.font = STDFont16;
-    button.tintColor = [UIColor darkGrayColor];
-    [button addTarget:self action:@selector(didTouchOnButton:) forControlEvents:UIControlEventTouchUpInside];
-    return button;
+    if (!_button) {
+        _button = [UIButton buttonWithType:UIButtonTypeSystem];
+        _button.frame = (CGRect){self.bounds.size.width - 40, 0, 40, 40};
+        _button.titleLabel.font = STDFont16;
+        _button.tintColor = [UIColor darkGrayColor];
+        _button.contentMode = UIViewContentModeCenter;
+        [_button addTarget:self action:@selector(didTouchOnButton:) forControlEvents:UIControlEventTouchUpInside];
+        [self.contentView addSubview:_button];
+    }
+    return _button;
 }
 
 #pragma mark - IBActions

@@ -8,8 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-#import "STDTextField.h"
-
 @class STDTaskTableViewHeaderFooterView;
 
 @protocol STDTaskTableViewHeaderFooterViewDelegate <NSObject>
@@ -26,6 +24,8 @@
 
 @property (weak, nonatomic) STDCategory *category;
 
-@property (strong, nonatomic) STDTextField *textField;
+@property (strong, nonatomic) UITextField *textField;
+
+@property (strong, nonatomic) UIButton *button;
 
 @end
