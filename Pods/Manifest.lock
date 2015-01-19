@@ -1,4 +1,19 @@
 PODS:
+  - FontAwesomeKit (2.1.8):
+    - FontAwesomeKit/Core (= 2.1.8)
+    - FontAwesomeKit/FontAwesome (= 2.1.8)
+    - FontAwesomeKit/FoundationIcons (= 2.1.8)
+    - FontAwesomeKit/IonIcons (= 2.1.8)
+    - FontAwesomeKit/Zocial (= 2.1.8)
+  - FontAwesomeKit/Core (2.1.8)
+  - FontAwesomeKit/FontAwesome (2.1.8):
+    - FontAwesomeKit/Core
+  - FontAwesomeKit/FoundationIcons (2.1.8):
+    - FontAwesomeKit/Core
+  - FontAwesomeKit/IonIcons (2.1.8):
+    - FontAwesomeKit/Core
+  - FontAwesomeKit/Zocial (2.1.8):
+    - FontAwesomeKit/Core
   - iRate (1.11.3)
   - JRSwizzle (1.0)
   - MagicalRecord/Shorthand (2.2)
@@ -8,6 +23,7 @@ PODS:
   - UIViewController+BHTKeyboardAnimationBlocks (0.0.2)
 
 DEPENDENCIES:
+  - FontAwesomeKit (~> 2.1.0)
   - iRate (~> 1.11)
   - JRSwizzle (~> 1.0)
   - MagicalRecord/Shorthand (~> 2.2)
@@ -17,6 +33,7 @@ DEPENDENCIES:
   - UIViewController+BHTKeyboardAnimationBlocks (~> 0.0)
 
 SPEC CHECKSUMS:
+  FontAwesomeKit: a2edea3111dab107b4cc43b85881b404eb063385
   iRate: 5e1978bac8b3f3f0296dbeccc0dd7b50e6e50657
   JRSwizzle: 30da7a2c539a4ebf954b16d15f6dd8221c9f6fa5
   MagicalRecord: 2b471584fc9e3137f3d0a56967917baa4979e224
@@ -25,4 +42,4 @@ SPEC CHECKSUMS:
   SZTextView: ba45928294d012591c720ae476e58b0bc4c56a44
   UIViewController+BHTKeyboardAnimationBlocks: fa8f86b798147159ddc1b2aba3f8c49247f1c814
 
-COCOAPODS: 0.35.0
+COCOAPODS: 0.36.0.beta.1
