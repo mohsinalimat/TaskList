@@ -17,6 +17,7 @@
 #import "UITableViewCell+Strikethrough.h"
 #import "STDCoreDataUtilities.h"
 #import "STDKeyboardListener.h"
+#import <FontAwesomeKit/FontAwesomeKit.h>
 
 #import "STDSubtasksViewController.h"
 #import "STDNotesViewController.h"
@@ -246,6 +247,13 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     self.toolbarItems = @[settingsButton];
 }
 
+- (void)rotateView:(UIView *)view angle:(CGFloat)angle duration:(CFTimeInterval)duration
+{
+    [UIView animateWithDuration:duration animations:^{
+        [view setTransform:CGAffineTransformMakeRotation(angle)];
+    }];
+}
+
 #pragma mark - Footer View
 
 - (void)showFooterView
@@ -382,7 +390,6 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
             }
             return string;
         }
-        return @"+";
     }
     return nil;
 }
@@ -410,9 +417,16 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     view.textField.text = [category.name uppercaseString];
     view.textField.userInteractionEnabled = !category;
     
+    NSAttributedString *attributedString = [self attributedTextForHeaderViewWithCategory:category];
+    [view.button setAttributedTitle:attributedString forState:UIControlStateNormal];
+}
+
+- (NSAttributedString *)attributedTextForHeaderViewWithCategory:(STDCategory *)category
+{
     NSString *title = [self taskCountStringForCategory:category];
-    UIButton *button = (UIButton *)view.textField.rightView;
-    [button setTitle:title forState:UIControlStateNormal];
+    if (title.length)
+        return [[NSAttributedString alloc] initWithString:title attributes:@{NSFontAttributeName:STDFontBold16}];
+    return [[FAKFontAwesome plusIconWithSize:14.0f] attributedString];
 }
 
 #pragma mark - UITableViewDataSource
@@ -448,8 +462,9 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
         cell.textField.delegate = self;
     }
     
-    STDTask *task = [self taskForIndexPath:indexPath];
-
+    BOOL isLastRow = (indexPath.row == ([self.tableView numberOfRowsInSection:indexPath.section] - 1));
+    STDTask *task = isLastRow ? nil : [self taskForIndexPath:indexPath];
+    
     cell.task = task;
     
     cell.textField.userInteractionEnabled = !task;
@@ -771,8 +786,9 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
 {
     if (textField.tag == kTextFieldCategory) {
         STDTaskTableViewHeaderFooterView *view = (STDTaskTableViewHeaderFooterView *)[textField superviewWithKindOfClass:[UITableViewHeaderFooterView class]];
-        UIButton *button = (UIButton *)view.textField.rightView;
-        [button setTitle:@"ⅹ" forState:UIControlStateNormal];
+        [view.button setAttributedTitle:[[FAKFontAwesome plusIconWithSize:14.0f] attributedString] forState:UIControlStateNormal];
+        [view.button layoutIfNeeded];
+        [self rotateView:view.button angle:M_PI_4 duration:0.2f];
     }
 }
 
@@ -805,9 +821,9 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
         STDTaskTableViewHeaderFooterView *view = (STDTaskTableViewHeaderFooterView *)[textField superviewWithKindOfClass:[UITableViewHeaderFooterView class]];
         STDCategory *category = view.category;
         
-        NSString *title = [self taskCountStringForCategory:category];
-        UIButton *button = (UIButton *)view.textField.rightView;
-        [button setTitle:title forState:UIControlStateNormal];
+        [self rotateView:view.button angle:0.0f duration:0.2f];
+        NSAttributedString *attributedString = [self attributedTextForHeaderViewWithCategory:category];
+        [view.button setAttributedTitle:attributedString forState:UIControlStateNormal];
         
         if (!category) {
             category = [STDCategory createEntity];

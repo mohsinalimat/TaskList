@@ -20,6 +20,7 @@
 #define STDFontBold36 [UIFont boldSystemFontOfSize:36.0f]
 #define STDFontBold24 [UIFont boldSystemFontOfSize:24.0f]
 #define STDFontBold18 [UIFont boldSystemFontOfSize:18.0f]
+#define STDFontBold16 [UIFont boldSystemFontOfSize:16.0f]
 
 #define STDFont16 [UIFont systemFontOfSize:16.0f]
 

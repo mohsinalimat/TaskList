@@ -54,7 +54,6 @@
     if (!_button) {
         _button = [UIButton buttonWithType:UIButtonTypeSystem];
         _button.frame = (CGRect){self.bounds.size.width - 40, 0, 40, 40};
-        _button.titleLabel.font = STDFont16;
         _button.tintColor = [UIColor darkGrayColor];
         _button.contentMode = UIViewContentModeCenter;
         [_button addTarget:self action:@selector(didTouchOnButton:) forControlEvents:UIControlEventTouchUpInside];
