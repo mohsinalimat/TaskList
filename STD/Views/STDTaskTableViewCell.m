@@ -23,7 +23,7 @@
 - (UIButton *)rightView
 {
     UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
-    button.frame = (CGRect){0, 0, 40, 40};
+    button.frame = (CGRect){0, 0, 44, 44};
     button.titleLabel.font = STDFont16;
     button.tintColor = [UIColor darkGrayColor];
     return button;

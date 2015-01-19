@@ -53,7 +53,7 @@
 {
     if (!_button) {
         _button = [UIButton buttonWithType:UIButtonTypeSystem];
-        _button.frame = (CGRect){self.bounds.size.width - 40, 0, 40, 40};
+        _button.frame = (CGRect){self.bounds.size.width - 44 - 7, 0, 44, 44};
         _button.tintColor = [UIColor darkGrayColor];
         _button.contentMode = UIViewContentModeCenter;
         [_button addTarget:self action:@selector(didTouchOnButton:) forControlEvents:UIControlEventTouchUpInside];
