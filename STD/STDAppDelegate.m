@@ -9,6 +9,7 @@
 #import "STDAppDelegate.h"
 #import "STDUserDefaults.h"
 #import "UIImage+Extras.h"
+#import "STDKeyboardListener.h"
 
 #import "iRate.h"
 
@@ -36,6 +37,9 @@
     
     // Fabric
     [Fabric with:@[CrashlyticsKit]];
+    
+    // Init Keyboard Listener
+    [STDKeyboardListener sharedInstance];
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.

@@ -16,6 +16,7 @@
 #import "UIView+Extras.h"
 #import "UITableViewCell+Strikethrough.h"
 #import "STDCoreDataUtilities.h"
+#import "STDKeyboardListener.h"
 
 #import "STDSubtasksViewController.h"
 #import "STDNotesViewController.h"
@@ -189,15 +190,17 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
 
 - (void)singleTapGestureRecognized:(UITapGestureRecognizer *)recognizer;
 {
+    if ([[STDKeyboardListener sharedInstance] isVisible]) {
+        [self.view endEditing:NO];
+        return;
+    }
+    
     CGPoint hitPoint = [recognizer locationInView:self.tableView];
     NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:hitPoint];
     STDTaskTableViewCell *cell = (STDTaskTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
     if (cell) {
         if (cell.task) [self toggleTask:cell.task];
     }
-    
-    // end editing
-    [self.view endEditing:NO];
 }
 
 - (void)doubleTapGestureRecognized:(UITapGestureRecognizer *)recognizer;
@@ -712,7 +715,11 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
 
 - (void)taskTableViewHeaderFooterView:(STDTaskTableViewHeaderFooterView *)view singleTapGestureRecognized:(UITapGestureRecognizer *)recognizer
 {
-    [self.view endEditing:YES];
+    if ([[STDKeyboardListener sharedInstance] isVisible]) {
+        [self.view endEditing:NO];
+        return;
+    }
+    
     [self toggleCategory:view.category];
 }
 
