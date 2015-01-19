@@ -24,7 +24,7 @@
 {
     UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
     button.frame = (CGRect){0, 0, 40, 40};
-    button.titleLabel.font = [UIFont systemFontOfSize:16.0f];
+    button.titleLabel.font = STDFont16;
     button.tintColor = [UIColor darkGrayColor];
     return button;
 }

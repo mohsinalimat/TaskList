@@ -73,6 +73,7 @@
 		C0C462571932BFEC0031E256 /* STDNotesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C0C462561932BFEC0031E256 /* STDNotesViewController.m */; };
 		C0C4625A1932BFFD0031E256 /* STDSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C0C462591932BFFD0031E256 /* STDSettingsViewController.m */; };
 		C0C5B7A91A6C7D2700F920CE /* STDKeyboardListener.m in Sources */ = {isa = PBXBuildFile; fileRef = C0C5B7A81A6C7D2700F920CE /* STDKeyboardListener.m */; };
+		C0C5B7AC1A6C832D00F920CE /* STDConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = C0C5B7AB1A6C832D00F920CE /* STDConstants.m */; };
 		C0D5C6BF19B3EF1E0010C13A /* check@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C0D5C6BB19B3EF1E0010C13A /* check@2x.png */; };
 		C0D5C6C019B3EF1E0010C13A /* clock@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C0D5C6BC19B3EF1E0010C13A /* clock@2x.png */; };
 		C0D5C6C119B3EF1E0010C13A /* cross@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C0D5C6BD19B3EF1E0010C13A /* cross@2x.png */; };
@@ -176,6 +177,8 @@
 		C0C462591932BFFD0031E256 /* STDSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STDSettingsViewController.m; sourceTree = "<group>"; };
 		C0C5B7A71A6C7D2700F920CE /* STDKeyboardListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STDKeyboardListener.h; sourceTree = "<group>"; };
 		C0C5B7A81A6C7D2700F920CE /* STDKeyboardListener.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STDKeyboardListener.m; sourceTree = "<group>"; };
+		C0C5B7AA1A6C832D00F920CE /* STDConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STDConstants.h; sourceTree = "<group>"; };
+		C0C5B7AB1A6C832D00F920CE /* STDConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STDConstants.m; sourceTree = "<group>"; };
 		C0D5C6BB19B3EF1E0010C13A /* check@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "check@2x.png"; sourceTree = "<group>"; };
 		C0D5C6BC19B3EF1E0010C13A /* clock@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "clock@2x.png"; sourceTree = "<group>"; };
 		C0D5C6BD19B3EF1E0010C13A /* cross@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cross@2x.png"; sourceTree = "<group>"; };
@@ -252,6 +255,8 @@
 			isa = PBXGroup;
 			children = (
 				C082BE19193C17D900A60D8E /* Categories */,
+				C0C5B7AA1A6C832D00F920CE /* STDConstants.h */,
+				C0C5B7AB1A6C832D00F920CE /* STDConstants.m */,
 				C043E93F1A50B88400A8A0C2 /* STDCoreDataUtilities.h */,
 				C043E9401A50B88400A8A0C2 /* STDCoreDataUtilities.m */,
 				C0C5B7A71A6C7D2700F920CE /* STDKeyboardListener.h */,
@@ -667,6 +672,7 @@
 				C0C5B7A91A6C7D2700F920CE /* STDKeyboardListener.m in Sources */,
 				C0F933331986178A00FC7329 /* STDSubtaskTableViewCell.m in Sources */,
 				C082BE14193BD86C00A60D8E /* STDTask.m in Sources */,
+				C0C5B7AC1A6C832D00F920CE /* STDConstants.m in Sources */,
 				C082BE08193BD86300A60D8E /* _STDTask.m in Sources */,
 				C0A8DF5519E1FEA1005FCC81 /* UIActionSheet+Blocks.m in Sources */,
 				C03A5C7319D8D16200437500 /* UITableView+Separator.m in Sources */,

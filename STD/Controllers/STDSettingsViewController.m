@@ -34,7 +34,7 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         
         cell.textLabel.textColor = [UIColor colorWithHue:(210.0f / 360.0f) saturation:0.94f brightness:1.0f alpha:1.0f];
-        cell.textLabel.font = [UIFont boldSystemFontOfSize:36.0f];
+        cell.textLabel.font = STDFontBold36;
         cell.textLabel.textAlignment = NSTextAlignmentCenter;
     }
     

@@ -8,6 +8,9 @@
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>
 
+    // Essentials
+    #import "STDConstants.h"
+
     // Core Data Model
     #import "STDCategory.h"
     #import "STDNote.h"

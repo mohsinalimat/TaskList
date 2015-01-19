@@ -242,7 +242,7 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
 - (void)styleNavigationController
 {
     UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithTitle:@"\u2699" style:UIBarButtonItemStylePlain target:self action:@selector(didTouchOnSettingsButton:)];
-    [settingsButton setTitleTextAttributes:@{NSFontAttributeName: [UIFont boldSystemFontOfSize:24.0]} forState:UIControlStateNormal];
+    [settingsButton setTitleTextAttributes:@{NSFontAttributeName: STDFontBold24} forState:UIControlStateNormal];
     self.toolbarItems = @[settingsButton];
 }
 
@@ -442,7 +442,7 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
         cell.delegate = self;
         cell.strikethroughDelegate = self;
         
-        cell.textField.font = [UIFont systemFontOfSize:14.0f];
+        cell.textField.font = STDFont16;
         cell.textField.placeholder = @"New Task";
         cell.textField.tag = kTextFieldTask;
         cell.textField.delegate = self;

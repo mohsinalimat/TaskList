@@ -14,11 +14,11 @@
 #import "UITableViewCell+Strikethrough.h"
 #import "PureLayout.h"
 #import "STDCoreDataUtilities.h"
+#import "STDKeyboardListener.h"
 
 #import "STDNotesViewController.h"
 
 #define kNumberOfRowsInSection self.subtasks.count + 1
-#define kTextViewFont [UIFont systemFontOfSize:17]
 
 static char kTextViewKey;
 static char kDummyTextViewKey;
@@ -116,6 +116,11 @@ static char kSubtaskKey;
 
 - (void)doubleTapGestureRecognized:(UITapGestureRecognizer *)recognizer;
 {
+    if ([[STDKeyboardListener sharedInstance] isVisible]) {
+        [self.view endEditing:NO];
+        return;
+    }
+    
     CGPoint hitPoint = [recognizer locationInView:self.tableView];
     NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:hitPoint];
     STDSubtaskTableViewCell *cell = (STDSubtaskTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
@@ -254,7 +259,7 @@ static char kSubtaskKey;
         
         cell.strikethroughDelegate = self;
         
-        cell.textView.font = kTextViewFont;
+        cell.textView.font = STDFont16;
         cell.textView.placeholder = @"New Task";
         cell.textView.delegate = self;
     }
@@ -280,7 +285,7 @@ static char kSubtaskKey;
     UITextView *textView = [self associatedObjectForKey:&kDummyTextViewKey];
     if (!textView) {
         textView = [UITextView new];
-        textView.font = kTextViewFont;
+        textView.font = STDFont16;
         [self setAssociatedObject:textView forKey:&kDummyTextViewKey];
     }
     textView.text = [self textForIndexPath:indexPath];
