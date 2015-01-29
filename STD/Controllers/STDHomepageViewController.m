@@ -17,7 +17,6 @@
 #import "UITableViewCell+Strikethrough.h"
 #import "STDCoreDataUtilities.h"
 #import "STDKeyboardListener.h"
-#import <FontAwesomeKit/FontAwesomeKit.h>
 
 #import "STDSubtasksViewController.h"
 #import "STDNotesViewController.h"
@@ -243,7 +242,7 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
 - (void)styleNavigationController
 {
     UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithTitle:@"\u2699" style:UIBarButtonItemStylePlain target:self action:@selector(didTouchOnSettingsButton:)];
-    [settingsButton setTitleTextAttributes:@{NSFontAttributeName: STDFontBold24} forState:UIControlStateNormal];
+    [settingsButton setTitleTextAttributes:@{NSFontAttributeName:STDFontBlack24} forState:UIControlStateNormal];
     self.toolbarItems = @[settingsButton];
 }
 
@@ -288,7 +287,7 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
         
         UIButton *undoButton = [UIButton buttonWithType:UIButtonTypeSystem];
         undoButton.translatesAutoresizingMaskIntoConstraints = NO;
-        undoButton.backgroundColor = [UIColor colorWithHue:(210.0f / 360.0f) saturation:0.94f brightness:1.0f alpha:1.0f];
+        undoButton.backgroundColor = STDColorDefault;
         undoButton.tintColor = [UIColor whiteColor];
         [undoButton setTitle:@"Undo" forState:UIControlStateNormal];
         [undoButton addTarget:self action:@selector(didTouchOnUndoButton:) forControlEvents:UIControlEventTouchUpInside];
@@ -424,9 +423,14 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
 - (NSAttributedString *)attributedTextForHeaderViewWithCategory:(STDCategory *)category
 {
     NSString *title = [self taskCountStringForCategory:category];
-    if (title.length)
-        return [[NSAttributedString alloc] initWithString:title attributes:@{NSFontAttributeName:STDFontBold16}];
-    return [[FAKFontAwesome plusIconWithSize:14.0f] attributedString];
+    return [self attributedTextForHeaderViewWithTitle:title];
+}
+
+- (NSAttributedString *)attributedTextForHeaderViewWithTitle:(NSString *)title
+{
+    NSString *string = title.length ? title : @"+";
+    UIFont *font = title.length ? STDFontMedium16 : STDFontMedium24;
+    return [[NSAttributedString alloc] initWithString:string attributes:@{NSFontAttributeName:font}];
 }
 
 #pragma mark - UITableViewDataSource
@@ -456,7 +460,7 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
         cell.delegate = self;
         cell.strikethroughDelegate = self;
         
-        cell.textField.font = STDFont16;
+        cell.textField.font = STDFontLight16;
         cell.textField.placeholder = @"New Task";
         cell.textField.tag = kTextFieldTask;
         cell.textField.delegate = self;
@@ -786,7 +790,8 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
 {
     if (textField.tag == kTextFieldCategory) {
         STDTaskTableViewHeaderFooterView *view = (STDTaskTableViewHeaderFooterView *)[textField superviewWithKindOfClass:[UITableViewHeaderFooterView class]];
-        [view.button setAttributedTitle:[[FAKFontAwesome plusIconWithSize:14.0f] attributedString] forState:UIControlStateNormal];
+        NSAttributedString *attributedString = [self attributedTextForHeaderViewWithTitle:nil];
+        [view.button setAttributedTitle:attributedString forState:UIControlStateNormal];
         [view.button layoutIfNeeded];
         [self rotateView:view.button angle:M_PI_4 duration:0.2f];
     }

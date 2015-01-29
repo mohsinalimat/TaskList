@@ -17,11 +17,21 @@
 #define STDLogError(format, ...) NSLog((@"%@ -> ERROR: " format), STDDefaultLog, ##__VA_ARGS__)
 
 // Fonts
-#define STDFontBold36 [UIFont boldSystemFontOfSize:36.0f]
-#define STDFontBold24 [UIFont boldSystemFontOfSize:24.0f]
-#define STDFontBold18 [UIFont boldSystemFontOfSize:18.0f]
-#define STDFontBold16 [UIFont boldSystemFontOfSize:16.0f]
+#define STDFontLight16 [UIFont fontWithName:kAvenirLight size:16.0f]
 
-#define STDFont16 [UIFont systemFontOfSize:16.0f]
+#define STDFontMedium16 [UIFont fontWithName:kAvenirMedium size:16.0f]
+#define STDFontMedium24 [UIFont fontWithName:kAvenirMedium size:24.0f]
+
+#define STDFontBlack20 [UIFont fontWithName:kAvenirBlack size:20.0f]
+#define STDFontBlack24 [UIFont fontWithName:kAvenirBlack size:24.0f]
+#define STDFontBlack36 [UIFont fontWithName:kAvenirBlack size:36.0f]
+
+#define kAvenirLight @"Avenir-Light"
+#define kAvenirMedium @"Avenir-Medium"
+#define kAvenirBlack @"Avenir-Black"
+
+// Colors
+#define STDColorBlue [UIColor colorWithHue:(210.0f / 360.0f) saturation:0.94f brightness:1.0f alpha:1.0f]
+#define STDColorDefault STDColorBlue
 
 @end

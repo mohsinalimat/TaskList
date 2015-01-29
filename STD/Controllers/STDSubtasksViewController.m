@@ -183,7 +183,7 @@ static char kSubtaskKey;
         
         UIButton *undoButton = [UIButton buttonWithType:UIButtonTypeSystem];
         undoButton.translatesAutoresizingMaskIntoConstraints = NO;
-        undoButton.backgroundColor = [UIColor colorWithHue:(210.0f / 360.0f) saturation:0.94f brightness:1.0f alpha:1.0f];
+        undoButton.backgroundColor = STDColorDefault;
         undoButton.tintColor = [UIColor whiteColor];
         [undoButton setTitle:@"Undo" forState:UIControlStateNormal];
         [undoButton addTarget:self action:@selector(didTouchOnUndoButton:) forControlEvents:UIControlEventTouchUpInside];
@@ -259,7 +259,7 @@ static char kSubtaskKey;
         
         cell.strikethroughDelegate = self;
         
-        cell.textView.font = STDFont16;
+        cell.textView.font = STDFontLight16;
         cell.textView.placeholder = @"New Task";
         cell.textView.delegate = self;
     }
@@ -285,7 +285,7 @@ static char kSubtaskKey;
     UITextView *textView = [self associatedObjectForKey:&kDummyTextViewKey];
     if (!textView) {
         textView = [UITextView new];
-        textView.font = STDFont16;
+        textView.font = STDFontLight16;
         [self setAssociatedObject:textView forKey:&kDummyTextViewKey];
     }
     textView.text = [self textForIndexPath:indexPath];

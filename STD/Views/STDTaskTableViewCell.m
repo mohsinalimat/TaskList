@@ -16,17 +16,14 @@
         button.tintColor = [UIColor blackColor];
     }
     
-    self.textField.rightView = [self rightView];
+    self.textField.rightView = (^{
+        UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
+        button.frame = (CGRect){0, 0, 44, 44};
+        button.titleLabel.font = STDFontLight16;
+        button.tintColor = [UIColor darkGrayColor];
+        return button;
+    })();
     self.textField.rightViewMode = UITextFieldViewModeUnlessEditing;
-}
-
-- (UIButton *)rightView
-{
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
-    button.frame = (CGRect){0, 0, 44, 44};
-    button.titleLabel.font = STDFont16;
-    button.tintColor = [UIColor darkGrayColor];
-    return button;
 }
 
 - (IBAction)didTouchOnTasksButton:(id)sender

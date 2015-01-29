@@ -59,7 +59,7 @@
     [[UIToolbar appearance] setBackgroundImage:backgroundImage forToolbarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
     [[UIToolbar appearance] setShadowImage:[UIImage new] forToolbarPosition:UIBarPositionAny];
     
-    [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor colorWithHue:(210.0f / 360.0f) saturation:0.94f brightness:1.0f alpha:1.0f]}];
+    [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName:STDColorDefault}];
     
     [self.window makeKeyAndVisible];
     

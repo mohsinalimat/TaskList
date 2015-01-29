@@ -23,11 +23,11 @@
 {
     UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(singleTapGestureRecognized:)];
     singleTap.numberOfTapsRequired = 1;
-    [self addGestureRecognizer:singleTap];
+    [self.contentView addGestureRecognizer:singleTap];
     
     UITapGestureRecognizer *doubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(doubleTapGestureRecognized:)];
     doubleTap.numberOfTapsRequired = 2;
-    [self addGestureRecognizer:doubleTap];
+    [self.contentView addGestureRecognizer:doubleTap];
     
     [singleTap requireGestureRecognizerToFail:doubleTap];
 }
@@ -37,13 +37,15 @@
 - (UITextField *)textField
 {
     if (!_textField) {
-        CGRect frame = CGRectInset(self.bounds, 14, 0);
-        frame.size.width += 7;
-        _textField = [[UITextField alloc] initWithFrame:frame];
-        _textField.textColor = [UIColor colorWithHue:(210.0f / 360.0f) saturation:0.94f brightness:1.0f alpha:1.0f];
-        _textField.font = STDFontBold18;
-        _textField.autocapitalizationType = UITextAutocapitalizationTypeAllCharacters;
-        _textField.autocorrectionType = UITextAutocorrectionTypeNo;
+        _textField = ({
+            UITextField *textField = [[UITextField alloc] initWithFrame:CGRectInset(self.contentView.bounds, 14, 0)];
+            textField.center = self.contentView.center;
+            textField.textColor = STDColorDefault;
+            textField.font = STDFontBlack20;
+            textField.autocapitalizationType = UITextAutocapitalizationTypeAllCharacters;
+            textField.autocorrectionType = UITextAutocorrectionTypeNo;
+            textField;
+        });
         [self.contentView addSubview:_textField];
     }
     return _textField;
@@ -52,11 +54,17 @@
 - (UIButton *)button
 {
     if (!_button) {
-        _button = [UIButton buttonWithType:UIButtonTypeSystem];
-        _button.frame = (CGRect){self.bounds.size.width - 44 - 7, 0, 44, 44};
-        _button.tintColor = [UIColor darkGrayColor];
-        _button.contentMode = UIViewContentModeCenter;
-        [_button addTarget:self action:@selector(didTouchOnButton:) forControlEvents:UIControlEventTouchUpInside];
+        _button = ({
+            UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
+            button.frame = ({
+                CGRect frame = (CGRect){0, 0, 44, 44};
+                frame.origin.x = CGRectGetMaxX(self.contentView.frame) - CGRectGetWidth(frame);
+                frame;
+            });
+            button.tintColor = STDColorDefault;
+            [button addTarget:self action:@selector(didTouchOnButton:) forControlEvents:UIControlEventTouchUpInside];
+            button;
+        });
         [self.contentView addSubview:_button];
     }
     return _button;

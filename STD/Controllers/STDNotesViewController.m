@@ -32,6 +32,7 @@
     self.navigationItem.title = self.task.name;
     
     self.textView.text = self.task.note.body;
+    self.textView.font = STDFontLight16;
     
     [self registerForKeyboardNotifications];
     
