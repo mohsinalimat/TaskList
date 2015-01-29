@@ -23,8 +23,6 @@
 
 @property (weak, nonatomic) STDTask *task;
 
-@property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *buttons;
-
 @property (weak, nonatomic) IBOutlet UITextField *textField;
 
 @end

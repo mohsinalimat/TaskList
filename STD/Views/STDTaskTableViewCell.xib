@@ -7,8 +7,8 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="STDTaskTableViewCell" id="KGk-i7-Jjw" customClass="STDTaskTableViewCell">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="88"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="STDTaskTableViewCell" rowHeight="44" id="KGk-i7-Jjw" customClass="STDTaskTableViewCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
                 <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
@@ -28,105 +28,23 @@
                             </mask>
                         </variation>
                     </textField>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ngj-f3-R3j">
-                        <rect key="frame" x="0.0" y="44" width="320" height="44"/>
-                        <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VDo-Wc-s5G">
-                                <rect key="frame" x="0.0" y="0.0" width="160" height="44"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="44" id="EKb-DN-bCT"/>
-                                    <constraint firstAttribute="width" constant="160" id="b1y-K9-aco"/>
-                                </constraints>
-                                <state key="normal" title="Tasks">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <variation key="default">
-                                    <mask key="constraints">
-                                        <exclude reference="b1y-K9-aco"/>
-                                    </mask>
-                                </variation>
-                                <connections>
-                                    <action selector="didTouchOnTasksButton:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="wAB-5V-TTO"/>
-                                </connections>
-                            </button>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rx0-gh-ony">
-                                <rect key="frame" x="160" y="7" width="1" height="30"/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="1" id="Grd-0e-bdw"/>
-                                    <constraint firstAttribute="height" constant="30" id="zG2-50-9ut"/>
-                                </constraints>
-                            </view>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qlO-7c-AWc">
-                                <rect key="frame" x="161" y="0.0" width="159" height="44"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="44" id="fhP-n9-ooX"/>
-                                    <constraint firstAttribute="width" constant="160" id="yH7-mz-07m"/>
-                                </constraints>
-                                <state key="normal" title="Notes">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <variation key="default">
-                                    <mask key="constraints">
-                                        <exclude reference="yH7-mz-07m"/>
-                                    </mask>
-                                </variation>
-                                <connections>
-                                    <action selector="didTouchOnNotesButton:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="1ht-QB-wMj"/>
-                                </connections>
-                            </button>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="rx0-gh-ony" firstAttribute="leading" secondItem="VDo-Wc-s5G" secondAttribute="trailing" id="EKq-Rw-elM"/>
-                            <constraint firstItem="qlO-7c-AWc" firstAttribute="leading" secondItem="rx0-gh-ony" secondAttribute="trailing" id="RO5-Jh-lWK"/>
-                            <constraint firstItem="qlO-7c-AWc" firstAttribute="leading" secondItem="VDo-Wc-s5G" secondAttribute="trailing" id="XfL-9h-rUh"/>
-                            <constraint firstAttribute="height" constant="44" id="ZzK-yC-nAY"/>
-                            <constraint firstAttribute="trailing" secondItem="qlO-7c-AWc" secondAttribute="trailing" id="aR1-aq-a23"/>
-                            <constraint firstItem="qlO-7c-AWc" firstAttribute="leading" secondItem="VDo-Wc-s5G" secondAttribute="trailing" id="f1h-H7-Hlu"/>
-                            <constraint firstItem="VDo-Wc-s5G" firstAttribute="leading" secondItem="Ngj-f3-R3j" secondAttribute="leading" id="gCz-bg-XgO"/>
-                            <constraint firstItem="rx0-gh-ony" firstAttribute="top" secondItem="Ngj-f3-R3j" secondAttribute="top" constant="7" id="gHd-qb-zvB"/>
-                            <constraint firstItem="rx0-gh-ony" firstAttribute="leading" secondItem="VDo-Wc-s5G" secondAttribute="trailing" id="ga2-NK-7Gg"/>
-                            <constraint firstItem="VDo-Wc-s5G" firstAttribute="top" secondItem="Ngj-f3-R3j" secondAttribute="top" id="gmg-Eo-g4B"/>
-                            <constraint firstAttribute="centerX" secondItem="rx0-gh-ony" secondAttribute="centerX" id="mKf-Y1-UaZ"/>
-                            <constraint firstItem="qlO-7c-AWc" firstAttribute="top" secondItem="Ngj-f3-R3j" secondAttribute="top" id="nbz-uF-i2l"/>
-                            <constraint firstAttribute="height" constant="44" id="vT6-f2-2MA"/>
-                        </constraints>
-                        <variation key="default">
-                            <mask key="constraints">
-                                <exclude reference="vT6-f2-2MA"/>
-                                <exclude reference="EKq-Rw-elM"/>
-                                <exclude reference="XfL-9h-rUh"/>
-                                <exclude reference="f1h-H7-Hlu"/>
-                            </mask>
-                        </variation>
-                    </view>
                 </subviews>
                 <constraints>
                     <constraint firstItem="roQ-J8-IGJ" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="7" id="1KP-uN-wAI"/>
                     <constraint firstAttribute="trailing" secondItem="roQ-J8-IGJ" secondAttribute="trailing" id="8LT-LK-sZy"/>
-                    <constraint firstAttribute="bottom" secondItem="Ngj-f3-R3j" secondAttribute="bottom" id="fDt-t6-gGl"/>
                     <constraint firstItem="roQ-J8-IGJ" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="14" id="flq-zA-OPM"/>
-                    <constraint firstItem="Ngj-f3-R3j" firstAttribute="top" secondItem="roQ-J8-IGJ" secondAttribute="bottom" constant="7" id="fyi-13-hyM"/>
-                    <constraint firstItem="Ngj-f3-R3j" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="hBx-hh-iMx"/>
                     <constraint firstItem="roQ-J8-IGJ" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="7" id="ibI-id-Ped"/>
-                    <constraint firstAttribute="trailing" secondItem="Ngj-f3-R3j" secondAttribute="trailing" id="njw-HV-Qqk"/>
-                    <constraint firstItem="Ngj-f3-R3j" firstAttribute="top" secondItem="roQ-J8-IGJ" secondAttribute="bottom" constant="7" id="ras-KK-B2j"/>
                 </constraints>
                 <variation key="default">
                     <mask key="constraints">
                         <exclude reference="1KP-uN-wAI"/>
-                        <exclude reference="fDt-t6-gGl"/>
-                        <exclude reference="fyi-13-hyM"/>
                     </mask>
                 </variation>
             </tableViewCellContentView>
             <connections>
                 <outlet property="textField" destination="roQ-J8-IGJ" id="Rds-LP-iDd"/>
-                <outletCollection property="buttons" destination="VDo-Wc-s5G" id="OeR-GV-KRk"/>
-                <outletCollection property="buttons" destination="qlO-7c-AWc" id="SKO-JA-Gyl"/>
             </connections>
-            <point key="canvasLocation" x="278" y="263"/>
+            <point key="canvasLocation" x="278" y="241"/>
         </tableViewCell>
     </objects>
 </document>

@@ -61,6 +61,10 @@
     
     [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName:STDColorDefault}];
     
+    [[UITextField appearance] setTextColor:[UIColor darkGrayColor]];
+    [[UITextView appearance] setTextColor:[UIColor darkGrayColor]];
+    [[UILabel appearance] setTextColor:[UIColor darkGrayColor]];
+    
     [self.window makeKeyAndVisible];
     
     return YES;
