@@ -54,6 +54,11 @@ static char kSubtaskKey;
     [self.tableView reloadData];
     
     [self footerView];
+    
+    if (!self.subtasks.count) {
+        STDSubtaskTableViewCell *cell = (STDSubtaskTableViewCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+        [cell.textView becomeFirstResponder];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
