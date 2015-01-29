@@ -56,12 +56,15 @@
     if (indexPath.row == 0) {
         [[iRate sharedInstance] promptForRating];
     } else if (indexPath.row == 1) {
-        if ([MFMailComposeViewController canSendMail]) {
-            MFMailComposeViewController *mailComposeViewController = [MFMailComposeViewController new];
-            mailComposeViewController.mailComposeDelegate = self;
-            [mailComposeViewController setToRecipients:@[@"support@morevoltage.com"]];
-            [self presentViewController:mailComposeViewController animated:YES completion:nil];
+        if (![MFMailComposeViewController canSendMail]) {
+            [UIAlertView showAlertViewWithMessage:@"Your device doesn't support Email!" title:@"Error"];
+            return;
         }
+        
+        MFMailComposeViewController *mailComposeViewController = [MFMailComposeViewController new];
+        mailComposeViewController.mailComposeDelegate = self;
+        [mailComposeViewController setToRecipients:@[@"support@morevoltage.com"]];
+        [self presentViewController:mailComposeViewController animated:YES completion:nil];
     }
 }
 
