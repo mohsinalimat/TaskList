@@ -1,8 +1,6 @@
-CLANG_CXX_LANGUAGE_STANDARD = c++11
-CLANG_CXX_LIBRARY = libc++
 GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
-HEADER_SEARCH_PATHS = "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/FontAwesomeKit" "${PODS_ROOT}/Headers/Public/JRSwizzle" "${PODS_ROOT}/Headers/Public/MagicalRecord" "${PODS_ROOT}/Headers/Public/PureLayout" "${PODS_ROOT}/Headers/Public/SZTextView" "${PODS_ROOT}/Headers/Public/UIViewController+BHTKeyboardAnimationBlocks" "${PODS_ROOT}/Headers/Public/iRate" "${PODS_ROOT}/Headers/Public/pop"
-OTHER_CFLAGS = $(inherited) -isystem "${PODS_ROOT}/Headers/Public" -isystem "${PODS_ROOT}/Headers/Public/FontAwesomeKit" -isystem "${PODS_ROOT}/Headers/Public/JRSwizzle" -isystem "${PODS_ROOT}/Headers/Public/MagicalRecord" -isystem "${PODS_ROOT}/Headers/Public/PureLayout" -isystem "${PODS_ROOT}/Headers/Public/SZTextView" -isystem "${PODS_ROOT}/Headers/Public/UIViewController+BHTKeyboardAnimationBlocks" -isystem "${PODS_ROOT}/Headers/Public/iRate" -isystem "${PODS_ROOT}/Headers/Public/pop"
-OTHER_LDFLAGS = -ObjC -l"Pods-FontAwesomeKit" -l"Pods-JRSwizzle" -l"Pods-MagicalRecord" -l"Pods-PureLayout" -l"Pods-SZTextView" -l"Pods-UIViewController+BHTKeyboardAnimationBlocks" -l"Pods-iRate" -l"Pods-pop" -l"c++" -framework "CoreData" -framework "CoreText" -framework "Foundation" -framework "UIKit"
+HEADER_SEARCH_PATHS = "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/JRSwizzle" "${PODS_ROOT}/Headers/Public/MagicalRecord" "${PODS_ROOT}/Headers/Public/PureLayout" "${PODS_ROOT}/Headers/Public/SZTextView" "${PODS_ROOT}/Headers/Public/UIViewController+BHTKeyboardAnimationBlocks" "${PODS_ROOT}/Headers/Public/iRate"
+OTHER_CFLAGS = $(inherited) -isystem "${PODS_ROOT}/Headers/Public" -isystem "${PODS_ROOT}/Headers/Public/JRSwizzle" -isystem "${PODS_ROOT}/Headers/Public/MagicalRecord" -isystem "${PODS_ROOT}/Headers/Public/PureLayout" -isystem "${PODS_ROOT}/Headers/Public/SZTextView" -isystem "${PODS_ROOT}/Headers/Public/UIViewController+BHTKeyboardAnimationBlocks" -isystem "${PODS_ROOT}/Headers/Public/iRate"
+OTHER_LDFLAGS = -ObjC -l"Pods-JRSwizzle" -l"Pods-MagicalRecord" -l"Pods-PureLayout" -l"Pods-SZTextView" -l"Pods-UIViewController+BHTKeyboardAnimationBlocks" -l"Pods-iRate" -framework "CoreData" -framework "Foundation"
 OTHER_LIBTOOLFLAGS = $(OTHER_LDFLAGS)
 PODS_ROOT = ${SRCROOT}/Pods
