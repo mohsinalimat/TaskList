@@ -819,9 +819,6 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
-    if (!textField.text.length)
-        return;
-    
     if (textField.tag == kTextFieldCategory) {
         STDTaskTableViewHeaderFooterView *view = (STDTaskTableViewHeaderFooterView *)[textField superviewWithKindOfClass:[UITableViewHeaderFooterView class]];
         STDCategory *category = view.category;
@@ -829,6 +826,9 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
         [self rotateView:view.button angle:0.0f duration:0.2f];
         NSAttributedString *attributedString = [self attributedTextForHeaderViewWithCategory:category];
         [view.button setAttributedTitle:attributedString forState:UIControlStateNormal];
+        
+        if (!textField.text.length)
+            return;
         
         if (!category) {
             category = [STDCategory createEntity];
@@ -868,6 +868,9 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
         
         [CATransaction commit];
     } else if (textField.tag == kTextFieldTask) {
+        if (!textField.text.length)
+            return;
+        
         CGPoint hitPoint = [textField convertPoint:CGPointZero toView:self.tableView];
         NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:hitPoint];
         if (indexPath) {
