@@ -3,7 +3,7 @@ This application makes use of the following third party libraries:
 
 ## MagicalRecord
 
- Copyright (c) 2010, Magical Panda Software, LLC
+ Copyright (c) 2010-2015, Magical Panda Software, LLC
 
  Permission is hereby granted, free of charge, to any person
  obtaining a copy of this software and associated documentation
@@ -13,10 +13,14 @@ This application makes use of the following third party libraries:
  copies of the Software, and to permit persons to whom the
  Software is furnished to do so, subject to the following
  conditions:
+ 
+ * Link to the MagicalRecord Repository at http:/github.com/magicalpanda/magicalrecord in the credits section of your application
 
  The above copyright notice and this permission notice shall be
  included in all copies or substantial portions of the Software.
 
+ This software license is in accordance with the standard MIT License.
+ 
  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
  OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
@@ -31,7 +35,7 @@ This application makes use of the following third party libraries:
 
 This code is distributed under the terms and conditions of the MIT license.
 
-Copyright (c) 2014 Tyler Fox
+Copyright (c) 2014-2015 Tyler Fox
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
@@ -94,7 +98,7 @@ SOFTWARE.
 
 iRate
 
-Version 1.11.3, October 24th, 2014
+Version 1.11.4, May 5th, 2015
 
 Copyright (C) 2011 Charcoal Design
 

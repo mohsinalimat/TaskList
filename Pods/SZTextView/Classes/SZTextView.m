@@ -23,6 +23,7 @@ static NSString * const kTextKey = @"text";
 static NSString * const kExclusionPathsKey = @"exclusionPaths";
 static NSString * const kLineFragmentPaddingKey = @"lineFragmentPadding";
 static NSString * const kTextContainerInsetKey = @"textContainerInset";
+static NSString * const kTextAlignmentKey = @"textAlignment";
 
 @implementation SZTextView
 
@@ -35,6 +36,16 @@ static NSString * const kTextContainerInsetKey = @"textContainerInset";
     return self;
 }
 
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 70000
+- (instancetype)initWithFrame:(CGRect)frame textContainer:(NSTextContainer *)textContainer
+{
+    self = [super initWithFrame:frame textContainer:textContainer];
+    if (self) {
+        [self preparePlaceholder];
+    }
+    return self;
+}
+#else
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
@@ -43,6 +54,7 @@ static NSString * const kTextContainerInsetKey = @"textContainerInset";
     }
     return self;
 }
+#endif
 
 - (void)preparePlaceholder
 {
@@ -56,13 +68,15 @@ static NSString * const kTextContainerInsetKey = @"textContainerInset";
     self._placeholderTextView = [[UITextView alloc] initWithFrame:frame];
     self._placeholderTextView.opaque = NO;
     self._placeholderTextView.backgroundColor = [UIColor clearColor];
-    self._placeholderTextView.textColor = [UIColor lightGrayColor];
+    self._placeholderTextView.textColor = [UIColor colorWithWhite:0.7f alpha:0.7f];
     self._placeholderTextView.textAlignment = self.textAlignment;
     self._placeholderTextView.editable = NO;
     self._placeholderTextView.scrollEnabled = NO;
     self._placeholderTextView.userInteractionEnabled = NO;
     self._placeholderTextView.font = self.font;
     self._placeholderTextView.isAccessibilityElement = NO;
+    self._placeholderTextView.contentOffset = self.contentOffset;
+    self._placeholderTextView.contentInset = self.contentInset;
 
     if ([self._placeholderTextView respondsToSelector:@selector(setSelectable:)]) {
         self._placeholderTextView.selectable = NO;
@@ -102,6 +116,8 @@ static NSString * const kTextContainerInsetKey = @"textContainerInset";
               options:NSKeyValueObservingOptionNew context:nil];
     [self addObserver:self forKeyPath:kTextKey
               options:NSKeyValueObservingOptionNew context:nil];
+    [self addObserver:self forKeyPath:kTextAlignmentKey
+              options:NSKeyValueObservingOptionNew context:nil];
 
     if (HAS_TEXT_CONTAINER) {
         [self.textContainer addObserver:self forKeyPath:kExclusionPathsKey
@@ -118,7 +134,7 @@ static NSString * const kTextContainerInsetKey = @"textContainerInset";
 
 - (void)setPlaceholder:(NSString *)placeholderText
 {
-    _placeholder = placeholderText;
+    _placeholder = [placeholderText copy];
     _attributedPlaceholder = [[NSAttributedString alloc] initWithString:placeholderText];
 
     [self resizePlaceholderFrame];
@@ -127,7 +143,7 @@ static NSString * const kTextContainerInsetKey = @"textContainerInset";
 - (void)setAttributedPlaceholder:(NSAttributedString *)attributedPlaceholderText
 {
     _placeholder = attributedPlaceholderText.string;
-    _attributedPlaceholder = attributedPlaceholderText;
+    _attributedPlaceholder = [attributedPlaceholderText copy];
 
     [self resizePlaceholderFrame];
 }
@@ -177,6 +193,10 @@ static NSString * const kTextContainerInsetKey = @"textContainerInset";
         NSValue *value = [change objectForKey:NSKeyValueChangeNewKey];
         self._placeholderTextView.textContainerInset = value.UIEdgeInsetsValue;
     }
+    else if ([keyPath isEqualToString:kTextAlignmentKey]) {
+        NSNumber *alignment = [change objectForKey:NSKeyValueChangeNewKey];
+        self._placeholderTextView.textAlignment = alignment.intValue;
+    }
     else {
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
     }
@@ -207,10 +227,31 @@ static NSString * const kTextContainerInsetKey = @"textContainerInset";
 - (void)setPlaceholderVisibleForText:(NSString *)text
 {
     if (text.length < 1) {
-        [self addSubview:self._placeholderTextView];
-        [self sendSubviewToBack:self._placeholderTextView];
-    } else {
-        [self._placeholderTextView removeFromSuperview];
+        if (self.fadeTime > 0.0) {
+            if (![self._placeholderTextView isDescendantOfView:self]) {
+                self._placeholderTextView.alpha = 0;
+                [self addSubview:self._placeholderTextView];
+                [self sendSubviewToBack:self._placeholderTextView];
+            }
+            [UIView animateWithDuration:_fadeTime animations:^{
+                self._placeholderTextView.alpha = 1;
+            }];
+        }
+        else {
+            [self addSubview:self._placeholderTextView];
+            [self sendSubviewToBack:self._placeholderTextView];
+            self._placeholderTextView.alpha = 1;
+        }
+    }
+    else {
+        if (self.fadeTime > 0.0) {
+            [UIView animateWithDuration:_fadeTime animations:^{
+                self._placeholderTextView.alpha = 0;
+            }];
+        }
+        else {
+            [self._placeholderTextView removeFromSuperview];
+        }
     }
 }
 
@@ -222,6 +263,7 @@ static NSString * const kTextContainerInsetKey = @"textContainerInset";
     [self removeObserver:self forKeyPath:kFontKey];
     [self removeObserver:self forKeyPath:kAttributedTextKey];
     [self removeObserver:self forKeyPath:kTextKey];
+    [self removeObserver:self forKeyPath:kTextAlignmentKey];
 
     if (HAS_TEXT_CONTAINER) {
         [self.textContainer removeObserver:self forKeyPath:kExclusionPathsKey];
