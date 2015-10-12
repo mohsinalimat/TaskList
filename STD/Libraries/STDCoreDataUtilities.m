@@ -24,7 +24,7 @@
 
 - (NSArray *)categories
 {
-    NSFetchRequest *request = [STDCategory requestAllSortedBy:NSStringFromSelector(@selector(index)) ascending:YES];
+    NSFetchRequest *request = [STDCategory MR_requestAllSortedBy:NSStringFromSelector(@selector(index)) ascending:YES];
     [request setRelationshipKeyPathsForPrefetching:@[@"tasks", @"tasks.subtasks"]];
     NSArray *categories = [STDCategory MR_executeFetchRequest:request];
     if (!categories.count) {
@@ -36,7 +36,7 @@
         category2.name = @"Work";
         category2.indexValue = 1;
         
-        [[NSManagedObjectContext contextForCurrentThread] MR_saveOnlySelfAndWait];
+        [[NSManagedObjectContext MR_defaultContext] MR_saveOnlySelfAndWait];
         
         return [self categories];
     }

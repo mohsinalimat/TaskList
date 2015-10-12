@@ -5,6 +5,7 @@
 //
 
 #ifdef __OBJC__
+
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>
 
@@ -18,10 +19,9 @@
 
     // External Frameworks
     #import <MagicalRecord/MagicalRecord.h>
-    #import <MagicalRecord/MagicalRecord+ShorthandMethods.h>
-    #import <MagicalRecord/MagicalRecordShorthandMethodAliases.h>
 
     // Categories
     #import "UIAlertView+Blocks.h"
     #import "UIActionSheet+Blocks.h"
+
 #endif

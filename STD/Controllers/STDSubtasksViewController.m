@@ -90,7 +90,7 @@ static char kSubtaskKey;
         
         [self load];
         
-        [[NSManagedObjectContext contextForCurrentThread] MR_saveOnlySelfAndWait];
+        [[NSManagedObjectContext MR_defaultContext] MR_saveOnlySelfAndWait];
         
         NSIndexPath *indexPath = [self indexPathOfSubtask:subtask];
         
@@ -111,7 +111,7 @@ static char kSubtaskKey;
     
     [self load];
     
-    [[NSManagedObjectContext contextForCurrentThread] MR_saveOnlySelfAndWait];
+    [[NSManagedObjectContext MR_defaultContext] MR_saveOnlySelfAndWait];
     
     // delete row
     [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
@@ -315,7 +315,7 @@ static char kSubtaskKey;
 
     [self load];
     
-    [[NSManagedObjectContext contextForCurrentThread] MR_saveOnlySelfAndWait];
+    [[NSManagedObjectContext MR_defaultContext] MR_saveOnlySelfAndWait];
 }
 
 - (NSIndexPath *)tableView:(UITableView *)tableView targetIndexPathForMoveFromRowAtIndexPath:(NSIndexPath *)sourceIndexPath toProposedIndexPath:(NSIndexPath *)proposedDestinationIndexPath
@@ -360,7 +360,7 @@ static char kSubtaskKey;
     
     subtask.name = textView.text;
     
-    [[NSManagedObjectContext contextForCurrentThread] MR_saveOnlySelfAndWait];
+    [[NSManagedObjectContext MR_defaultContext] MR_saveOnlySelfAndWait];
     
     BOOL isNew = (indexPath.row == ([self.tableView numberOfRowsInSection:indexPath.section] - 1));
 

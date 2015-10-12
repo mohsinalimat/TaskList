@@ -35,7 +35,6 @@
     [STDUserDefaults setObject:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"] forKey:@"version_preference"];
     
     // MagicalRecord
-    [MagicalRecord enableShorthandMethods];
     [MagicalRecord setupAutoMigratingCoreDataStack];
     
     // Fabric

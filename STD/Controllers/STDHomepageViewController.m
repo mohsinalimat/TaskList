@@ -120,7 +120,7 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     
     // save and update data model
     if (tasks.count) {
-        [[NSManagedObjectContext contextForCurrentThread] MR_saveOnlySelfAndWait];
+        [[NSManagedObjectContext MR_defaultContext] MR_saveOnlySelfAndWait];
         
         NSIndexPath *indexPath = [self indexPathOfTask:task];
         
@@ -158,7 +158,7 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
                     subtask.completion_date = [NSDate date];
                 }
                 
-                [[NSManagedObjectContext contextForCurrentThread] MR_saveOnlySelfAndWait];
+                [[NSManagedObjectContext MR_defaultContext] MR_saveOnlySelfAndWait];
             }
             
             [self didCompleteTask:task];
@@ -178,7 +178,7 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     task.completed = @YES;
     task.completion_date = [NSDate date];
     
-    [[NSManagedObjectContext contextForCurrentThread] MR_saveOnlySelfAndWait];
+    [[NSManagedObjectContext MR_defaultContext] MR_saveOnlySelfAndWait];
     
     // delete row
     [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
@@ -563,7 +563,7 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
         [self reloadHeaderViewForCategory:destinationCategory];
     }
     
-    [[NSManagedObjectContext contextForCurrentThread] MR_saveOnlySelfAndWait];
+    [[NSManagedObjectContext MR_defaultContext] MR_saveOnlySelfAndWait];
 }
 
 - (NSIndexPath *)tableView:(UITableView *)tableView targetIndexPathForMoveFromRowAtIndexPath:(NSIndexPath *)sourceIndexPath toProposedIndexPath:(NSIndexPath *)proposedDestinationIndexPath
@@ -766,7 +766,7 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
                     
                     [category MR_deleteEntity];
                     
-                    [[NSManagedObjectContext contextForCurrentThread] MR_saveOnlySelfAndWait];
+                    [[NSManagedObjectContext MR_defaultContext] MR_saveOnlySelfAndWait];
                     
                     [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:section] withRowAnimation:UITableViewRowAnimationFade];
                 }
@@ -840,7 +840,7 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
         
         category.name = textField.text;
         
-        [[NSManagedObjectContext contextForCurrentThread] MR_saveOnlySelfAndWait];
+        [[NSManagedObjectContext MR_defaultContext] MR_saveOnlySelfAndWait];
         
         NSUInteger section = [self sectionForCategory:category];
         
@@ -887,7 +887,7 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
                 
                 task.name = textField.text;
                 
-                [[NSManagedObjectContext contextForCurrentThread] MR_saveOnlySelfAndWait];
+                [[NSManagedObjectContext MR_defaultContext] MR_saveOnlySelfAndWait];
                 
                 BOOL isNew = (indexPath.row == ([self.tableView numberOfRowsInSection:indexPath.section] - 2));
                 
