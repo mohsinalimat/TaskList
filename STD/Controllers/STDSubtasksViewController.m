@@ -90,7 +90,7 @@ static char kSubtaskKey;
         
         [self load];
         
-        [[NSManagedObjectContext contextForCurrentThread] saveOnlySelfAndWait];
+        [[NSManagedObjectContext contextForCurrentThread] MR_saveOnlySelfAndWait];
         
         NSIndexPath *indexPath = [self indexPathOfSubtask:subtask];
         
@@ -111,7 +111,7 @@ static char kSubtaskKey;
     
     [self load];
     
-    [[NSManagedObjectContext contextForCurrentThread] saveOnlySelfAndWait];
+    [[NSManagedObjectContext contextForCurrentThread] MR_saveOnlySelfAndWait];
     
     // delete row
     [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
@@ -315,7 +315,7 @@ static char kSubtaskKey;
 
     [self load];
     
-    [[NSManagedObjectContext contextForCurrentThread] saveOnlySelfAndWait];
+    [[NSManagedObjectContext contextForCurrentThread] MR_saveOnlySelfAndWait];
 }
 
 - (NSIndexPath *)tableView:(UITableView *)tableView targetIndexPathForMoveFromRowAtIndexPath:(NSIndexPath *)sourceIndexPath toProposedIndexPath:(NSIndexPath *)proposedDestinationIndexPath
@@ -353,14 +353,14 @@ static char kSubtaskKey;
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:0];
     STDTask *subtask = [self subtaskForIndexPath:indexPath];
     if (!subtask) {
-        subtask = [STDTask createEntity];
+        subtask = [STDTask MR_createEntity];
         [self.task addSubtasksObject:subtask];
         [self.subtasks addObject:subtask];
     }
     
     subtask.name = textView.text;
     
-    [[NSManagedObjectContext contextForCurrentThread] saveOnlySelfAndWait];
+    [[NSManagedObjectContext contextForCurrentThread] MR_saveOnlySelfAndWait];
     
     BOOL isNew = (indexPath.row == ([self.tableView numberOfRowsInSection:indexPath.section] - 1));
 

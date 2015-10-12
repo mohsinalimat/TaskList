@@ -22,7 +22,7 @@
     [super viewWillAppear:animated];
     
     if (!self.task.note)
-        self.task.note = [STDNote createEntity];
+        self.task.note = [STDNote MR_createEntity];
 }
 
 - (void)viewDidLoad

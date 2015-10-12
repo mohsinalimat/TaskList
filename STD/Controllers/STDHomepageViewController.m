@@ -120,7 +120,7 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     
     // save and update data model
     if (tasks.count) {
-        [[NSManagedObjectContext contextForCurrentThread] saveOnlySelfAndWait];
+        [[NSManagedObjectContext contextForCurrentThread] MR_saveOnlySelfAndWait];
         
         NSIndexPath *indexPath = [self indexPathOfTask:task];
         
@@ -158,7 +158,7 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
                     subtask.completion_date = [NSDate date];
                 }
                 
-                [[NSManagedObjectContext contextForCurrentThread] saveOnlySelfAndWait];
+                [[NSManagedObjectContext contextForCurrentThread] MR_saveOnlySelfAndWait];
             }
             
             [self didCompleteTask:task];
@@ -178,7 +178,7 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
     task.completed = @YES;
     task.completion_date = [NSDate date];
     
-    [[NSManagedObjectContext contextForCurrentThread] saveOnlySelfAndWait];
+    [[NSManagedObjectContext contextForCurrentThread] MR_saveOnlySelfAndWait];
     
     // delete row
     [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
@@ -563,7 +563,7 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
         [self reloadHeaderViewForCategory:destinationCategory];
     }
     
-    [[NSManagedObjectContext contextForCurrentThread] saveOnlySelfAndWait];
+    [[NSManagedObjectContext contextForCurrentThread] MR_saveOnlySelfAndWait];
 }
 
 - (NSIndexPath *)tableView:(UITableView *)tableView targetIndexPathForMoveFromRowAtIndexPath:(NSIndexPath *)sourceIndexPath toProposedIndexPath:(NSIndexPath *)proposedDestinationIndexPath
@@ -764,9 +764,9 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
                     
                     [self.categories removeObject:category];
                     
-                    [category deleteEntity];
+                    [category MR_deleteEntity];
                     
-                    [[NSManagedObjectContext contextForCurrentThread] saveOnlySelfAndWait];
+                    [[NSManagedObjectContext contextForCurrentThread] MR_saveOnlySelfAndWait];
                     
                     [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:section] withRowAnimation:UITableViewRowAnimationFade];
                 }
@@ -831,7 +831,7 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
             return;
         
         if (!category) {
-            category = [STDCategory createEntity];
+            category = [STDCategory MR_createEntity];
             [self.categories addObject:category];
         } else if ([category.name isEqualToString:textField.text]) {
             view.textField.userInteractionEnabled = NO;
@@ -840,7 +840,7 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
         
         category.name = textField.text;
         
-        [[NSManagedObjectContext contextForCurrentThread] saveOnlySelfAndWait];
+        [[NSManagedObjectContext contextForCurrentThread] MR_saveOnlySelfAndWait];
         
         NSUInteger section = [self sectionForCategory:category];
         
@@ -878,7 +878,7 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
             if (category) {
                 STDTask *task = [self taskForIndexPath:indexPath];
                 if (!task) {
-                    task = [STDTask createEntity];
+                    task = [STDTask MR_createEntity];
                     [category addTasksObject:task];
                 } else if ([task.name isEqualToString:textField.text]) {
                     textField.userInteractionEnabled = NO;
@@ -887,7 +887,7 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
                 
                 task.name = textField.text;
                 
-                [[NSManagedObjectContext contextForCurrentThread] saveOnlySelfAndWait];
+                [[NSManagedObjectContext contextForCurrentThread] MR_saveOnlySelfAndWait];
                 
                 BOOL isNew = (indexPath.row == ([self.tableView numberOfRowsInSection:indexPath.section] - 2));
                 

@@ -1,0 +1,27 @@
+//
+//  Prefix header
+//
+//  The contents of this file are implicitly included at the beginning of every source file.
+//
+
+#ifdef __OBJC__
+    #import <UIKit/UIKit.h>
+    #import <Foundation/Foundation.h>
+
+    // Essentials
+    #import "STDConstants.h"
+
+    // Core Data Model
+    #import "STDCategory.h"
+    #import "STDNote.h"
+    #import "STDTask.h"
+
+    // External Frameworks
+    #import <MagicalRecord/MagicalRecord.h>
+    #import <MagicalRecord/MagicalRecord+ShorthandMethods.h>
+    #import <MagicalRecord/MagicalRecordShorthandMethodAliases.h>
+
+    // Categories
+    #import "UIAlertView+Blocks.h"
+    #import "UIActionSheet+Blocks.h"
+#endif
