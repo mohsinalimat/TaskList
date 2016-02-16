@@ -36,6 +36,8 @@
     
     // MagicalRecord
     [MagicalRecord setupAutoMigratingCoreDataStack];
+    [MagicalRecord setupCoreDataStackWithiCloudContainer:@"iCloud.com.morevoltage.STD" localStoreNamed:[MagicalRecord defaultStoreName]];
+//    [MagicalRecord setupCoreDataStackWithiCloudContainer:@"iCloud.com.morevoltage.STD" contentNameKey:@"Content" localStoreNamed:[MagicalRecord defaultStoreName] cloudStorePathComponent:@"Path"];
     
     // Fabric
     [Fabric with:@[CrashlyticsKit]];

@@ -141,6 +141,7 @@
 		8BB19F861BCB0E0C00453FCD /* STDUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = STDUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8BB19F8A1BCB0E0C00453FCD /* STDUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = STDUITests.m; sourceTree = "<group>"; };
 		8BB19F8C1BCB0E0C00453FCD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8BF066BA1BCB82D8000B1934 /* STD.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = STD.entitlements; sourceTree = "<group>"; };
 		C7218BF270A02BA30D6C2BE4 /* libPods-STD.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-STD.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -311,6 +312,7 @@
 		8BB19F641BCB0E0C00453FCD /* STD */ = {
 			isa = PBXGroup;
 			children = (
+				8BF066BA1BCB82D8000B1934 /* STD.entitlements */,
 				8BB19F681BCB0E0C00453FCD /* AppDelegate.h */,
 				8BB19F691BCB0E0C00453FCD /* AppDelegate.m */,
 				8BB19F711BCB0E0C00453FCD /* Assets.xcassets */,
@@ -436,6 +438,11 @@
 					8BB19F611BCB0E0C00453FCD = {
 						CreatedOnToolsVersion = 7.0.1;
 						DevelopmentTeam = NNRNHY2N8B;
+						SystemCapabilities = {
+							com.apple.iCloud = {
+								enabled = 1;
+							};
+						};
 					};
 					8BB19F7A1BCB0E0C00453FCD = {
 						CreatedOnToolsVersion = 7.0.1;
@@ -721,13 +728,16 @@
 			baseConfigurationReference = 311A1D06BCE546D7B43BFDF7 /* Pods-STD.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = STD/STD.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "STD/STD-Prefix.pch";
 				INFOPLIST_FILE = STD/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.morevoltage.STD;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -736,13 +746,16 @@
 			baseConfigurationReference = 7B8DE52BC0904544F18762A5 /* Pods-STD.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = STD/STD.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "STD/STD-Prefix.pch";
 				INFOPLIST_FILE = STD/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.morevoltage.STD;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};
