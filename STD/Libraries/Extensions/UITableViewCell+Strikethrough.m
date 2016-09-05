@@ -86,7 +86,7 @@ static char kPanGestureRecognizerAssociatedKey;
 {
     if ([gestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]]) {
         CGPoint translation = [gestureRecognizer translationInView:[self superview]];
-        return fabsf(translation.x) > fabsf(translation.y);
+        return fabs(translation.x) > fabs(translation.y);
     }
     return NO;
 }
