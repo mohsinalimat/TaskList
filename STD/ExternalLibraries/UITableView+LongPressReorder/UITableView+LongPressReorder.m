@@ -53,7 +53,7 @@
     CGPoint location = [gesture locationInView:_tableView];
     NSIndexPath *indexPath = [_tableView indexPathForRowAtPoint:location];
     
-    int sections = [_tableView numberOfSections];
+    int sections = (int)[_tableView numberOfSections];
     int rows = 0;
     for(int i = 0; i < sections; i++) {
         rows += [_tableView numberOfRowsInSection:i];

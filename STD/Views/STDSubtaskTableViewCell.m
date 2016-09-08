@@ -12,6 +12,7 @@
 
 - (void)awakeFromNib
 {
+    [super awakeFromNib];
     self.textView.scrollsToTop = NO;
     self.textView.contentInset = (UIEdgeInsets){2, 0, 0, 0};
 }
