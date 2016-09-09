@@ -1,9 +1,9 @@
 //
 //  main.m
-//  STD
+//  Todo
 //
-//  Created by Lasha Efremidze on 10/11/15.
-//  Copyright © 2015 Lasha Efremidze. All rights reserved.
+//  Created by Lasha Efremidze on 9/9/16.
+//  Copyright © 2016 More Voltage. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
