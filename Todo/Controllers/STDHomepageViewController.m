@@ -14,6 +14,7 @@
 #import "UITableView+LongPressReorder.h"
 #import "PureLayout.h"
 #import "UIView+Extras.h"
+#import "UIImage+Extras.h"
 #import "UITableViewCell+Strikethrough.h"
 #import "STDCoreDataUtilities.h"
 #import "STDKeyboardListener.h"
@@ -241,8 +242,7 @@ typedef NS_ENUM(NSInteger, UITableViewSectionAction) {
 
 - (void)styleNavigationController
 {
-    UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithTitle:@"\u2699" style:UIBarButtonItemStylePlain target:self action:@selector(didTouchOnSettingsButton:)];
-    [settingsButton setTitleTextAttributes:@{NSFontAttributeName:STDFontBlack24} forState:UIControlStateNormal];
+    UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"gear3"] resize:(CGSize){20, 20}] style:UIBarButtonItemStylePlain target:self action:@selector(didTouchOnSettingsButton:)];
     self.toolbarItems = @[settingsButton];
 }
 

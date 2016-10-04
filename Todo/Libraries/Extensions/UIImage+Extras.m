@@ -16,4 +16,13 @@
     return image;
 }
 
+- (UIImage *)resize:(CGSize)size;
+{
+    UIGraphicsBeginImageContextWithOptions(size, false, 0);
+    [self drawInRect:(CGRect){0, 0, size.width, size.height}];
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return [image imageWithRenderingMode:[self renderingMode]];
+}
+
 @end
