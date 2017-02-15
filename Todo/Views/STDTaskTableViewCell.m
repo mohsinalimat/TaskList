@@ -18,6 +18,8 @@
 
 - (void)awakeFromNib
 {
+    [super awakeFromNib];
+    
     self.textField.rightView = ({
         UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
         button.frame = (CGRect){0, 0, 44, 44};
